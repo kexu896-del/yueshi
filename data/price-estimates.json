@@ -1,0 +1,156 @@
+{
+  "meta": {
+    "city": "南京",
+    "as_of": "2026-08",
+    "estimate_only": true,
+    "note": "当地近期同类公开行情估算，非实时报价；无来源价食材按品类区间上限取值",
+    "unit_standard": "元/500g",
+    "version": "2026-08-24",
+    "method": "category_estimate",
+    "contract": "字段契约：city（城市）/ as_of（数据日期）/ unit_standard（单位口径）/ method（估算方法：category_estimate|historical_estimate）/ version（版本日期）；items 每项含 spec/price/upper/price_basis/category"
+  },
+  "category_defaults_per_500g": {
+    "叶菜": [
+      4,
+      8
+    ],
+    "根茎瓜果蔬菜": [
+      3,
+      7
+    ],
+    "菌菇": [
+      8,
+      15
+    ],
+    "鲜肉": [
+      18,
+      45
+    ],
+    "水产": [
+      25,
+      60
+    ],
+    "豆制品": [
+      4,
+      8
+    ],
+    "谷物薯类": [
+      3,
+      10
+    ],
+    "乳品": [
+      8,
+      18
+    ],
+    "油脂": [
+      15,
+      40
+    ],
+    "水果": [
+      5,
+      15
+    ],
+    "调味干货": [
+      10,
+      40
+    ]
+  },
+  "items": {
+    "虾": {
+      "spec": "冷冻虾仁 300g/袋",
+      "price": "约26元/袋",
+      "upper": 26,
+      "price_basis": "category_estimate"
+    },
+    "鳕鱼": {
+      "spec": "冷冻鳕鱼块 250g/袋",
+      "price": "约24元/袋",
+      "upper": 24,
+      "price_basis": "category_estimate"
+    },
+    "牛里脊": {
+      "spec": "300–350g/盒",
+      "price": "约30元/盒",
+      "upper": 30,
+      "price_basis": "category_estimate"
+    },
+    "北豆腐": {
+      "spec": "400g/盒 ×1 + 按需补",
+      "price": "约3.5元/盒",
+      "upper": 7,
+      "price_basis": "category_estimate"
+    },
+    "菠菜": {
+      "spec": "300–350g/把",
+      "price": "约5元/把",
+      "upper": 5,
+      "price_basis": "category_estimate"
+    },
+    "芹菜": {
+      "spec": "300g/把",
+      "price": "约4元/把",
+      "upper": 4,
+      "price_basis": "category_estimate"
+    },
+    "冬瓜": {
+      "spec": "切块 400–500g/份",
+      "price": "约3元/份",
+      "upper": 3,
+      "price_basis": "category_estimate"
+    },
+    "番茄": {
+      "spec": "约3个",
+      "price": "约5元",
+      "upper": 5,
+      "price_basis": "category_estimate"
+    },
+    "西兰花": {
+      "spec": "1颗（约250g）",
+      "price": "约6元/颗",
+      "upper": 6,
+      "price_basis": "category_estimate"
+    },
+    "大白菜": {
+      "spec": "半颗",
+      "price": "约3元",
+      "upper": 3,
+      "price_basis": "category_estimate"
+    },
+    "洋葱": {
+      "spec": "1个",
+      "price": "约2元/个",
+      "upper": 2,
+      "price_basis": "category_estimate"
+    },
+    "胡萝卜": {
+      "spec": "1根",
+      "price": "约1.5元/根",
+      "upper": 1.5,
+      "price_basis": "category_estimate"
+    },
+    "鲜玉米": {
+      "spec": "3根装",
+      "price": "约10元/3根",
+      "upper": 10,
+      "price_basis": "category_estimate"
+    },
+    "莲藕": {
+      "spec": "2节（约450g）",
+      "price": "约7元",
+      "upper": 7,
+      "price_basis": "category_estimate"
+    },
+    "燕麦片": {
+      "spec": "250g/小袋",
+      "price": "约8元/袋",
+      "upper": 8,
+      "price_basis": "category_estimate"
+    },
+    "无糖酸奶": {
+      "spec": "100g/杯 ×7",
+      "price": "约21元/7杯",
+      "upper": 21,
+      "price_basis": "category_estimate"
+    }
+  }
+}

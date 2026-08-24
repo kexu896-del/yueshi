@@ -1,0 +1,1918 @@
+{
+ "说明": "食材目录：预选候选的元数据（别名/当令/包装/易腐/平替/最低菜数）。价格不入此表，价格走菜场参考价与平台搜索两层。",
+ "items": {
+  "三文鱼": {
+   "ingredient_id": "三文鱼",
+   "normalized_name": "三文鱼",
+   "display_name": "三文鱼",
+   "category": "蛋白质",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "三文鱼",
+   "expected_package": {
+    "package_quantity": 200,
+    "unit": "g",
+    "note": "刺身/煎排装"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [
+    "鲭鱼",
+    "带鱼"
+   ],
+   "preference_status": "neutral"
+  },
+  "上海青": {
+   "ingredient_id": "上海青",
+   "normalized_name": "上海青",
+   "display_name": "上海青",
+   "category": "蔬菜",
+   "aliases": [
+    "小青菜",
+    "青菜",
+    "油菜"
+   ],
+   "seasonality": [],
+   "search_keyword": "小青菜",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "丝瓜": {
+   "ingredient_id": "丝瓜",
+   "normalized_name": "丝瓜",
+   "display_name": "丝瓜",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [
+    "6月",
+    "7月"
+   ],
+   "search_keyword": "丝瓜",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "全脂牛奶": {
+   "ingredient_id": "全脂牛奶",
+   "normalized_name": "全脂牛奶",
+   "display_name": "全脂牛奶",
+   "category": "可选点缀",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "全脂牛奶",
+   "expected_package": {
+    "package_quantity": 950,
+    "unit": "ml",
+    "alt": [
+     250
+    ]
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 1,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "内酯豆腐": {
+   "ingredient_id": "内酯豆腐",
+   "normalized_name": "内酯豆腐",
+   "display_name": "内酯豆腐",
+   "category": "蛋白质",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "内酯豆腐",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "冬瓜": {
+   "ingredient_id": "冬瓜",
+   "normalized_name": "冬瓜",
+   "display_name": "冬瓜",
+   "category": "蔬菜",
+   "aliases": [
+    "白瓜"
+   ],
+   "seasonality": [
+    "6月",
+    "7月"
+   ],
+   "search_keyword": "白瓜",
+   "expected_package": null,
+   "perishability": "low",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "冬笋": {
+   "ingredient_id": "冬笋",
+   "normalized_name": "冬笋",
+   "display_name": "冬笋",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [
+    "1月",
+    "12月"
+   ],
+   "search_keyword": "冬笋",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "切达奶酪": {
+   "ingredient_id": "切达奶酪",
+   "normalized_name": "切达奶酪",
+   "display_name": "切达奶酪",
+   "category": "可选点缀",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "切达奶酪",
+   "expected_package": {
+    "package_quantity": 200,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 1,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "南瓜": {
+   "ingredient_id": "南瓜",
+   "normalized_name": "南瓜",
+   "display_name": "南瓜",
+   "category": "天然碳水",
+   "aliases": [],
+   "seasonality": [
+    "8月",
+    "9月"
+   ],
+   "search_keyword": "南瓜",
+   "expected_package": {
+    "package_quantity": 500,
+    "unit": "g",
+    "note": "切片装或整颗"
+   },
+   "perishability": "low",
+   "minimum_meal_uses": 1,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "卷心菜": {
+   "ingredient_id": "卷心菜",
+   "normalized_name": "卷心菜",
+   "display_name": "卷心菜",
+   "category": "蔬菜",
+   "aliases": [
+    "包菜",
+    "圆白菜",
+    "洋白菜"
+   ],
+   "seasonality": [],
+   "search_keyword": "包菜",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "口蘑": {
+   "ingredient_id": "口蘑",
+   "normalized_name": "口蘑",
+   "display_name": "口蘑",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "口蘑",
+   "expected_package": {
+    "package_quantity": 200,
+    "unit": "g"
+   },
+   "perishability": "high",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "咖喱粉": {
+   "ingredient_id": "咖喱粉",
+   "normalized_name": "咖喱粉",
+   "display_name": "咖喱粉",
+   "category": "可选点缀",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "咖喱粉",
+   "expected_package": {
+    "package_quantity": 100,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 1,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "土豆": {
+   "ingredient_id": "土豆",
+   "normalized_name": "土豆",
+   "display_name": "土豆",
+   "category": "天然碳水",
+   "aliases": [
+    "马铃薯",
+    "洋芋"
+   ],
+   "seasonality": [],
+   "search_keyword": "马铃薯",
+   "expected_package": {
+    "package_quantity": 500,
+    "unit": "g"
+   },
+   "perishability": "low",
+   "minimum_meal_uses": 1,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "大白菜": {
+   "ingredient_id": "大白菜",
+   "normalized_name": "大白菜",
+   "display_name": "大白菜",
+   "category": "蔬菜",
+   "aliases": [
+    "白菜"
+   ],
+   "seasonality": [
+    "1月",
+    "11月",
+    "12月"
+   ],
+   "search_keyword": "白菜",
+   "expected_package": {
+    "package_quantity": 1000,
+    "unit": "g",
+    "note": "整颗约1-1.5kg，可买半颗"
+   },
+   "perishability": "low",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "小米": {
+   "ingredient_id": "小米",
+   "normalized_name": "小米",
+   "display_name": "小米",
+   "category": "天然碳水",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "小米",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 1,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "小青菜": {
+   "ingredient_id": "小青菜",
+   "normalized_name": "小青菜",
+   "display_name": "小青菜",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "小青菜",
+   "expected_package": {
+    "package_quantity": 300,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "山药": {
+   "ingredient_id": "山药",
+   "normalized_name": "山药",
+   "display_name": "山药",
+   "category": "天然碳水",
+   "aliases": [
+    "淮山"
+   ],
+   "seasonality": [
+    "9月",
+    "10月"
+   ],
+   "search_keyword": "淮山",
+   "expected_package": {
+    "package_quantity": 500,
+    "unit": "g"
+   },
+   "perishability": "low",
+   "minimum_meal_uses": 1,
+   "substitutes": [
+    "莲藕",
+    "芋头（平衡激素模式）"
+   ],
+   "preference_status": "neutral"
+  },
+  "巴旦木": {
+   "ingredient_id": "巴旦木",
+   "normalized_name": "巴旦木",
+   "display_name": "巴旦木",
+   "category": "可选点缀",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "巴旦木",
+   "expected_package": {
+    "package_quantity": 200,
+    "unit": "g"
+   },
+   "perishability": "low",
+   "minimum_meal_uses": 1,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "巴沙鱼": {
+   "ingredient_id": "巴沙鱼",
+   "normalized_name": "巴沙鱼",
+   "display_name": "巴沙鱼",
+   "category": "蛋白质",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "巴沙鱼",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "带鱼": {
+   "ingredient_id": "带鱼",
+   "normalized_name": "带鱼",
+   "display_name": "带鱼",
+   "category": "蛋白质",
+   "aliases": [],
+   "seasonality": [
+    "2月",
+    "11月"
+   ],
+   "search_keyword": "带鱼",
+   "expected_package": {
+    "package_quantity": 400,
+    "unit": "g",
+    "note": "冷冻段"
+   },
+   "perishability": "low",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "干丝": {
+   "ingredient_id": "干丝",
+   "normalized_name": "干丝",
+   "display_name": "干丝",
+   "category": "蛋白质",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "干丝",
+   "expected_package": {
+    "package_quantity": 200,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "扇贝": {
+   "ingredient_id": "扇贝",
+   "normalized_name": "扇贝",
+   "display_name": "扇贝",
+   "category": "蛋白质",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "扇贝",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "排骨": {
+   "ingredient_id": "排骨",
+   "normalized_name": "排骨",
+   "display_name": "排骨",
+   "category": "蛋白质",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "排骨",
+   "expected_package": {
+    "package_quantity": 400,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "无糖希腊酸奶": {
+   "ingredient_id": "无糖希腊酸奶",
+   "normalized_name": "无糖希腊酸奶",
+   "display_name": "无糖希腊酸奶",
+   "category": "可选点缀",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "无糖希腊酸奶",
+   "expected_package": {
+    "package_quantity": 400,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 1,
+   "substitutes": [
+    "无糖酸奶+蛋白粉",
+    "内酯豆腐（饮品替代）"
+   ],
+   "preference_status": "neutral"
+  },
+  "无糖豆浆": {
+   "ingredient_id": "无糖豆浆",
+   "normalized_name": "无糖豆浆",
+   "display_name": "无糖豆浆",
+   "category": "蛋白质",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "无糖豆浆",
+   "expected_package": {
+    "package_quantity": 500,
+    "unit": "ml",
+    "note": "开封后3天内"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "无糖酸奶": {
+   "ingredient_id": "无糖酸奶",
+   "normalized_name": "无糖酸奶",
+   "display_name": "无糖酸奶",
+   "category": "可选点缀",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "无糖酸奶",
+   "expected_package": {
+    "package_quantity": 400,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 1,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "春笋": {
+   "ingredient_id": "春笋",
+   "normalized_name": "春笋",
+   "display_name": "春笋",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [
+    "2月",
+    "3月"
+   ],
+   "search_keyword": "春笋",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "木耳": {
+   "ingredient_id": "木耳",
+   "normalized_name": "木耳",
+   "display_name": "木耳",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "木耳",
+   "expected_package": {
+    "package_quantity": 100,
+    "unit": "g",
+    "note": "干品"
+   },
+   "perishability": "low",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "核桃": {
+   "ingredient_id": "核桃",
+   "normalized_name": "核桃",
+   "display_name": "核桃",
+   "category": "可选点缀",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "核桃",
+   "expected_package": {
+    "package_quantity": 200,
+    "unit": "g"
+   },
+   "perishability": "low",
+   "minimum_meal_uses": 1,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "梨": {
+   "ingredient_id": "梨",
+   "normalized_name": "梨",
+   "display_name": "梨",
+   "category": "可选点缀",
+   "aliases": [],
+   "seasonality": [
+    "8月",
+    "9月"
+   ],
+   "search_keyword": "梨",
+   "expected_package": {
+    "package_quantity": 1000,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 1,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "橄榄油": {
+   "ingredient_id": "橄榄油",
+   "normalized_name": "橄榄油",
+   "display_name": "橄榄油",
+   "category": "可选点缀",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "橄榄油",
+   "expected_package": {
+    "package_quantity": 500,
+    "unit": "ml"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 1,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "油菜": {
+   "ingredient_id": "油菜",
+   "normalized_name": "油菜",
+   "display_name": "油菜",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "油菜",
+   "expected_package": {
+    "package_quantity": 300,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [
+    "小青菜",
+    "菠菜",
+    "空心菜"
+   ],
+   "preference_status": "neutral"
+  },
+  "油麦菜": {
+   "ingredient_id": "油麦菜",
+   "normalized_name": "油麦菜",
+   "display_name": "油麦菜",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "油麦菜",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "洋葱": {
+   "ingredient_id": "洋葱",
+   "normalized_name": "洋葱",
+   "display_name": "洋葱",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "洋葱",
+   "expected_package": {
+    "package_quantity": 500,
+    "unit": "g"
+   },
+   "perishability": "low",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "海带": {
+   "ingredient_id": "海带",
+   "normalized_name": "海带",
+   "display_name": "海带",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "海带",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "燕麦片": {
+   "ingredient_id": "燕麦片",
+   "normalized_name": "燕麦片",
+   "display_name": "燕麦片",
+   "category": "天然碳水",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "燕麦片",
+   "expected_package": {
+    "package_quantity": 500,
+    "unit": "g"
+   },
+   "perishability": "low",
+   "minimum_meal_uses": 1,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "燕麦米": {
+   "ingredient_id": "燕麦米",
+   "normalized_name": "燕麦米",
+   "display_name": "燕麦米",
+   "category": "天然碳水",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "燕麦米",
+   "expected_package": {
+    "package_quantity": 500,
+    "unit": "g"
+   },
+   "perishability": "low",
+   "minimum_meal_uses": 1,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "牛油果": {
+   "ingredient_id": "牛油果",
+   "normalized_name": "牛油果",
+   "display_name": "牛油果",
+   "category": "可选点缀",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "牛油果",
+   "expected_package": {
+    "package_quantity": 2,
+    "unit": "个"
+   },
+   "perishability": "high",
+   "minimum_meal_uses": 1,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "牛腩": {
+   "ingredient_id": "牛腩",
+   "normalized_name": "牛腩",
+   "display_name": "牛腩",
+   "category": "蛋白质",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "牛腩",
+   "expected_package": {
+    "package_quantity": 500,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [
+    "猪排骨",
+    "鸡腿"
+   ],
+   "preference_status": "neutral"
+  },
+  "牛里脊": {
+   "ingredient_id": "牛里脊",
+   "normalized_name": "牛里脊",
+   "display_name": "牛里脊",
+   "category": "蛋白质",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "牛里脊",
+   "expected_package": {
+    "package_quantity": 300,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [
+    "猪里脊",
+    "鸡胸肉"
+   ],
+   "preference_status": "neutral"
+  },
+  "猪五花": {
+   "ingredient_id": "猪五花",
+   "normalized_name": "猪五花",
+   "display_name": "猪五花",
+   "category": "蛋白质",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "猪五花",
+   "expected_package": {
+    "package_quantity": 400,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "猪排骨": {
+   "ingredient_id": "猪排骨",
+   "normalized_name": "猪排骨",
+   "display_name": "猪排骨",
+   "category": "蛋白质",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "猪排骨",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "猪里脊": {
+   "ingredient_id": "猪里脊",
+   "normalized_name": "猪里脊",
+   "display_name": "猪里脊",
+   "category": "蛋白质",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "猪里脊",
+   "expected_package": {
+    "package_quantity": 300,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [
+    "鸡胸肉",
+    "牛里脊"
+   ],
+   "preference_status": "neutral"
+  },
+  "玉米": {
+   "ingredient_id": "玉米",
+   "normalized_name": "玉米",
+   "display_name": "玉米",
+   "category": "天然碳水",
+   "aliases": [],
+   "seasonality": [
+    "8月"
+   ],
+   "search_keyword": "玉米",
+   "expected_package": {
+    "package_quantity": 2,
+    "unit": "根"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 1,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "生菜": {
+   "ingredient_id": "生菜",
+   "normalized_name": "生菜",
+   "display_name": "生菜",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "生菜",
+   "expected_package": {
+    "package_quantity": 400,
+    "unit": "g",
+    "note": "多颗装"
+   },
+   "perishability": "high",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "生蚝": {
+   "ingredient_id": "生蚝",
+   "normalized_name": "生蚝",
+   "display_name": "生蚝",
+   "category": "蛋白质",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "生蚝",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "番茄": {
+   "ingredient_id": "番茄",
+   "normalized_name": "番茄",
+   "display_name": "番茄",
+   "category": "蔬菜",
+   "aliases": [
+    "西红柿"
+   ],
+   "seasonality": [
+    "5月"
+   ],
+   "search_keyword": "西红柿",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "白萝卜": {
+   "ingredient_id": "白萝卜",
+   "normalized_name": "白萝卜",
+   "display_name": "白萝卜",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [
+    "1月",
+    "10月",
+    "11月",
+    "12月"
+   ],
+   "search_keyword": "白萝卜",
+   "expected_package": {
+    "package_quantity": 800,
+    "unit": "g"
+   },
+   "perishability": "low",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "百合": {
+   "ingredient_id": "百合",
+   "normalized_name": "百合",
+   "display_name": "百合",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [
+    "8月"
+   ],
+   "search_keyword": "百合",
+   "expected_package": {
+    "package_quantity": 150,
+    "unit": "g",
+    "note": "鲜品"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "空心菜": {
+   "ingredient_id": "空心菜",
+   "normalized_name": "空心菜",
+   "display_name": "空心菜",
+   "category": "蔬菜",
+   "aliases": [
+    "蕹菜"
+   ],
+   "seasonality": [
+    "6月"
+   ],
+   "search_keyword": "蕹菜",
+   "expected_package": {
+    "package_quantity": 300,
+    "unit": "g"
+   },
+   "perishability": "high",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "竹笋": {
+   "ingredient_id": "竹笋",
+   "normalized_name": "竹笋",
+   "display_name": "竹笋",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "竹笋",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "糙米": {
+   "ingredient_id": "糙米",
+   "normalized_name": "糙米",
+   "display_name": "糙米",
+   "category": "天然碳水",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "糙米",
+   "expected_package": {
+    "package_quantity": 1000,
+    "unit": "g"
+   },
+   "perishability": "low",
+   "minimum_meal_uses": 1,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "紫甘蓝": {
+   "ingredient_id": "紫甘蓝",
+   "normalized_name": "紫甘蓝",
+   "display_name": "紫甘蓝",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "紫甘蓝",
+   "expected_package": {
+    "package_quantity": 800,
+    "unit": "g",
+    "note": "整颗，耐放"
+   },
+   "perishability": "low",
+   "minimum_meal_uses": 2,
+   "substitutes": [
+    "西兰花",
+    "大白菜"
+   ],
+   "preference_status": "neutral"
+  },
+  "紫菜": {
+   "ingredient_id": "紫菜",
+   "normalized_name": "紫菜",
+   "display_name": "紫菜",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "紫菜",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "红薯": {
+   "ingredient_id": "红薯",
+   "normalized_name": "红薯",
+   "display_name": "红薯",
+   "category": "天然碳水",
+   "aliases": [
+    "地瓜",
+    "番薯",
+    "山芋"
+   ],
+   "seasonality": [
+    "10月",
+    "11月"
+   ],
+   "search_keyword": "地瓜",
+   "expected_package": {
+    "package_quantity": 500,
+    "unit": "g"
+   },
+   "perishability": "low",
+   "minimum_meal_uses": 1,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "纳豆": {
+   "ingredient_id": "纳豆",
+   "normalized_name": "纳豆",
+   "display_name": "纳豆",
+   "category": "蛋白质",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "纳豆",
+   "expected_package": {
+    "package_quantity": 150,
+    "unit": "g",
+    "note": "3小盒装"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [
+    "无糖豆浆",
+    "豆腐"
+   ],
+   "preference_status": "neutral"
+  },
+  "绿豆芽": {
+   "ingredient_id": "绿豆芽",
+   "normalized_name": "绿豆芽",
+   "display_name": "绿豆芽",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "绿豆芽",
+   "expected_package": {
+    "package_quantity": 300,
+    "unit": "g"
+   },
+   "perishability": "high",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "羊肉卷": {
+   "ingredient_id": "羊肉卷",
+   "normalized_name": "羊肉卷",
+   "display_name": "羊肉卷",
+   "category": "蛋白质",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "羊肉卷",
+   "expected_package": {
+    "package_quantity": 300,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "羽衣甘蓝": {
+   "ingredient_id": "羽衣甘蓝",
+   "normalized_name": "羽衣甘蓝",
+   "display_name": "羽衣甘蓝",
+   "category": "可选点缀",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "羽衣甘蓝",
+   "expected_package": {
+    "package_quantity": 200,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 1,
+   "substitutes": [
+    "菠菜",
+    "西兰花"
+   ],
+   "preference_status": "neutral"
+  },
+  "肥牛卷": {
+   "ingredient_id": "肥牛卷",
+   "normalized_name": "肥牛卷",
+   "display_name": "肥牛卷",
+   "category": "蛋白质",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "肥牛卷",
+   "expected_package": {
+    "package_quantity": 300,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "胡萝卜": {
+   "ingredient_id": "胡萝卜",
+   "normalized_name": "胡萝卜",
+   "display_name": "胡萝卜",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "胡萝卜",
+   "expected_package": {
+    "package_quantity": 500,
+    "unit": "g"
+   },
+   "perishability": "low",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "芋头": {
+   "ingredient_id": "芋头",
+   "normalized_name": "芋头",
+   "display_name": "芋头",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [
+    "9月",
+    "10月"
+   ],
+   "search_keyword": "芋头",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "芦笋": {
+   "ingredient_id": "芦笋",
+   "normalized_name": "芦笋",
+   "display_name": "芦笋",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [
+    "4月"
+   ],
+   "search_keyword": "芦笋",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [
+    "芹菜",
+    "西兰花梗"
+   ],
+   "preference_status": "neutral"
+  },
+  "芹菜": {
+   "ingredient_id": "芹菜",
+   "normalized_name": "芹菜",
+   "display_name": "芹菜",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "芹菜",
+   "expected_package": {
+    "package_quantity": 400,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "苋菜": {
+   "ingredient_id": "苋菜",
+   "normalized_name": "苋菜",
+   "display_name": "苋菜",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [
+    "5月"
+   ],
+   "search_keyword": "苋菜",
+   "expected_package": null,
+   "perishability": "high",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "苦瓜": {
+   "ingredient_id": "苦瓜",
+   "normalized_name": "苦瓜",
+   "display_name": "苦瓜",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [
+    "6月",
+    "7月"
+   ],
+   "search_keyword": "苦瓜",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "茄子": {
+   "ingredient_id": "茄子",
+   "normalized_name": "茄子",
+   "display_name": "茄子",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [
+    "5月"
+   ],
+   "search_keyword": "茄子",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "茭白": {
+   "ingredient_id": "茭白",
+   "normalized_name": "茭白",
+   "display_name": "茭白",
+   "category": "蔬菜",
+   "aliases": [
+    "茭笋",
+    "高笋"
+   ],
+   "seasonality": [],
+   "search_keyword": "茭笋",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "茯苓": {
+   "ingredient_id": "茯苓",
+   "normalized_name": "茯苓",
+   "display_name": "茯苓",
+   "category": "可选点缀",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "茯苓",
+   "expected_package": {
+    "package_quantity": 200,
+    "unit": "g",
+    "note": "药食同源干货"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 1,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "荞麦面": {
+   "ingredient_id": "荞麦面",
+   "normalized_name": "荞麦面",
+   "display_name": "荞麦面",
+   "category": "天然碳水",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "荞麦面",
+   "expected_package": {
+    "package_quantity": 400,
+    "unit": "g"
+   },
+   "perishability": "low",
+   "minimum_meal_uses": 1,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "荸荠": {
+   "ingredient_id": "荸荠",
+   "normalized_name": "荸荠",
+   "display_name": "荸荠",
+   "category": "蔬菜",
+   "aliases": [
+    "马蹄"
+   ],
+   "seasonality": [],
+   "search_keyword": "马蹄",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "莲藕": {
+   "ingredient_id": "莲藕",
+   "normalized_name": "莲藕",
+   "display_name": "莲藕",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [
+    "7月",
+    "8月"
+   ],
+   "search_keyword": "莲藕",
+   "expected_package": {
+    "package_quantity": 400,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [
+    "山药",
+    "白萝卜（碳水略降）"
+   ],
+   "preference_status": "neutral"
+  },
+  "莴笋": {
+   "ingredient_id": "莴笋",
+   "normalized_name": "莴笋",
+   "display_name": "莴笋",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [
+    "4月"
+   ],
+   "search_keyword": "莴笋",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "菠菜": {
+   "ingredient_id": "菠菜",
+   "normalized_name": "菠菜",
+   "display_name": "菠菜",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [
+    "1月",
+    "2月"
+   ],
+   "search_keyword": "菠菜",
+   "expected_package": {
+    "package_quantity": 300,
+    "unit": "g",
+    "note": "平台份装；菜场按把约250g"
+   },
+   "perishability": "high",
+   "minimum_meal_uses": 2,
+   "substitutes": [
+    "油菜",
+    "小青菜",
+    "生菜"
+   ],
+   "preference_status": "neutral"
+  },
+  "菱角": {
+   "ingredient_id": "菱角",
+   "normalized_name": "菱角",
+   "display_name": "菱角",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "菱角",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "葡萄": {
+   "ingredient_id": "葡萄",
+   "normalized_name": "葡萄",
+   "display_name": "葡萄",
+   "category": "可选点缀",
+   "aliases": [],
+   "seasonality": [
+    "7月",
+    "8月"
+   ],
+   "search_keyword": "葡萄",
+   "expected_package": {
+    "package_quantity": 500,
+    "unit": "g"
+   },
+   "perishability": "high",
+   "minimum_meal_uses": 1,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "薏米": {
+   "ingredient_id": "薏米",
+   "normalized_name": "薏米",
+   "display_name": "薏米",
+   "category": "天然碳水",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "薏米",
+   "expected_package": {
+    "package_quantity": 500,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 1,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "藜麦": {
+   "ingredient_id": "藜麦",
+   "normalized_name": "藜麦",
+   "display_name": "藜麦",
+   "category": "天然碳水",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "藜麦",
+   "expected_package": null,
+   "perishability": "low",
+   "minimum_meal_uses": 1,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "虾": {
+   "ingredient_id": "虾",
+   "normalized_name": "虾",
+   "display_name": "虾",
+   "category": "蛋白质",
+   "aliases": [
+    "基围虾",
+    "河虾"
+   ],
+   "seasonality": [],
+   "search_keyword": "基围虾",
+   "expected_package": {
+    "package_quantity": 300,
+    "unit": "g",
+    "note": "活虾/冻虾均可"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [
+    "蛤蜊",
+    "扇贝",
+    "鸡胸肉"
+   ],
+   "preference_status": "neutral"
+  },
+  "蛤蜊": {
+   "ingredient_id": "蛤蜊",
+   "normalized_name": "蛤蜊",
+   "display_name": "蛤蜊",
+   "category": "蛋白质",
+   "aliases": [
+    "花蛤",
+    "花甲"
+   ],
+   "seasonality": [],
+   "search_keyword": "花蛤",
+   "expected_package": {
+    "package_quantity": 500,
+    "unit": "g",
+    "note": "需当日食用"
+   },
+   "perishability": "high",
+   "minimum_meal_uses": 2,
+   "substitutes": [
+    "虾",
+    "生蚝"
+   ],
+   "preference_status": "neutral"
+  },
+  "蟹味菇": {
+   "ingredient_id": "蟹味菇",
+   "normalized_name": "蟹味菇",
+   "display_name": "蟹味菇",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "蟹味菇",
+   "expected_package": {
+    "package_quantity": 150,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [
+    "金针菇",
+    "口蘑",
+    "香菇"
+   ],
+   "preference_status": "neutral"
+  },
+  "西兰花": {
+   "ingredient_id": "西兰花",
+   "normalized_name": "西兰花",
+   "display_name": "西兰花",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "西兰花",
+   "expected_package": {
+    "package_quantity": 400,
+    "unit": "g",
+    "note": "整颗"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [
+    "菜花",
+    "紫甘蓝"
+   ],
+   "preference_status": "neutral"
+  },
+  "西红柿": {
+   "ingredient_id": "西红柿",
+   "normalized_name": "西红柿",
+   "display_name": "西红柿",
+   "category": "蔬菜",
+   "aliases": [
+    "番茄"
+   ],
+   "seasonality": [],
+   "search_keyword": "番茄",
+   "expected_package": {
+    "package_quantity": 500,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "豆腐": {
+   "ingredient_id": "豆腐",
+   "normalized_name": "豆腐",
+   "display_name": "豆腐",
+   "category": "蛋白质",
+   "aliases": [
+    "嫩豆腐",
+    "北豆腐"
+   ],
+   "seasonality": [],
+   "search_keyword": "嫩豆腐",
+   "expected_package": {
+    "package_quantity": 400,
+    "unit": "g",
+    "note": "盒装"
+   },
+   "perishability": "high",
+   "minimum_meal_uses": 2,
+   "substitutes": [
+    "香干",
+    "干丝",
+    "鸡蛋"
+   ],
+   "preference_status": "neutral"
+  },
+  "豆苗": {
+   "ingredient_id": "豆苗",
+   "normalized_name": "豆苗",
+   "display_name": "豆苗",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "豆苗",
+   "expected_package": null,
+   "perishability": "high",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "赤小豆": {
+   "ingredient_id": "赤小豆",
+   "normalized_name": "赤小豆",
+   "display_name": "赤小豆",
+   "category": "天然碳水",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "赤小豆",
+   "expected_package": {
+    "package_quantity": 500,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 1,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "金针菇": {
+   "ingredient_id": "金针菇",
+   "normalized_name": "金针菇",
+   "display_name": "金针菇",
+   "category": "蔬菜",
+   "aliases": [
+    "金菇"
+   ],
+   "seasonality": [],
+   "search_keyword": "金菇",
+   "expected_package": {
+    "package_quantity": 150,
+    "unit": "g"
+   },
+   "perishability": "high",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "银耳": {
+   "ingredient_id": "银耳",
+   "normalized_name": "银耳",
+   "display_name": "银耳",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [
+    "8月"
+   ],
+   "search_keyword": "银耳",
+   "expected_package": {
+    "package_quantity": 80,
+    "unit": "g",
+    "note": "干品"
+   },
+   "perishability": "low",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "陈皮": {
+   "ingredient_id": "陈皮",
+   "normalized_name": "陈皮",
+   "display_name": "陈皮",
+   "category": "可选点缀",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "陈皮",
+   "expected_package": {
+    "package_quantity": 50,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 1,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "韭菜": {
+   "ingredient_id": "韭菜",
+   "normalized_name": "韭菜",
+   "display_name": "韭菜",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [
+    "2月",
+    "3月"
+   ],
+   "search_keyword": "韭菜",
+   "expected_package": null,
+   "perishability": "high",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "香干": {
+   "ingredient_id": "香干",
+   "normalized_name": "香干",
+   "display_name": "香干",
+   "category": "蛋白质",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "香干",
+   "expected_package": {
+    "package_quantity": 200,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "香菇": {
+   "ingredient_id": "香菇",
+   "normalized_name": "香菇",
+   "display_name": "香菇",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "香菇",
+   "expected_package": {
+    "package_quantity": 200,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "鲈鱼": {
+   "ingredient_id": "鲈鱼",
+   "normalized_name": "鲈鱼",
+   "display_name": "鲈鱼",
+   "category": "蛋白质",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "鲈鱼",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "鲭鱼": {
+   "ingredient_id": "鲭鱼",
+   "normalized_name": "鲭鱼",
+   "display_name": "鲭鱼",
+   "category": "蛋白质",
+   "aliases": [
+    "青花鱼",
+    "鲐鱼"
+   ],
+   "seasonality": [],
+   "search_keyword": "青花鱼",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "鳕鱼": {
+   "ingredient_id": "鳕鱼",
+   "normalized_name": "鳕鱼",
+   "display_name": "鳕鱼",
+   "category": "蛋白质",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "鳕鱼",
+   "expected_package": {
+    "package_quantity": 200,
+    "unit": "g"
+   },
+   "perishability": "low",
+   "minimum_meal_uses": 2,
+   "substitutes": [
+    "龙利鱼",
+    "巴沙鱼"
+   ],
+   "preference_status": "neutral"
+  },
+  "鳜鱼": {
+   "ingredient_id": "鳜鱼",
+   "normalized_name": "鳜鱼",
+   "display_name": "鳜鱼",
+   "category": "蛋白质",
+   "aliases": [],
+   "seasonality": [
+    "3月"
+   ],
+   "search_keyword": "鳜鱼",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "鸡翅中": {
+   "ingredient_id": "鸡翅中",
+   "normalized_name": "鸡翅中",
+   "display_name": "鸡翅中",
+   "category": "蛋白质",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "鸡翅中",
+   "expected_package": {
+    "package_quantity": 400,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "鸡胸肉": {
+   "ingredient_id": "鸡胸肉",
+   "normalized_name": "鸡胸肉",
+   "display_name": "鸡胸肉",
+   "category": "蛋白质",
+   "aliases": [
+    "鸡脯肉"
+   ],
+   "seasonality": [],
+   "search_keyword": "鸡脯肉",
+   "expected_package": {
+    "package_quantity": 500,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [
+    "鸡腿去皮",
+    "猪里脊",
+    "牛里脊"
+   ],
+   "preference_status": "neutral"
+  },
+  "鸡腿": {
+   "ingredient_id": "鸡腿",
+   "normalized_name": "鸡腿",
+   "display_name": "鸡腿",
+   "category": "蛋白质",
+   "aliases": [
+    "鸡腿肉",
+    "琵琶腿"
+   ],
+   "seasonality": [],
+   "search_keyword": "鸡腿肉",
+   "expected_package": {
+    "package_quantity": 400,
+    "unit": "g",
+    "note": "2-3只装"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [
+    "鸡胸肉",
+    "鸭腿"
+   ],
+   "preference_status": "neutral"
+  },
+  "鸡蛋": {
+   "ingredient_id": "鸡蛋",
+   "normalized_name": "鸡蛋",
+   "display_name": "鸡蛋",
+   "category": "蛋白质",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "鸡蛋",
+   "expected_package": {
+    "package_quantity": 10,
+    "unit": "枚",
+    "alt": [
+     15,
+     30
+    ]
+   },
+   "perishability": "low",
+   "minimum_meal_uses": 2,
+   "substitutes": [
+    "鸭蛋",
+    "豆腐+蛋的组合"
+   ],
+   "preference_status": "neutral"
+  },
+  "鸭腿": {
+   "ingredient_id": "鸭腿",
+   "normalized_name": "鸭腿",
+   "display_name": "鸭腿",
+   "category": "蛋白质",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "鸭腿",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "鸭蛋": {
+   "ingredient_id": "鸭蛋",
+   "normalized_name": "鸭蛋",
+   "display_name": "鸭蛋",
+   "category": "蛋白质",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "鸭蛋",
+   "expected_package": null,
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "黄油": {
+   "ingredient_id": "黄油",
+   "normalized_name": "黄油",
+   "display_name": "黄油",
+   "category": "可选点缀",
+   "aliases": [],
+   "seasonality": [],
+   "search_keyword": "黄油",
+   "expected_package": {
+    "package_quantity": 200,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 1,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "黄瓜": {
+   "ingredient_id": "黄瓜",
+   "normalized_name": "黄瓜",
+   "display_name": "黄瓜",
+   "category": "蔬菜",
+   "aliases": [],
+   "seasonality": [
+    "5月"
+   ],
+   "search_keyword": "黄瓜",
+   "expected_package": {
+    "package_quantity": 500,
+    "unit": "g"
+   },
+   "perishability": "medium",
+   "minimum_meal_uses": 2,
+   "substitutes": [],
+   "preference_status": "neutral"
+  },
+  "龙利鱼": {
+   "ingredient_id": "龙利鱼",
+   "normalized_name": "龙利鱼",
+   "display_name": "龙利鱼",
+   "category": "蛋白质",
+   "aliases": [
+    "巴沙鱼柳"
+   ],
+   "seasonality": [],
+   "search_keyword": "巴沙鱼柳",
+   "expected_package": {
+    "package_quantity": 300,
+    "unit": "g",
+    "note": "冷冻柳"
+   },
+   "perishability": "low",
+   "minimum_meal_uses": 2,
+   "substitutes": [
+    "巴沙鱼",
+    "鳕鱼"
+   ],
+   "preference_status": "neutral"
+  }
+ }
+}
