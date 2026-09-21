@@ -1,0 +1,16 @@
+{
+  "generated_at": "2026-09-21T14:51:48+08:00",
+  "unit": "ms (best of 3)",
+  "nodes": {
+    "rule_loading_solo_hash": 2.228,
+    "household_hash": 5.54,
+    "pipeline_hash": 5.41,
+    "identity_merge_2p": 32.841,
+    "override_merge_2p": 30.104,
+    "override_merge_3p_absent": 32.166,
+    "effective_validation": 27.597,
+    "solo_golden_render": 226.834,
+    "family_effective_render": 0.034,
+    "price_gate_validate": 1.751
+  }
+}

@@ -1,0 +1,273 @@
+{
+ "schema_version": "1.2",
+ "request_id": "2026-09-18-round67-sample",
+ "provider": "dingdong_web",
+ "started_at": "2026-09-18T11:22:10+08:00",
+ "completed_at": "2026-09-18T11:23:36+08:00",
+ "delivery_context_confirmed_by_user": true,
+ "results": [
+  {
+   "ingredient_id": "猪里脊",
+   "query": "猪里脊",
+   "status": "success",
+   "candidates": [
+    {
+     "ingredient_id": "猪里脊",
+     "query": "猪里脊",
+     "product_name": "严选鲜切猪小里脊 约170g",
+     "reference_grams": 170,
+     "listed_price_yuan": 8.9,
+     "availability": "available",
+     "eligible_for_purchase": true,
+     "match_quality": "alias"
+    },
+    {
+     "ingredient_id": "猪里脊",
+     "query": "猪里脊",
+     "product_name": "新鲜猪小里脊 600g",
+     "reference_grams": 600,
+     "listed_price_yuan": 31.5,
+     "availability": "available",
+     "eligible_for_purchase": true,
+     "match_quality": "alias"
+    },
+    {
+     "ingredient_id": "猪里脊",
+     "query": "猪里脊",
+     "product_name": "国产谷饲冷鲜精修牛小里脊 300g",
+     "reference_grams": 300,
+     "listed_price_yuan": 37.9,
+     "availability": "available",
+     "eligible_for_purchase": true,
+     "match_quality": "alias"
+    },
+    {
+     "ingredient_id": "猪里脊",
+     "query": "猪里脊",
+     "product_name": "精选小里脊 300g",
+     "reference_grams": 300,
+     "listed_price_yuan": 12.0,
+     "availability": "available",
+     "eligible_for_purchase": true,
+     "match_quality": "alias"
+    }
+   ],
+   "suggested_purchase": {
+    "product_name": "国产谷饲冷鲜精修牛小里脊 300g",
+    "packages": 1,
+    "total_grams": 300.0,
+    "total_price_yuan": 37.9
+   }
+  },
+  {
+   "ingredient_id": "南瓜",
+   "query": "南瓜",
+   "status": "success",
+   "candidates": [
+    {
+     "ingredient_id": "南瓜",
+     "query": "南瓜",
+     "product_name": "叮咚V5益生元南瓜脆片 50g/袋",
+     "reference_grams": 50,
+     "listed_price_yuan": 8.8,
+     "availability": "available",
+     "eligible_for_purchase": true
+    },
+    {
+     "ingredient_id": "南瓜",
+     "query": "南瓜",
+     "product_name": "每日粗粮包（山药+南瓜+红薯）200g/袋",
+     "reference_grams": 200,
+     "listed_price_yuan": 7.9,
+     "availability": "available",
+     "eligible_for_purchase": true
+    },
+    {
+     "ingredient_id": "南瓜",
+     "query": "南瓜",
+     "product_name": "【粉糯香甜】惠和贝贝南瓜 约500g",
+     "reference_grams": 500,
+     "listed_price_yuan": 7.19,
+     "availability": "available",
+     "eligible_for_purchase": true
+    }
+   ],
+   "suggested_purchase": {
+    "product_name": "【粉糯香甜】惠和贝贝南瓜 约500g",
+    "packages": 1,
+    "total_grams": 500.0,
+    "total_price_yuan": 7.19
+   }
+  },
+  {
+   "ingredient_id": "芹菜",
+   "query": "芹菜",
+   "status": "success",
+   "candidates": [
+    {
+     "ingredient_id": "芹菜",
+     "query": "芹菜",
+     "product_name": "有机芹菜（香芹） 250g/份",
+     "reference_grams": 250,
+     "listed_price_yuan": 8.27,
+     "availability": "available",
+     "eligible_for_purchase": true
+    },
+    {
+     "ingredient_id": "芹菜",
+     "query": "芹菜",
+     "product_name": "叮咚好食光芹菜香干 140g",
+     "reference_grams": 140,
+     "listed_price_yuan": 9.9,
+     "availability": "available",
+     "eligible_for_purchase": true
+    },
+    {
+     "ingredient_id": "芹菜",
+     "query": "芹菜",
+     "product_name": "香芹 约500g",
+     "reference_grams": 500,
+     "listed_price_yuan": 4.98,
+     "availability": "available",
+     "eligible_for_purchase": true,
+     "match_quality": "alias"
+    }
+   ],
+   "suggested_purchase": {
+    "product_name": "有机芹菜（香芹） 250g/份",
+    "packages": 1,
+    "total_grams": 250.0,
+    "total_price_yuan": 8.27
+   }
+  },
+  {
+   "ingredient_id": "带鱼",
+   "query": "带鱼",
+   "status": "success",
+   "candidates": [
+    {
+     "ingredient_id": "带鱼",
+     "query": "带鱼",
+     "product_name": "叮咚王牌菜香煎舟山带鱼 240g",
+     "reference_grams": 240,
+     "listed_price_yuan": 19.9,
+     "availability": "available",
+     "eligible_for_purchase": true
+    },
+    {
+     "ingredient_id": "带鱼",
+     "query": "带鱼",
+     "product_name": "【红烧很香】渔夫保萝舟山海捕冷冻带鱼段 500g",
+     "reference_grams": 500,
+     "listed_price_yuan": 24.9,
+     "availability": "available",
+     "eligible_for_purchase": true
+    },
+    {
+     "ingredient_id": "带鱼",
+     "query": "带鱼",
+     "product_name": "叮咚王牌菜秘制舟山带鱼 180g",
+     "reference_grams": 180,
+     "listed_price_yuan": 22.8,
+     "availability": "available",
+     "eligible_for_purchase": true
+    }
+   ],
+   "suggested_purchase": {
+    "product_name": "【红烧很香】渔夫保萝舟山海捕冷冻带鱼段 500g",
+    "packages": 1,
+    "total_grams": 500.0,
+    "total_price_yuan": 24.9
+   }
+  },
+  {
+   "ingredient_id": "无糖酸奶",
+   "query": "酸奶",
+   "status": "candidates_filtered",
+   "candidates": [],
+   "warnings": [
+    "NO_RELIABLE_PRODUCT_CANDIDATE"
+   ]
+  },
+  {
+   "ingredient_id": "全麦面包",
+   "query": "面包",
+   "status": "success",
+   "candidates": [
+    {
+     "ingredient_id": "全麦面包",
+     "query": "全麦面包",
+     "product_name": "曼可顿全麦吐司 400g",
+     "reference_grams": 400,
+     "listed_price_yuan": 9.9,
+     "availability": "available",
+     "eligible_for_purchase": true
+    },
+    {
+     "ingredient_id": "全麦面包",
+     "query": "全麦面包",
+     "product_name": "白吐司 400g",
+     "reference_grams": 400,
+     "listed_price_yuan": 7.9,
+     "availability": "available",
+     "eligible_for_purchase": true
+    },
+    {
+     "ingredient_id": "全麦面包",
+     "query": "全麦面包",
+     "product_name": "原味欧包 300g",
+     "reference_grams": 300,
+     "listed_price_yuan": 12.9,
+     "availability": "available",
+     "eligible_for_purchase": true
+    }
+   ],
+   "suggested_purchase": {
+    "product_name": "白吐司 400g",
+    "packages": 1,
+    "total_grams": 400.0,
+    "total_price_yuan": 7.9
+   }
+  },
+  {
+   "ingredient_id": "豆腐",
+   "query": "豆腐",
+   "status": "success",
+   "candidates": [
+    {
+     "ingredient_id": "豆腐",
+     "query": "豆腐",
+     "product_name": "老豆腐 400g",
+     "reference_grams": 400,
+     "listed_price_yuan": 3.5,
+     "availability": "available",
+     "eligible_for_purchase": true
+    },
+    {
+     "ingredient_id": "豆腐",
+     "query": "豆腐",
+     "product_name": "油豆腐 200g",
+     "reference_grams": 200,
+     "listed_price_yuan": 5.9,
+     "availability": "available",
+     "eligible_for_purchase": true
+    },
+    {
+     "ingredient_id": "豆腐",
+     "query": "豆腐",
+     "product_name": "内酯豆腐 350g",
+     "reference_grams": 350,
+     "listed_price_yuan": 4.5,
+     "availability": "available",
+     "eligible_for_purchase": true
+    }
+   ],
+   "suggested_purchase": {
+    "product_name": "油豆腐 200g",
+    "packages": 1,
+    "total_grams": 200.0,
+    "total_price_yuan": 5.9
+   }
+  }
+ ]
+}

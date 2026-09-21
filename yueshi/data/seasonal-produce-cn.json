@@ -1,0 +1,1754 @@
+{
+  "说明": "地区月度时令证据库（round60 新增；2026-09-18 合并江淮覆盖层）。数据派生自 data/seasonal-foods.json（公历月份当令速查，二十四节气口径），source_rule_id 逐项回指该文件月份条目，可追溯；region 分层：全国通用条目 evidence_type=national_audited；江淮覆盖层条目 evidence_type=jianghuai_overlay（来源：区域级公开资料 + 江淮菜场/生鲜平台常见性，2026-09-18 起口径）。城市级（如南京）细化仍须另有审核来源，缺失时不得虚构\"当季\"结论。season_status 口径：当月列表=peak，相邻月=in_season，其余月份出现=shoulder，任何月份列表均未出现=unknown（不得声称当季）。",
+  "version": "1.0.0",
+  "region": "全国通用（二十四节气口径）+ 江淮覆盖层（2026-09-18）",
+  "source": "data/seasonal-foods.json（含江淮覆盖层）",
+  "months": {
+    "1": [
+      {
+        "ingredient_id": "大白菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#1月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "白萝卜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#1月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "冬笋",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#1月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "菠菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#1月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "羊肉",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#1月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "鲫鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#1月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "荸荠",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#1月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "慈姑",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#1月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "水芹",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#1月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "塌菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#1月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "小白菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#1月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "芹菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#1月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "茼蒿",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#1月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "花菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#1月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "胡萝卜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#1月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "山药",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#1月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "红薯",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#1月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "莲藕",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#1月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "鲈鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#1月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "青鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#1月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "草鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#1月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "橙子",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#1月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "金桔",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#1月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "草莓",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#1月",
+        "evidence_type": "jianghuai_overlay"
+      }
+    ],
+    "2": [
+      {
+        "ingredient_id": "菠菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#2月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "韭菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#2月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "荠菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#2月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "春笋",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#2月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "带鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#2月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "芦蒿",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#2月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "马兰头",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#2月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "豌豆苗",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#2月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "水芹",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#2月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "慈姑",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#2月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "荸荠",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#2月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "白萝卜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#2月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "大白菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#2月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "茼蒿",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#2月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "草头",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#2月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "草莓",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#2月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "鲫鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#2月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "河蚌",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#2月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "螺蛳",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#2月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "小白菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#2月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "芹菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#2月",
+        "evidence_type": "jianghuai_overlay"
+      }
+    ],
+    "3": [
+      {
+        "ingredient_id": "春笋",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#3月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "香椿",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#3月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "荠菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#3月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "韭菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#3月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "螺蛳",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#3月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "鳜鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#3月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "马兰头",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#3月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "芦蒿",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#3月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "草头",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#3月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "豌豆苗",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#3月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "蚕豆",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#3月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "荸荠",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#3月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "水芹",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#3月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "菠菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#3月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "莴笋",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#3月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "芹菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#3月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "草莓",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#3月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "蚬子",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#3月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "刀鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#3月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "甲鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#3月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "银鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#3月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "小白菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#3月",
+        "evidence_type": "jianghuai_overlay"
+      }
+    ],
+    "4": [
+      {
+        "ingredient_id": "芦笋",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#4月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "豌豆",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#4月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "蚕豆",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#4月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "莴笋",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#4月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "鲳鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#4月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "春笋",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#4月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "香椿",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#4月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "马兰头",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#4月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "草头",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#4月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "芦蒿",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#4月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "蒜苗",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#4月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "豌豆苗",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#4月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "樱桃",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#4月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "青梅",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#4月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "螺蛳",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#4月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "蚬子",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#4月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "刀鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#4月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "鲥鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#4月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "白虾",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#4月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "草莓",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#4月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "生菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#4月",
+        "evidence_type": "jianghuai_overlay"
+      }
+    ],
+    "5": [
+      {
+        "ingredient_id": "黄瓜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#5月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "番茄",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#5月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "茄子",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#5月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "苋菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#5月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "枇杷",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#5月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "樱桃",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#5月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "蚕豆",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#5月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "豌豆",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#5月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "蒜苗",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#5月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "莴笋",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#5月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "芦笋",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#5月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "空心菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#5月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "毛豆",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#5月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "丝瓜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#5月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "杨梅",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#5月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "青梅",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#5月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "黄鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#5月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "鲥鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#5月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "白鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#5月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "白虾",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#5月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "小龙虾",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#5月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "生菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#5月",
+        "evidence_type": "jianghuai_overlay"
+      }
+    ],
+    "6": [
+      {
+        "ingredient_id": "丝瓜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#6月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "苦瓜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#6月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "冬瓜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#6月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "空心菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#6月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "桃",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#6月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "西瓜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#6月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "黄鳝",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#6月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "黄瓜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#6月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "番茄",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#6月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "茄子",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#6月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "苋菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#6月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "毛豆",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#6月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "扁豆",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#6月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "绿豆芽",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#6月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "杨梅",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#6月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "白虾",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#6月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "白鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#6月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "鲈鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#6月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "小龙虾",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#6月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "莲藕",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#6月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "茭白",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#6月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "生菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#6月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "鲜玉米",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#6月",
+        "evidence_type": "jianghuai_overlay"
+      }
+    ],
+    "7": [
+      {
+        "ingredient_id": "冬瓜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#7月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "丝瓜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#7月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "苦瓜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#7月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "绿豆",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#7月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "莲藕",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#7月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "葡萄",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#7月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "黄瓜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#7月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "番茄",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#7月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "茄子",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#7月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "空心菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#7月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "苋菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#7月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "毛豆",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#7月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "豇豆",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#7月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "扁豆",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#7月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "桃",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#7月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "西瓜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#7月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "黄鳝",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#7月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "泥鳅",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#7月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "河虾",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#7月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "小龙虾",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#7月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "鲜玉米",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#7月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "菱角",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#7月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "鸡头米",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#7月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "茭白",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#7月",
+        "evidence_type": "jianghuai_overlay"
+      }
+    ],
+    "8": [
+      {
+        "ingredient_id": "莲藕",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#8月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "南瓜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#8月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "玉米",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#8月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "银耳",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#8月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "百合",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#8月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "梨",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#8月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "葡萄",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#8月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "菱角",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#8月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "鸡头米",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#8月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "茭白",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#8月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "芋艿",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#8月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "丝瓜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#8月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "冬瓜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#8月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "苦瓜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#8月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "空心菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#8月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "毛豆",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#8月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "豇豆",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#8月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "茄子",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#8月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "黄鳝",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#8月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "泥鳅",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#8月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "河虾",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#8月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "花生",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#8月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "无花果",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#8月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "秋葵",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#8月",
+        "evidence_type": "jianghuai_overlay"
+      }
+    ],
+    "9": [
+      {
+        "ingredient_id": "南瓜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "山药",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "芋头",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "板栗",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "梨",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "石榴",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "螃蟹",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "莲藕",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "菱角",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "鸡头米",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "茭白",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "秋葵",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "茄子",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "丝瓜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "冬瓜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "毛豆",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "空心菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "苋菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "茼蒿",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "芹菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "菠菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "小白菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "白萝卜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "花菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "西兰花",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "番茄",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "黄瓜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "生菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "鲜玉米",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "花生",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "白果",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "鲈鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#9月",
+        "evidence_type": "jianghuai_overlay"
+      }
+    ],
+    "10": [
+      {
+        "ingredient_id": "山药",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#10月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "红薯",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#10月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "芋头",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#10月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "板栗",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#10月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "白萝卜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#10月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "螃蟹",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#10月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "柿子",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#10月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "莲藕",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#10月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "菱角",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#10月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "茭白",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#10月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "荸荠",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#10月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "南瓜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#10月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "花菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#10月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "西兰花",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#10月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "芹菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#10月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "菠菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#10月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "小白菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#10月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "茼蒿",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#10月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "苹果",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#10月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "梨",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#10月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "石榴",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#10月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "柑橘",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#10月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "鲈鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#10月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "湖蟹",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#10月",
+        "evidence_type": "jianghuai_overlay"
+      }
+    ],
+    "11": [
+      {
+        "ingredient_id": "白萝卜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#11月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "大白菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#11月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "红薯",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#11月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "羊肉",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#11月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "橙子",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#11月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "带鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#11月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "荸荠",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#11月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "慈姑",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#11月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "水芹",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#11月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "莲藕",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#11月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "菠菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#11月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "芹菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#11月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "茼蒿",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#11月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "莴笋",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#11月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "花菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#11月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "西兰花",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#11月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "胡萝卜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#11月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "芋头",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#11月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "板栗",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#11月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "柑橘",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#11月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "冬笋",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#11月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "鲫鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#11月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "草鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#11月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "青鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#11月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "湖蟹",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#11月",
+        "evidence_type": "jianghuai_overlay"
+      }
+    ],
+    "12": [
+      {
+        "ingredient_id": "大白菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#12月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "白萝卜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#12月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "冬笋",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#12月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "羊肉",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#12月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "牛肉",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#12月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "橙子",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#12月",
+        "evidence_type": "national_audited"
+      },
+      {
+        "ingredient_id": "荸荠",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#12月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "慈姑",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#12月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "水芹",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#12月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "塌菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#12月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "小白菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#12月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "菠菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#12月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "芹菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#12月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "茼蒿",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#12月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "花菜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#12月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "西兰花",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#12月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "胡萝卜",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#12月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "山药",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#12月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "芋头",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#12月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "金桔",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#12月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "柑橘",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#12月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "带鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#12月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "鲫鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#12月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "青鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#12月",
+        "evidence_type": "jianghuai_overlay"
+      },
+      {
+        "ingredient_id": "草鱼",
+        "season_status": "peak",
+        "source_rule_id": "seasonal-foods.json#12月",
+        "evidence_type": "jianghuai_overlay"
+      }
+    ]
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "production_recipe_pool_version": "2026-08-21",
+  "note": "record_status: production / approved_not_merged / candidate / proposed / rejected / stale / culture_only / historical_lead。recipe_ranker.py 默认只读取 production。",
+  "sources": [
+    {
+      "source_id": "howtocook",
+      "path": "data/recipe-index.json",
+      "status": "production",
+      "approved_records": 367
+    },
+    {
+      "source_id": "book_pool_11books",
+      "path": "data/book-recipes.json",
+      "status": "production",
+      "approved_records": 1209
+    },
+    {
+      "source_id": "local_home_masters",
+      "path": "references/recipe-pool.md",
+      "status": "production"
+    },
+    {
+      "source_id": "chinese_homestyle",
+      "path": "book-extraction/chinese_homestyle/extraction/explicit-recipes.jsonl",
+      "status": "candidate",
+      "approved_records": 0
+    },
+    {
+      "source_id": "woks_of_life",
+      "path": "book-extraction/woks_of_life/extraction/explicit-recipes.jsonl",
+      "status": "candidate",
+      "approved_records": 0
+    },
+    {
+      "source_id": "chinese_soul_food",
+      "path": "book-extraction/chinese_soul_food/extraction/explicit-recipes.jsonl",
+      "status": "candidate",
+      "approved_records": 0
+    },
+    {
+      "source_id": "coconut_sambal",
+      "path": "book-extraction/coconut_sambal/extraction/explicit-recipes.jsonl",
+      "status": "candidate",
+      "approved_records": 0,
+      "fingerprint": "158ec08ff63d3f6d"
+    },
+    {
+      "source_id": "coconut_sambal_old",
+      "status": "stale",
+      "note": "旧文件不可解析，无记录"
+    },
+    {
+      "source_id": "chihuo_cidian",
+      "path": "book-extraction/chihuo_cidian/",
+      "status": "culture_only",
+      "approved_records": 0
+    },
+    {
+      "source_id": "gusu_shihua",
+      "path": "book-extraction/gusu_shihua/",
+      "status": "culture_only",
+      "approved_records": 0
+    },
+    {
+      "source_id": "how_to_eat_cookbook",
+      "path": "book-extraction/how_to_eat_cookbook/extraction/explicit-recipes.jsonl",
+      "status": "candidate",
+      "approved_records": 0,
+      "fingerprint": "4db91cb377f7f119",
+      "note": "How to Eat to Beat Disease Cookbook（Hultin，2021）75 道候选；defense-foods.json 为《Eat to Beat Disease》附录 A 的 5 系统 205 项权威食物清单（562 条系统映射），供 5×5×5 框架落地"
+    },
+    {
+      "source_id": "proposed_new_recipes",
+      "path": "book-extraction/proposed-new-recipes.jsonl",
+      "status": "proposed",
+      "approved_records": 0
+    },
+    {
+      "source_id": "duplicate_merge_plan",
+      "path": "book-extraction/duplicate-merge-plan.json",
+      "status": "proposed"
+    }
+  ],
+  "record_status_spec": {
+    "production": "可进入正式菜单",
+    "approved_not_merged": "已批准但尚未构建进生产池",
+    "candidate": "已提取、待评估",
+    "proposed": "已通过初筛、待人工批准",
+    "culture_only": "只进入文化和食材索引",
+    "historical_lead": "等待可执行菜谱来源验证",
+    "rejected": "已审核不采用",
+    "stale": "旧版、不可用或已被替换",
+    "transitions": "candidate → proposed → approved_not_merged → production；任一步均可 → rejected；旧版本或被替换版本 → stale；用户临时菜：unregistered → transient_approved → 当前计划结束后失效（长期复用须重新走 candidate 起的完整状态机）",
+    "ranker_rule": "recipe_ranker.py 只能读取 record_status == production",
+    "transient_approved": "用户临时菜谱：通过十项检查，scope=current_plan_only，仅限当前计划使用，不写入生产池，计划结束后失效",
+    "transient_rule": "transient_user_recipe 须通过菜名食材确认/规范化/过敏用药检查/locked_basket 合规/一人份克数/用油调味估算/营养重算/时间厨具可行性/包装剩菜/生产池指纹查重 共 10 项检查；核心食材不在 locked_basket 时本周不自动加入采购，可提示预选追加或记为 next_week_candidate"
+  },
+  "protocol_version": "2026-08-21",
+  "release": {
+    "release_status": "approved",
+    "build_id": "2026-09-17-r63",
+    "artifact_hashes": {
+      "recipe_index": "sha256:2ae977de3e99cabe714ad22bf5d17d8be72287a4b6f42beae4e30ee967a167e5",
+      "book_recipes": "sha256:a7ef984eecdb7ad6c436cb7fd0cf9c0bd9ffccebeff48151859f5e79bd07795d",
+      "classification_output": "sha256:52de132136cc1ef31d42c67b8779d73b5835303b05a2935fd5d61fd9211074de",
+      "fingerprints": "sha256:be56239df296f825b62a5afdd80cf52166a7970b3efbd65bafa346891eeaeb50",
+      "audit_data": "sha256:dcb1b8625717cf60b54463e75a532afb6059b7ee80c98c59707c11a04e137518",
+      "ingredient_catalog": "sha256:3ac5f07c04b18d14bdf4ebe0b5a7db0d693de6a1559f6fe7cbdc062cb6a2be67",
+      "review_overrides": "sha256:bf5af2c2b09ad2f34cee6d125171f4c93d3a84d27cfb8eb67b96e096014ecf9d",
+      "taxonomy_bundle": "sha256:a6049d126fcc7396198b142adb4932cf5c6d9174a72c937df61d6b11514344e8"
+    },
+    "quality_thresholds": {
+      "dish_category_coverage": 1.0,
+      "primary_ingredient_family_coverage": 0.98,
+      "primary_protein_family_coverage": 0.98,
+      "classification_sample_accuracy": 0.95,
+      "cross_category_cluster_count": 0,
+      "severe_protein_mislabel_count": 0
+    },
+    "quality_metrics": {
+      "dish_category_coverage": 1.0,
+      "primary_ingredient_family_coverage": 0.9981,
+      "primary_protein_family_coverage": 1.0,
+      "classification_sample_accuracy": 0.9825,
+      "cross_category_cluster_count": 0,
+      "severe_protein_mislabel_count": 0,
+      "low_confidence_count": 3,
+      "low_confidence_reviewed_count": 3,
+      "unparseable_isolated_count": 15,
+      "exact_duplicate_recipes": 0,
+      "diversity_duplicate_recipes": 497,
+      "sampling": {
+        "population_build_id": "2026-09-15-r63",
+        "sample_size": 124,
+        "strategy": "stratified_plus_risk_based",
+        "random_seed": 63,
+        "generated_at": "2026-09-15T09:37:13",
+        "strata": "每 dish_category ≥6 道 + 每 primary_ingredient_family ≥4 道（分层随机，seed=63）",
+        "risk_inclusion": "全部低置信度项（3 道）强制入样，标记 sample_kind=risk"
+      },
+      "per_field_accuracy": {
+        "dish_category": 0.9915,
+        "primary_ingredient_family": 1.0,
+        "primary_protein_family": 0.9915,
+        "primary_cooking_method": null,
+        "overall": 0.9825,
+        "denominator": "correct+incorrect（ambiguous 不计入）",
+        "field_note": "分字段结论由 2 条 incorrect 的误判字段定位；烹法字段未抽样，记 null 不伪造"
+      },
+      "sample_split": {
+        "stratified_random": 121,
+        "risk": 3,
+        "risk_ids": [
+          "htc-147",
+          "htc-148",
+          "htc-161"
+        ],
+        "overall_accuracy_basis": "stratified_random 子集"
+      }
+    },
+    "blocking_issues": [],
+    "warnings": [
+      "soft_cross_category_clusters_for_review"
+    ],
+    "approved_by": "round64-test-restore",
+    "approved_at": "2026-09-21T14:52:36",
+    "gate": "scripts/recipe_release_gate.py",
+    "note": "release_status 只能由本脚本依据审计结果写入；审计失败不得手工改状态绕过。修改菜谱数据、分类器或指纹算法后必须重新审计并重新过门禁。artifact_hashes 冻结全部生产产物内容哈希；taxonomy 或食材目录变更后必须重跑完整构建链，否则哈希失配即拒绝。"
+  }
+}

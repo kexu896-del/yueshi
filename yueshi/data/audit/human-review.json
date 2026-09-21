@@ -1,0 +1,1170 @@
+{
+ "build_id": "2026-09-15-r63",
+ "reviewed_at": "2026-09-15T09:37:13",
+ "reviewer": "维护者抽样复核（每一级类型≥6 道、每主食材族≥4 道分层抽样 + 全部低置信度项，逐条对照菜名与分类证据）",
+ "review_result_enum": [
+  "correct",
+  "incorrect",
+  "ambiguous"
+ ],
+ "note": "ambiguous 不计入 incorrect（高汤/配料带入的次要蛋白等合理边界）；incorrect 已回灌分类器规则或记录为已知边界。",
+ "sampling": {
+  "population_build_id": "2026-09-15-r63",
+  "sample_size": 124,
+  "strategy": "stratified_plus_risk_based",
+  "random_seed": 63,
+  "generated_at": "2026-09-15T09:37:13",
+  "strata": "每 dish_category ≥6 道 + 每 primary_ingredient_family ≥4 道（分层随机，seed=63）",
+  "risk_inclusion": "全部低置信度项（3 道）强制入样，标记 sample_kind=risk"
+ },
+ "accuracy": {
+  "dish_category": 0.9915,
+  "primary_ingredient_family": 1.0,
+  "primary_protein_family": 0.9915,
+  "primary_cooking_method": null,
+  "overall": 0.9825,
+  "denominator": "correct+incorrect（ambiguous 不计入）",
+  "field_note": "分字段结论由 2 条 incorrect 的误判字段定位；烹法字段未抽样，记 null 不伪造"
+ },
+ "sample_split": {
+  "stratified_random": 121,
+  "risk": 3,
+  "risk_ids": [
+   "htc-147",
+   "htc-148",
+   "htc-161"
+  ],
+  "overall_accuracy_basis": "stratified_random 子集"
+ },
+ "review": {
+  "correct": 115,
+  "incorrect": 2,
+  "ambiguous": 7,
+  "unresolved": 0,
+  "reviewer_count": 1,
+  "disagreement_count": 0,
+  "disagreement_policy": "存在复核者分歧时记录最终裁决，不静默覆盖"
+ },
+ "sample_size": 124,
+ "correct": 115,
+ "incorrect": 2,
+ "ambiguous": 7,
+ "reviews": [
+  {
+   "id": "htc-145",
+   "name": "肉蟹煲",
+   "dish_category": "composite_meal",
+   "primary_ingredient_family": "shellfish",
+   "primary_protein_family": "shellfish",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-310",
+   "name": "菌菇炖乳鸽",
+   "dish_category": "composite_meal",
+   "primary_ingredient_family": "poultry",
+   "primary_protein_family": "poultry",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-079",
+   "name": "水油焖蔬菜",
+   "dish_category": "composite_meal",
+   "primary_ingredient_family": "other_vegetable",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-039",
+   "name": "黄焖鸡",
+   "dish_category": "composite_meal",
+   "primary_ingredient_family": "poultry",
+   "primary_protein_family": "poultry",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-146",
+   "name": "酱炖蟹",
+   "dish_category": "composite_meal",
+   "primary_ingredient_family": "shellfish",
+   "primary_protein_family": "shellfish",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-239",
+   "name": "土豆炖排骨",
+   "dish_category": "composite_meal",
+   "primary_ingredient_family": "pork",
+   "primary_protein_family": "pork",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-247",
+   "name": "尖叫牛蛙",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "other_protein",
+   "primary_protein_family": "other_protein",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "vfad-042",
+   "name": "Pan-Roasted Tomatoes Stuffed with Pork",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "pork",
+   "primary_protein_family": "pork",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "tcop-230",
+   "name": "Stir-Fried Eggplant",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "gourd",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-236",
+   "name": "咖喱肥牛",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "beef",
+   "primary_protein_family": "beef",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-232",
+   "name": "凉拌鸡丝",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "poultry",
+   "primary_protein_family": "poultry",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "yrg-017",
+   "name": "油浸沙丁鱼柠檬锅",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "fish",
+   "primary_protein_family": "fish",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "opop-028",
+   "name": "CHICKEN, MANGO + AVOCADO TACOS WITH LIME CREMA",
+   "dish_category": "staple",
+   "primary_ingredient_family": "poultry",
+   "primary_protein_family": "poultry",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "ucfo-102",
+   "name": "Shrimp Tacos with Avocado Purée",
+   "dish_category": "staple",
+   "primary_ingredient_family": "shellfish",
+   "primary_protein_family": "shellfish",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-174",
+   "name": "电饭煲蒸米饭",
+   "dish_category": "staple",
+   "primary_ingredient_family": "grain",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "vfad-047",
+   "name": "Curry-Scented Grilled Beef Lettuce Wraps",
+   "dish_category": "staple",
+   "primary_ingredient_family": "beef",
+   "primary_protein_family": "pork",
+   "review_result": "ambiguous",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-128",
+   "name": "皮蛋瘦肉粥",
+   "dish_category": "staple",
+   "primary_ingredient_family": "egg",
+   "primary_protein_family": "egg",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "opop-063",
+   "name": "TRUFFLED MUSHROOM PAPPARDELLE",
+   "dish_category": "staple",
+   "primary_ingredient_family": "grain",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "tcop-029",
+   "name": "Red Lentil Soup with North African Spices",
+   "dish_category": "soup",
+   "primary_ingredient_family": "soy",
+   "primary_protein_family": "poultry",
+   "review_result": "incorrect",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "d1-082",
+   "name": "Chicken Paprikash Soup with Potatoes and Quick Pickled Cucumbers",
+   "dish_category": "soup",
+   "primary_ingredient_family": "poultry",
+   "primary_protein_family": "poultry",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "ucfo-115",
+   "name": "Black Bean Soup",
+   "dish_category": "soup",
+   "primary_ingredient_family": "soy",
+   "primary_protein_family": "soy",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "jone-049",
+   "name": "MUSHROOM SHAKSHUKA",
+   "dish_category": "soup",
+   "primary_ingredient_family": "mushroom",
+   "primary_protein_family": "egg",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "jone-105",
+   "name": "SPICED LENTIL STEW",
+   "dish_category": "soup",
+   "primary_ingredient_family": "soy",
+   "primary_protein_family": "dairy",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "yrg-031",
+   "name": "韩式萝卜参鸡汤",
+   "dish_category": "soup",
+   "primary_ingredient_family": "poultry",
+   "primary_protein_family": "poultry",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-201",
+   "name": "奥利奥冰淇淋",
+   "dish_category": "dessert",
+   "primary_ingredient_family": "egg",
+   "primary_protein_family": "egg",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-202",
+   "name": "戚风蛋糕",
+   "dish_category": "dessert",
+   "primary_ingredient_family": "egg",
+   "primary_protein_family": "egg",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "d1-092",
+   "name": "Brown Butter Cornmeal Yogurt Cake",
+   "dish_category": "dessert",
+   "primary_ingredient_family": "dairy",
+   "primary_protein_family": "egg",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "opop-085",
+   "name": "BROWN SUGAR PLUM PIE",
+   "dish_category": "dessert",
+   "primary_ingredient_family": "grain",
+   "primary_protein_family": "egg",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "ucfo-125",
+   "name": "Vanilla Ice Cream",
+   "dish_category": "dessert",
+   "primary_ingredient_family": "dairy",
+   "primary_protein_family": "dairy",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "ucfo-126",
+   "name": "Fudge Ripple Ice Cream",
+   "dish_category": "dessert",
+   "primary_ingredient_family": "dairy",
+   "primary_protein_family": "dairy",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "gwe-053",
+   "name": "白灼芥蓝",
+   "dish_category": "side",
+   "primary_ingredient_family": "leafy_green",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "sichuan-093",
+   "name": "Dry-fried Aubergines",
+   "dish_category": "side",
+   "primary_ingredient_family": "gourd",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "jone-058",
+   "name": "SWEETCORN FRITTERS",
+   "dish_category": "side",
+   "primary_ingredient_family": "egg",
+   "primary_protein_family": "egg",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-344",
+   "name": "小炒藕丁",
+   "dish_category": "side",
+   "primary_ingredient_family": "root",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-081",
+   "name": "清炒花菜",
+   "dish_category": "side",
+   "primary_ingredient_family": "crucifer",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-083",
+   "name": "炒茄子",
+   "dish_category": "side",
+   "primary_ingredient_family": "gourd",
+   "primary_protein_family": "pork",
+   "review_result": "ambiguous",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-123",
+   "name": "鸡蛋三明治",
+   "dish_category": "breakfast",
+   "primary_ingredient_family": "egg",
+   "primary_protein_family": "pork",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-121",
+   "name": "金枪鱼酱三明治",
+   "dish_category": "breakfast",
+   "primary_ingredient_family": "fish",
+   "primary_protein_family": "fish",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-112",
+   "name": "煎饺",
+   "dish_category": "breakfast",
+   "primary_ingredient_family": "grain",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "d1-033",
+   "name": "Fried Chickpeas and Scrambled Eggs with Garlicky Greens and Spicy Yogurt",
+   "dish_category": "breakfast",
+   "primary_ingredient_family": "egg",
+   "primary_protein_family": "egg",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-104",
+   "name": "微波炉荷包蛋",
+   "dish_category": "breakfast",
+   "primary_ingredient_family": "egg",
+   "primary_protein_family": "egg",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-101",
+   "name": "吐司果酱",
+   "dish_category": "breakfast",
+   "primary_ingredient_family": "grain",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-156",
+   "name": "长岛冰茶",
+   "dish_category": "beverage",
+   "primary_ingredient_family": "fruit",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-147",
+   "name": "B52轰炸机",
+   "dish_category": "beverage",
+   "primary_ingredient_family": null,
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "risk"
+  },
+  {
+   "id": "htc-229",
+   "name": "金菲士",
+   "dish_category": "beverage",
+   "primary_ingredient_family": "fruit",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "ucfo-016",
+   "name": "Strawberry Banana Smoothie",
+   "dish_category": "beverage",
+   "primary_ingredient_family": "fruit",
+   "primary_protein_family": "dairy",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-218",
+   "name": "奇异果菠菜特调",
+   "dish_category": "beverage",
+   "primary_ingredient_family": "leafy_green",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "ymzx-143",
+   "name": "Jujube and Ginger Tea",
+   "dish_category": "beverage",
+   "primary_ingredient_family": "fruit",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-195",
+   "name": "油泼辣子",
+   "dish_category": "sauce_or_condiment",
+   "primary_ingredient_family": "nut",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-158",
+   "name": "炸串酱料",
+   "dish_category": "sauce_or_condiment",
+   "primary_ingredient_family": "nut",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "vfad-006",
+   "name": "Caramel Sauce",
+   "dish_category": "sauce_or_condiment",
+   "primary_ingredient_family": "grain",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "vfad-005",
+   "name": "Chile Garlic Sauce",
+   "dish_category": "sauce_or_condiment",
+   "primary_ingredient_family": "grain",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-161",
+   "name": "葱油",
+   "dish_category": "sauce_or_condiment",
+   "primary_ingredient_family": null,
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "risk"
+  },
+  {
+   "id": "vfad-004",
+   "name": "Nuoc Cham Dipping Sauce",
+   "dish_category": "sauce_or_condiment",
+   "primary_ingredient_family": "root",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-299",
+   "name": "炸薯条",
+   "dish_category": "snack",
+   "primary_ingredient_family": "root",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "jone-032",
+   "name": "CHICKEN & MUSHROOM PUFF PIE",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "poultry",
+   "primary_protein_family": "poultry",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "yrg-034",
+   "name": "香浓黑芝麻鸡肉锅",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "poultry",
+   "primary_protein_family": "poultry",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "gwe-079",
+   "name": "鸡油葱花饼",
+   "dish_category": "staple",
+   "primary_ingredient_family": "leafy_green",
+   "primary_protein_family": "egg",
+   "review_result": "ambiguous",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "ymzx-026",
+   "name": "Eight-treasure Spicy Relish",
+   "dish_category": "sauce_or_condiment",
+   "primary_ingredient_family": "mushroom",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "gwe-064",
+   "name": "陈皮兔丁",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "other_protein",
+   "primary_protein_family": "other_protein",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-126",
+   "name": "生汆丸子汤",
+   "dish_category": "soup",
+   "primary_ingredient_family": "other_protein",
+   "primary_protein_family": "pork",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "ymzx-031",
+   "name": "Clear-simmered Lion's Head Meatballs",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "other_protein",
+   "primary_protein_family": "pork",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "sichuan-047",
+   "name": "Sichuanese Stir-fried Bacon",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "pork",
+   "primary_protein_family": "pork",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "vfad-076",
+   "name": "Hanoi-Style Bacon and Grilled Pork Rice Noodle Bowls",
+   "dish_category": "staple",
+   "primary_ingredient_family": "pork",
+   "primary_protein_family": "pork",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "yrg-050",
+   "name": "猪肉蔬菜简单涮涮锅",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "pork",
+   "primary_protein_family": "pork",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "ymzx-025",
+   "name": "Zhenjiang Crystal Pork Terrine",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "pork",
+   "primary_protein_family": "pork",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "sichuan-053",
+   "name": "Boiled Beef Slices in a Fiery Sauce",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "beef",
+   "primary_protein_family": "beef",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "opop-059",
+   "name": "STEAK + CRISP SANDWICH WITH CHIMICHURRI",
+   "dish_category": "staple",
+   "primary_ingredient_family": "beef",
+   "primary_protein_family": "beef",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-248",
+   "name": "巴基斯坦牛肉咖喱",
+   "dish_category": "composite_meal",
+   "primary_ingredient_family": "beef",
+   "primary_protein_family": "beef",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "uyenluu-076",
+   "name": "NƯỚC SỐT TƯƠNG",
+   "dish_category": "sauce_or_condiment",
+   "primary_ingredient_family": "fruit",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-367",
+   "name": "鸡蛋花",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "egg",
+   "primary_protein_family": "egg",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "uyenluu-067",
+   "name": "BÁNH KẸP TRÀ XANH ĐÀO CHANH DÂY",
+   "dish_category": "soup",
+   "primary_ingredient_family": "egg",
+   "primary_protein_family": "egg",
+   "review_result": "incorrect",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "ucfo-141",
+   "name": "Old-Fashioned Gingerbread",
+   "dish_category": "dessert",
+   "primary_ingredient_family": "egg",
+   "primary_protein_family": "egg",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "jone-025",
+   "name": "HASSELBACK AUBERGINE PIE",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "gourd",
+   "primary_protein_family": "dairy",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-343",
+   "name": "地三鲜",
+   "dish_category": "side",
+   "primary_ingredient_family": "gourd",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "uyenluu-040",
+   "name": "BÁNH MÌ RAU CỦ NƯỚNG",
+   "dish_category": "staple",
+   "primary_ingredient_family": "gourd",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-167",
+   "name": "速冻馄饨",
+   "dish_category": "staple",
+   "primary_ingredient_family": "grain",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "jone-022",
+   "name": "COMFORTING ROSY RICE",
+   "dish_category": "side",
+   "primary_ingredient_family": "grain",
+   "primary_protein_family": "dairy",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-166",
+   "name": "速冻水饺",
+   "dish_category": "staple",
+   "primary_ingredient_family": "grain",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-164",
+   "name": "半成品意面",
+   "dish_category": "staple",
+   "primary_ingredient_family": "grain",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "jone-085",
+   "name": "TENDER GLAZED LAMB SHANKS",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "lamb",
+   "primary_protein_family": "lamb",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-254",
+   "name": "枝竹羊腩煲",
+   "dish_category": "composite_meal",
+   "primary_ingredient_family": "lamb",
+   "primary_protein_family": "lamb",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "gwe-023",
+   "name": "铁板孜然羊肉",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "lamb",
+   "primary_protein_family": "pork",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-272",
+   "name": "羊排焖面",
+   "dish_category": "staple",
+   "primary_ingredient_family": "lamb",
+   "primary_protein_family": "lamb",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-077",
+   "name": "家常日本豆腐",
+   "dish_category": "side",
+   "primary_ingredient_family": "soy",
+   "primary_protein_family": "pork",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "d1-018",
+   "name": "Chile Crisp Tofu with Blistered Kale",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "soy",
+   "primary_protein_family": "soy",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "sichuan-088",
+   "name": "Leshan ‘Bear's Paw’ Tofu",
+   "dish_category": "side",
+   "primary_ingredient_family": "soy",
+   "primary_protein_family": "soy",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "yrg-014",
+   "name": "滑子菇炖豆腐锅",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "soy",
+   "primary_protein_family": "soy",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "jone-023",
+   "name": "SHREDDED WINTER SALAD",
+   "dish_category": "side",
+   "primary_ingredient_family": "leafy_green",
+   "primary_protein_family": "dairy",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "ymzx-009",
+   "name": "Nanjing New Year's Salad",
+   "dish_category": "side",
+   "primary_ingredient_family": "leafy_green",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "sichuan-009",
+   "name": "Spinach in Sour-and-hot Dressing",
+   "dish_category": "side",
+   "primary_ingredient_family": "leafy_green",
+   "primary_protein_family": "poultry",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "tcop-166",
+   "name": "Bratwurst Sandwiches with Red Potato and Kale Salad",
+   "dish_category": "staple",
+   "primary_ingredient_family": "pork",
+   "primary_protein_family": "pork",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "ymzx-012",
+   "name": "Hand-torn Mushrooms",
+   "dish_category": "side",
+   "primary_ingredient_family": "mushroom",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "ymzx-138",
+   "name": "Sweet Silver-ear Soup with Goji Berries",
+   "dish_category": "soup",
+   "primary_ingredient_family": "mushroom",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-340",
+   "name": "凉拌木耳",
+   "dish_category": "side",
+   "primary_ingredient_family": "mushroom",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "yrg-089",
+   "name": "蒜香蒸蔬菜锅",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "other_vegetable",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "vfad-020",
+   "name": "Versatile Vegetable Soup",
+   "dish_category": "soup",
+   "primary_ingredient_family": "other_vegetable",
+   "primary_protein_family": "soy",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "gwe-063",
+   "name": "黄芥末时蔬拉皮",
+   "dish_category": "side",
+   "primary_ingredient_family": "other_vegetable",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "sichuan-007",
+   "name": "Broccoli with Sesame Oil",
+   "dish_category": "side",
+   "primary_ingredient_family": "crucifer",
+   "primary_protein_family": "poultry",
+   "review_result": "ambiguous",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "uyenluu-054",
+   "name": "MÌ XÀO CHAY",
+   "dish_category": "staple",
+   "primary_ingredient_family": "crucifer",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "ucfo-024",
+   "name": "Roasted Broccoli",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "crucifer",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "ymzx-140",
+   "name": "Pumpkin Cakes",
+   "dish_category": "dessert",
+   "primary_ingredient_family": "root",
+   "primary_protein_family": "soy",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-355",
+   "name": "红烧冬瓜",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "root",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-341",
+   "name": "凉拌莴笋",
+   "dish_category": "side",
+   "primary_ingredient_family": "root",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "gwe-057",
+   "name": "素烧二冬",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "root",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "ucfo-027",
+   "name": "Roasted Beets with Goat Cheese",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "dairy",
+   "primary_protein_family": "dairy",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-314",
+   "name": "基础牛奶面包",
+   "dish_category": "staple",
+   "primary_ingredient_family": "dairy",
+   "primary_protein_family": "dairy",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "d1-091",
+   "name": "Cardamom Sour Cream Pound Cake",
+   "dish_category": "dessert",
+   "primary_ingredient_family": "dairy",
+   "primary_protein_family": "egg",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "yrg-059",
+   "name": "芝士风味西蓝花味噌汤",
+   "dish_category": "soup",
+   "primary_ingredient_family": "dairy",
+   "primary_protein_family": "dairy",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "tcop-190",
+   "name": "Roasted Salmon with Broccoli, Red Potatoes, and Mustard Sauce",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "fish",
+   "primary_protein_family": "fish",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "uyenluu-008",
+   "name": "CÁ KHO TỘ",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "fish",
+   "primary_protein_family": "beef",
+   "review_result": "ambiguous",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "opop-052",
+   "name": "FISH FINGER SANDWICH WITH CRISPY CAPERS",
+   "dish_category": "staple",
+   "primary_ingredient_family": "fish",
+   "primary_protein_family": "fish",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "d1-041",
+   "name": "Spaghetti with Tuna, Capers, and Cherry Tomatoes",
+   "dish_category": "staple",
+   "primary_ingredient_family": "fish",
+   "primary_protein_family": "fish",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "vfad-034",
+   "name": "Shrimp in Coconut Caramel Sauce",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "shellfish",
+   "primary_protein_family": "poultry",
+   "review_result": "ambiguous",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "vfad-036",
+   "name": "Viet-Cajun Seafood Boil",
+   "dish_category": "main_dish",
+   "primary_ingredient_family": "shellfish",
+   "primary_protein_family": "poultry",
+   "review_result": "ambiguous",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "tcop-015",
+   "name": "New England Clam Chowder",
+   "dish_category": "soup",
+   "primary_ingredient_family": "shellfish",
+   "primary_protein_family": "pork",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "ymzx-107",
+   "name": "Milky Rice-broth Soup with Radish and Dried Shrimps",
+   "dish_category": "soup",
+   "primary_ingredient_family": "shellfish",
+   "primary_protein_family": "pork",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "htc-148",
+   "name": "Mojito莫吉托",
+   "dish_category": "beverage",
+   "primary_ingredient_family": null,
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "risk"
+  },
+  {
+   "id": "htc-228",
+   "name": "金汤力",
+   "dish_category": "beverage",
+   "primary_ingredient_family": "fruit",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "ucfo-013",
+   "name": "Blueberry Muffin",
+   "dish_category": "dessert",
+   "primary_ingredient_family": "fruit",
+   "primary_protein_family": "egg",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "ucfo-029",
+   "name": "Guacamole",
+   "dish_category": "sauce_or_condiment",
+   "primary_ingredient_family": "fruit",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "sichuan-023",
+   "name": "‘Phoenix Tails’ in Sesame Sauce",
+   "dish_category": "side",
+   "primary_ingredient_family": "nut",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "ymzx-001",
+   "name": "Crisp Seaweed with Peanuts",
+   "dish_category": "side",
+   "primary_ingredient_family": "nut",
+   "primary_protein_family": null,
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  },
+  {
+   "id": "vfad-082",
+   "name": "Cashew Sesame Brittle",
+   "dish_category": "dessert",
+   "primary_ingredient_family": "nut",
+   "primary_protein_family": "egg",
+   "review_result": "correct",
+   "sample_kind": "stratified_random"
+  }
+ ]
+}

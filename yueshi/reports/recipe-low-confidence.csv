@@ -1,0 +1,4 @@
+﻿id,name,source,dish_category,primary_ingredient_family,primary_protein_family,evidence
+htc-147,B52轰炸机,howtocook,beverage,,,"[{""rule"": ""dish_category"", ""value"": ""beverage"", ""via"": ""name:b52""}]"
+htc-148,Mojito莫吉托,howtocook,beverage,,,"[{""rule"": ""dish_category"", ""value"": ""beverage"", ""via"": ""name:mojito""}]"
+htc-161,葱油,howtocook,sauce_or_condiment,,,"[{""rule"": ""dish_category"", ""value"": ""sauce_or_condiment"", ""via"": ""name:葱油""}]"

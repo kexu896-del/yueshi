@@ -1,0 +1,14 @@
+# 运行期与构建期产物一律不进版本库
+browser-profile/
+output/
+logs/
+build/logs/
+.venv/
+_build/
+browsers/
+release/
+dist/
+月食叮咚查价助手-便携版/
+__pycache__/
+*.pyc
+*.spec

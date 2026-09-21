@@ -1,0 +1,8 @@
+{
+  "schema_version": "1.0",
+  "data_version": "2026-08-25",
+  "authority": "家庭人数与版面参数唯一来源；SKILL/问卷/脚本/渲染一律从本文件取值，不得各自写死",
+  "summary_inline_members": 3,
+  "max_members": 6,
+  "notes": "summary_inline_members=摘要页最多并排展示人数，超出进成员附页；max_members=生成前硬上限，超过返回 user_input_required 或换输出格式"
+}

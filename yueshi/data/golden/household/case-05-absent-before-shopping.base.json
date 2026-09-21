@@ -1,0 +1,224 @@
+{
+  "plan_meta": {
+    "build_id": "golden-hh-05",
+    "plan_schema_version": "v0.3-rc2",
+    "rules_bundle_hash": "",
+    "skill_version": "g",
+    "runtime_rules_version": "g",
+    "nutrition_rules_version": "g",
+    "output_policy_version": "g",
+    "recipe_manifest_version": "g",
+    "effective_parameters_version": "g",
+    "price_data_version": "g",
+    "generated_at": "2026-08-25T09:00:00Z"
+  },
+  "plan_mode": "shared_meal_personalized",
+  "members": [
+    {
+      "member_id": "m_a",
+      "display_label": "减重份",
+      "precision_level": "exact",
+      "goal": "weight_loss",
+      "restrictions": [],
+      "is_primary": true,
+      "sex": "f",
+      "age_years": 30,
+      "height_cm": 165,
+      "weight_kg": 55,
+      "activity_factor": 1.375,
+      "nutrition_target": {
+        "calories_kcal": 1500,
+        "net_carbs_g": 120,
+        "protein_floor_g": 55,
+        "protein_target_g": 70
+      }
+    },
+    {
+      "member_id": "m_b",
+      "display_label": "维持份",
+      "precision_level": "exact",
+      "goal": "maintain",
+      "restrictions": [],
+      "is_primary": false,
+      "sex": "m",
+      "age_years": 32,
+      "height_cm": 176,
+      "weight_kg": 72,
+      "activity_factor": 1.375,
+      "nutrition_target": {
+        "calories_kcal": 2100,
+        "net_carbs_g": 200,
+        "protein_floor_g": 75,
+        "protein_target_g": 95
+      }
+    }
+  ],
+  "shared_meals": [
+    {
+      "meal_id": "d1",
+      "date": "2026-09-01",
+      "meal_type": "dinner",
+      "title": "番茄炒蛋+米饭",
+      "household_ingredients": [
+        {
+          "ingredient_id": "鸡蛋",
+          "quantity": {
+            "display_value": 4,
+            "display_unit": "枚",
+            "canonical_grams": 200,
+            "canonical_basis": "raw"
+          }
+        },
+        {
+          "ingredient_id": "番茄",
+          "quantity": {
+            "display_value": 2,
+            "display_unit": "个",
+            "canonical_grams": 300,
+            "canonical_basis": "raw"
+          }
+        }
+      ],
+      "participant_member_ids": [
+        "m_a",
+        "m_b"
+      ],
+      "member_portions": [
+        {
+          "member_id": "m_a",
+          "items": [
+            {
+              "ingredient_id": "鸡蛋",
+              "quantity": {
+                "display_value": 125,
+                "display_unit": "g",
+                "canonical_grams": 125,
+                "canonical_basis": "raw"
+              }
+            },
+            {
+              "ingredient_id": "番茄",
+              "quantity": {
+                "display_value": 125,
+                "display_unit": "g",
+                "canonical_grams": 125,
+                "canonical_basis": "raw"
+              }
+            }
+          ]
+        },
+        {
+          "member_id": "m_b",
+          "items": [
+            {
+              "ingredient_id": "鸡蛋",
+              "quantity": {
+                "display_value": 125,
+                "display_unit": "g",
+                "canonical_grams": 125,
+                "canonical_basis": "raw"
+              }
+            },
+            {
+              "ingredient_id": "番茄",
+              "quantity": {
+                "display_value": 125,
+                "display_unit": "g",
+                "canonical_grams": 125,
+                "canonical_basis": "raw"
+              }
+            }
+          ]
+        }
+      ],
+      "portion_method": "equal_split"
+    }
+  ],
+  "shopping": [
+    {
+      "ingredient_id": "鸡蛋",
+      "household_required_amount": {
+        "display_value": 14,
+        "display_unit": "枚",
+        "canonical_grams": 700,
+        "canonical_basis": "raw"
+      },
+      "recommended_package": "10枚/盒 ×1",
+      "price_basis": "direct_public_price",
+      "new_purchase_cost": 12.0
+    }
+  ],
+  "household_default_cooking_gate": {
+    "same_pot_allowed": true,
+    "separate_before_seasoning": false,
+    "separate_cookware_required": false,
+    "cross_contact_risk": "low",
+    "blocking_reasons": []
+  },
+  "household_validation": {
+    "checks": [
+      {
+        "check_id": "total_equals_portions_plus_loss",
+        "status": "pass"
+      },
+      {
+        "check_id": "member_nutrition_uses_member_portions",
+        "status": "pass"
+      },
+      {
+        "check_id": "purchase_matches_household_usage",
+        "status": "pass"
+      },
+      {
+        "check_id": "one_ingredient_per_shopping_row",
+        "status": "pass"
+      },
+      {
+        "check_id": "ratio_split_confidence_ok",
+        "status": "pass"
+      },
+      {
+        "check_id": "breakfast_portions_present",
+        "status": "pass"
+      },
+      {
+        "check_id": "portion_method_required",
+        "status": "pass"
+      },
+      {
+        "check_id": "reuse_dates_match_meals",
+        "status": "pass"
+      },
+      {
+        "check_id": "seasoning_strategy_resolved",
+        "status": "pass"
+      },
+      {
+        "check_id": "no_internal_terms_in_visible_text",
+        "status": "pass"
+      },
+      {
+        "check_id": "override_merge_consistent",
+        "status": "pass"
+      },
+      {
+        "check_id": "leftover_destination_resolved",
+        "status": "pass"
+      },
+      {
+        "check_id": "nutrition_transfer_consistent",
+        "status": "pass"
+      }
+    ]
+  },
+  "household_layout_gate": {
+    "one_ingredient_per_shopping_row": true,
+    "shopping_row_height": "auto",
+    "ingredient_word_break": "keep_all",
+    "nutrition_member_block_count_max_pdf": 3,
+    "portion_note_max_lines": 2,
+    "visible_font_min_pt": 8.5,
+    "no_fixed_row_height": true,
+    "disclaimer_separate": true
+  }
+}

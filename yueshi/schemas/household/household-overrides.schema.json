@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "household-overrides.schema.json",
+  "title": "月食家庭版 overrides 数据契约（v0.3 RC2）",
+  "description": "缺席/变化 patch（overrides_YYYYMMDD.json），独立校验，不写回 base_plan。status 分支：absent 必填 action 并可引用 leftover_plan_id；external_meal 不要求 action、禁止 leftover_plan_id、仅 known_at=before_shopping 时允许 shopping_delta（destination 只能 reduce_purchase）；present_confirmed 仅关闭 uncertain，禁止 action/shopping_delta/leftover_plan_id。计划期 uncertain 的悬置项放 pending_resolutions。",
+
+  "definitions": {
+    "shopping_delta": { "$ref": "shared-definitions.schema.json#/definitions/shopping_delta" },
+    "attendance_override": { "$ref": "shared-definitions.schema.json#/definitions/attendance_override" },
+    "pending_attendance_resolution": { "$ref": "shared-definitions.schema.json#/definitions/pending_attendance_resolution" }
+  },
+
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["base_build_id", "override_batch_id", "overrides"],
+  "properties": {
+    "base_build_id": { "type": "string", "description": "指向被覆盖的 base_plan.plan_meta.build_id" },
+    "override_batch_id": { "type": "string" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "overrides": { "type": "array", "minItems": 1, "items": { "$ref": "#/definitions/attendance_override" } },
+    "pending_resolutions": { "type": "array", "items": { "$ref": "#/definitions/pending_attendance_resolution" } }
+  }
+}

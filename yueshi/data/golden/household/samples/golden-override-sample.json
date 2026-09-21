@@ -1,0 +1,21 @@
+{
+  "base_build_id": "golden-20260825-01",
+  "override_batch_id": "golden-override-01",
+  "generated_at": "2026-08-26T08:00:00+08:00",
+  "overrides": [
+    {
+      "override_id": "ovr-wed-lunch-secondary-absent",
+      "date": "2026-08-26",
+      "meal_id": "wed_lunch",
+      "member_id": "secondary",
+      "status": "absent",
+      "known_at": "before_cooking",
+      "action": "keep_batch_for_leftover",
+      "leftover_plan_id": "lp-01",
+      "note": "男方周三午临时不吃；汤照炖，米饭男方份转次日午餐",
+      "merge_status": "applied",
+      "applied_at": "2026-08-26T08:05:00+08:00"
+    }
+  ],
+  "pending_resolutions": []
+}

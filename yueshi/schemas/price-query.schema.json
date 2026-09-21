@@ -1,0 +1,294 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://yueshi.local/schemas/price-query.schema.json",
+  "title": "月食外部价格查询批次（price-query.json）",
+  "description": "契约版本 price_data_version = 1.2（round52：增补匹配质量分层字段 exact_terms/broad_terms/category_substitution_allowed 与主库版本回显；round58：精简项目结构——清单可只携带 标准食材 ID + 需求克数 + 用途约束（required_form）+ catalog_version，匹配规则由助手从本地词典/目录快照按 ingredient_id 展开，不再逐项重复 search_terms/positive_terms/hard_excluded_terms；仅本周有特殊用途时提供对应字段作 override（override 优先于词典展开）；向后兼容。round67：搜索范围与验收条件分离——display_name / search_scope.category_query（大品类召回）/ acceptance_profile（品类、物种、部位、结构、加工、特定要求）/ uncertainty_policy（证据不足与无合格候选的处理）；别名只用于召回，不再作为商品合格的充分条件）。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "request_id",
+    "items"
+  ],
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "本次采购需求批次标识；price-result 必须回显同一 request_id（P08）。"
+    },
+    "catalog_version": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "v2.0：生成清单时所用食材主库版本（data/ingredient-catalog.json）；price-result 回显供对账。"
+    },
+    "form_dictionary_version": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "v2.0：生成清单时所用形态词典版本（data/product-form-dictionary.json）；price-result 回显供对账。"
+    },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/query_item"
+      }
+    }
+  },
+  "definitions": {
+    "query_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ingredient_id",
+        "query"
+      ],
+      "properties": {
+        "ingredient_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "query": {
+          "type": "string",
+          "minLength": 1,
+          "description": "主关键词，每食材仅 1 个。"
+        },
+        "required_grams": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "required_form": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "round58：用途形态约束（如 drumstick/whole_leg/fillet）；等价于单值 allowed_forms 的简写，助手按本地形态词典展开。"
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "maxItems": 1,
+          "description": "搜索别名仅用于寻找目标商品，不具有食材替代决策权；性能硬边界：最多 1 个别名。"
+        },
+        "excluded_terms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "排除词：候选名称命中即拒绝（P07）。"
+        },
+        "max_candidates": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10,
+          "default": 5,
+          "description": "每关键词最多保留候选数；策略默认 5。"
+        },
+        "search_terms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "maxItems": 3,
+          "description": "逐级召回搜索词，最多 3 个；缺省 = [query] + aliases。合格 SKU 达标即停。"
+        },
+        "positive_terms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "语义相关词：候选名命中其一即相关；缺省 = search_terms。"
+        },
+        "hard_excluded_terms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "硬排除词（熟食/预制/腌制/水饺等），与 excluded_terms 合并生效。"
+        },
+        "allowed_forms": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "v1.9/v2.0：允许形态（whole_leg/drumstick/wing/breast 等）；设置后候选限制性形态必须正向匹配（鸡腿块不得冒充整腿），建议购买只在形态正向命中的候选中挑选。"
+        },
+        "excluded_forms": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "v1.9：排除形态（diced/shredded/sliced/minced/marinated/cooked 等）；命中即拒。"
+        },
+        "exact_terms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "v2.0：精确词，商品名命中即 match_quality=exact；缺省 = [query]。"
+        },
+        "broad_terms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "v2.0：宽泛上位词（如「青菜」）；只用于扩大召回，命中标 category_fallback，不得冒充精确命中。"
+        },
+        "category_substitution_allowed": {
+          "type": "boolean",
+          "default": false,
+          "description": "v2.0：是否允许宽泛同类替代进入 suggested_purchase；默认不允许。"
+        },
+        "display_name": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "round67：用户可读名称（如「无糖酸奶」）；搜索词与验收条件均以本项语义为准，商品名命中仅用于召回。"
+        },
+        "search_scope": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "required": [
+            "category_query"
+          ],
+          "properties": {
+            "category_query": {
+              "type": "string",
+              "minLength": 1,
+              "description": "稳定大品类搜索词（如「酸奶」「面包」「豆腐」「猪里脊」）；不得用长尾同义词轮询模拟条件筛选。"
+            },
+            "fallback_category_query": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "主品类召回不足时的父品类回退（如「猪肉」）；回退只放宽召回，不放宽验收要求。"
+            }
+          },
+          "description": "round67：召回范围。"
+        },
+        "acceptance_profile": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "required_category": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "商品主体必须属于的品类（如 yogurt/fermented_milk、bread、tofu）。"
+            },
+            "species": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "要求的物种（如 猪）；候选出现牛/羊/鸡等冲突物种即 rejected。"
+            },
+            "plant_part": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "要求的可食部位（如 块茎、叶）。"
+            },
+            "animal_cut": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "要求的部位（如 里脊、肋排、琵琶腿）。"
+            },
+            "accepted_composition": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "允许的商品结构（如 single_ingredient / plain_single_product / minimally_processed）。"
+            },
+            "excluded_composition": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "排除的商品结构（如 composite_food / prepared_dish / snack / beverage / dessert）。"
+            },
+            "required_processing": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "允许的加工状态（如 fresh_raw / frozen_raw / cleaned_raw / cut_raw）。"
+            },
+            "excluded_processing": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "排除的加工状态（如 fried / ready_to_eat / seasoned / cooked）。"
+            },
+            "sweetening_requirement": {
+              "enum": [
+                "no_added_sugar",
+                null
+              ],
+              "description": "无添加糖要求；证据不足（标题未出现糖信息）不得判定为已满足，按 uncertainty_policy 处理。"
+            },
+            "whole_grain_requirement": {
+              "enum": [
+                "whole_grain",
+                null
+              ],
+              "description": "全谷物要求；仅标题出现「全麦」属 title_claim，不得描述为已验证比例。"
+            }
+          },
+          "description": "round67：商品验收条件（与召回分离）。"
+        },
+        "uncertainty_policy": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "missing_label_action": {
+              "enum": [
+                "review_required"
+              ],
+              "description": "标签/配料证据不足时的处理：一律 review_required，不得自动采用。"
+            },
+            "no_accepted_candidate_action": {
+              "enum": [
+                "category_estimate",
+                "replace_ingredient"
+              ],
+              "description": "无 accepted 候选时的处理：按当地参考价估算或由上游替换同功能食材。"
+            }
+          },
+          "description": "round67：不确定性处理策略。"
+        }
+      }
+    }
+  }
+}

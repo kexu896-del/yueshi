@@ -1,0 +1,24 @@
+{
+  "base_build_id": "golden-hh-07",
+  "override_batch_id": "ov-07",
+  "overrides": [
+    {
+      "override_id": "ov-07-1",
+      "date": "2026-09-01",
+      "meal_id": "d1",
+      "member_id": "m_b",
+      "status": "present_confirmed",
+      "known_at": "before_cooking"
+    }
+  ],
+  "pending_resolutions": [
+    {
+      "resolution_id": "pr-07-1",
+      "meal_id": "d1",
+      "member_id": "m_b",
+      "deadline": "2026-09-01T12:00:00Z",
+      "auto_resolve": "keep_plan",
+      "status": "resolved"
+    }
+  ]
+}

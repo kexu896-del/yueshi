@@ -1,0 +1,15 @@
+{
+  "base_build_id": "golden-hh-08",
+  "override_batch_id": "ov-08",
+  "overrides": [
+    {
+      "override_id": "ov-08-1",
+      "date": "2026-09-01",
+      "meal_id": "d1",
+      "member_id": "m_c",
+      "status": "absent",
+      "known_at": "before_cooking",
+      "action": "keep_batch_for_leftover"
+    }
+  ]
+}

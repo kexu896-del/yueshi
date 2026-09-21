@@ -1,0 +1,23 @@
+{
+  "base_build_id": "golden-hh-05",
+  "override_batch_id": "ov-05",
+  "overrides": [
+    {
+      "override_id": "ov-05-1",
+      "date": "2026-09-01",
+      "meal_id": "d1",
+      "member_id": "m_b",
+      "status": "absent",
+      "known_at": "before_shopping",
+      "action": "reduce_batch",
+      "shopping_delta": [
+        {
+          "ingredient_id": "鸡蛋",
+          "direction": "reduce",
+          "grams": 100,
+          "destination": "reduce_purchase"
+        }
+      ]
+    }
+  ]
+}

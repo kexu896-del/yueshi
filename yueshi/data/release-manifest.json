@@ -1,0 +1,98 @@
+{
+  "release_version": "yueshi-1.4.3",
+  "created_at": "2026-09-21T06:51:59+00:00",
+  "build_source": "candidates/round44",
+  "build_tool_version": "release_pack.py@587e90e13a01",
+  "artifacts": [
+    {
+      "name": "yueshi.skill",
+      "size_bytes": 1226188,
+      "sha256": "f6b2fb92db30eb02befc5d5d17c8a3208993fb47b25f055f89b6bc4f8eea81ef"
+    },
+    {
+      "name": "yueshi.zip",
+      "size_bytes": 1226188,
+      "sha256": "f6b2fb92db30eb02befc5d5d17c8a3208993fb47b25f055f89b6bc4f8eea81ef"
+    }
+  ],
+  "package_file_count": 248,
+  "uncompressed_size_bytes": 6879376,
+  "size_reduction_note": "round43 起排除维护区工作目录：仅移除非运行期维护材料，无运行依赖变化",
+  "excluded_paths": [
+    "book-extraction/",
+    "candidates/",
+    "__pycache__/",
+    "scripts/extract_*"
+  ],
+  "exclusion_reason": "维护期书籍审计工作目录与候选轮次工作区；含不进入发布包的版权原文与中间材料；runtime_dependency=false；仅保留于受控源码/维护环境",
+  "runtime_dependency": false,
+  "source_retention_policy": "维护区材料仅保留于受控源码/维护环境，不进入公开分发产物",
+  "rules_bundle_hash_solo": "3cc5029e4a6dd617",
+  "rules_bundle_hash_household": "7fba469fcceea9ba",
+  "pipeline_bundle_hash": "735ac3c2114def14",
+  "schemas": [
+    "base_plan",
+    "overrides",
+    "effective_plan"
+  ],
+  "copyright_payload_scan": {
+    "passed": true,
+    "hits": []
+  },
+  "runtime_reference_scan": {
+    "passed": true,
+    "hits": []
+  },
+  "runtime_dependency_check": {
+    "passed": true,
+    "missing": [],
+    "closure_size": 50
+  },
+  "reproducible_build": true,
+  "release_invariants_hard_ok": true,
+  "smoke_steps": [
+    {
+      "step": "renderer_import",
+      "ok": true,
+      "tail": "3cc5029e4a6dd617\n"
+    },
+    {
+      "step": "identity_merge",
+      "ok": true,
+      "tail": "merged: <identity> (applied 0 overrides) -> C:\\Users\\22408913\\AppData\\Local\\Temp\\tmpa4zxah3o\\pkg\\_smoke_identity.json\n"
+    },
+    {
+      "step": "override_merge",
+      "ok": true,
+      "tail": "merged: C:\\Users\\22408913\\AppData\\Local\\Temp\\tmpa4zxah3o\\pkg\\data\\golden\\household\\samples\\golden-override-sample.json (applied 1 overrides) -> C:\\Users\\22408913\\AppData\\Local\\Temp\\tmpa4zxah3o\\pkg\\_smoke_override.json\n"
+    },
+    {
+      "step": "effective_validation",
+      "ok": true,
+      "tail": "ok\n"
+    },
+    {
+      "step": "solo_golden_render",
+      "ok": true,
+      "tail": "已渲染 C:\\Users\\22408913\\AppData\\Local\\Temp\\tmpa4zxah3o\\pkg\\_smoke_solo.html（include_recipe_steps=True）\n"
+    },
+    {
+      "step": "family_effective_render",
+      "ok": true,
+      "tail": "ok\n"
+    },
+    {
+      "step": "release_hygiene",
+      "ok": true,
+      "tail": "ok\n"
+    }
+  ],
+  "package_smoke": {
+    "passed": true
+  },
+  "test_summary": {
+    "total": 42,
+    "passed": 42,
+    "failed": 0
+  }
+}

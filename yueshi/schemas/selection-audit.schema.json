@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://yueshi.local/schemas/selection-audit.schema.json",
+  "title": "月食菜谱选择审计（selection_audit，round62 定稿）",
+  "description": "验证菜谱书是否真正影响最终菜单的运行记录契约。未实际计算的字段必须为 null，不得填猜测值；本审计只进运行记录，不进入用户文件。连续多周出现：最终菜谱集中于少数来源 / 指纹去重后候选骤减 / 大量书籍从未入选 / 同一烹法长期占比过高 → 先修索引、标签和排序，而不是补书。",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "candidate_count_before_dedup",
+    "candidate_count_after_dedup",
+    "recipe_source_count",
+    "technique_count",
+    "seasonal_candidate_count",
+    "history_repeat_count",
+    "selected_recipe_ids",
+    "selected_source_ids",
+    "selected_fingerprints",
+    "diversity_gate_result"
+  ],
+  "properties": {
+    "candidate_count_before_dedup": {"type": ["integer", "null"], "minimum": 0},
+    "candidate_count_after_dedup": {"type": ["integer", "null"], "minimum": 0},
+    "recipe_source_count": {"type": ["integer", "null"], "minimum": 0},
+    "technique_count": {"type": ["integer", "null"], "minimum": 0},
+    "cuisine_count": {"type": ["integer", "null"], "minimum": 0},
+    "seasonal_candidate_count": {"type": ["integer", "null"], "minimum": 0},
+    "history_repeat_count": {"type": ["integer", "null"], "minimum": 0},
+    "selected_recipe_ids": {"type": "array", "items": {"type": "string"}},
+    "selected_source_ids": {"type": "array", "items": {"type": "string"}},
+    "selected_fingerprints": {"type": "array", "items": {"type": ["string", "null"]}},
+    "diversity_gate_result": {"type": ["string", "null"]},
+    "rejected_reason_counts": {"type": ["object", "null"]},
+    "mode_schedule_hash": {"type": ["string", "null"]}
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.2",
+  "request_id": "weekly-plan-2026-08-26-sample",
+  "provider": "dingdong_web",
+  "started_at": "2026-08-26T08:25:00+08:00",
+  "completed_at": "2026-08-26T08:30:00+08:00",
+  "login_confirmed_by_user": true,
+  "delivery_context_confirmed_by_user": true,
+  "results": [
+    {
+      "ingredient_id": "pork_lean",
+      "query": "猪瘦肉",
+      "status": "success",
+      "attempted_queries": ["猪瘦肉"],
+      "matched_query": "猪瘦肉",
+      "match_strategy": "primary",
+      "candidates": [
+        {
+          "provider": "dingdong_web",
+          "ingredient_id": "pork_lean",
+          "query": "猪瘦肉",
+          "matched_query": "猪瘦肉",
+          "product_id": "sample-p-001",
+          "product_name": "冷鲜猪瘦肉 400g",
+          "package_text": "400g",
+          "reference_grams": 400,
+          "reference_milliliters": null,
+          "package_count": 1,
+          "listed_price_yuan": 12.9,
+          "regular_price_yuan": 12.9,
+          "promotion_price_yuan": null,
+          "member_price_yuan": null,
+          "price_type": "regular",
+          "availability": "available",
+          "eligible_for_purchase": true,
+          "product_url": "https://maicai.api.ddxq.mobi/search/searchProduct",
+          "observed_at": "2026-08-26T08:27:00+08:00",
+          "data_source": "network_response",
+          "parse_warnings": []
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "ingredient_id": "tofu_firm",
+      "query": "北豆腐",
+      "status": "success",
+      "attempted_queries": ["北豆腐"],
+      "matched_query": "北豆腐",
+      "match_strategy": "primary",
+      "candidates": [
+        {
+          "provider": "dingdong_web",
+          "ingredient_id": "tofu_firm",
+          "query": "北豆腐",
+          "matched_query": "北豆腐",
+          "product_id": "sample-t-001",
+          "product_name": "北豆腐 400g/盒",
+          "package_text": "400g/盒",
+          "reference_grams": 400,
+          "reference_milliliters": null,
+          "package_count": 1,
+          "listed_price_yuan": 4.29,
+          "regular_price_yuan": 5.29,
+          "promotion_price_yuan": 4.29,
+          "member_price_yuan": null,
+          "price_type": "promotion",
+          "availability": "available",
+          "eligible_for_purchase": true,
+          "product_url": "https://maicai.api.ddxq.mobi/search/searchProduct",
+          "observed_at": "2026-08-26T08:28:00+08:00",
+          "data_source": "network_response",
+          "parse_warnings": []
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "run_warnings": []
+}

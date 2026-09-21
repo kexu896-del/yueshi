@@ -1,0 +1,458 @@
+{
+  "total_recipes": 1576,
+  "parseable_recipes": 1571,
+  "unparseable_recipes": 5,
+  "missing_source": 0,
+  "missing_technique": 0,
+  "missing_cuisine": 1576,
+  "missing_season": 1576,
+  "missing_primary_family": 390,
+  "fingerprint_cluster_count": 154,
+  "high_duplicate_recipes": 338,
+  "protein_family_coverage": {
+    "egg": 214,
+    "poultry": 77,
+    "soy": 69,
+    "pork": 53,
+    "shellfish": 50,
+    "fish": 36,
+    "lamb": 6,
+    "beef": 5
+  },
+  "technique_coverage": {
+    "煮": 797,
+    "炒": 595,
+    "烤": 485,
+    "凉拌": 435,
+    "炖": 357,
+    "蒸": 243,
+    "卤": 234,
+    "腌": 224,
+    "煎": 136,
+    "炸": 136,
+    "调制": 33,
+    "冷藏定型": 18,
+    "烧": 12,
+    "煲": 11,
+    "焖": 8,
+    "烩": 2,
+    "白灼": 2,
+    "烘焙": 2
+  },
+  "cuisine_coverage": {},
+  "quick_recipes": 369,
+  "solo_friendly_recipes": 752,
+  "household_friendly_recipes": 118,
+  "per_source_counts": {
+    "howtocook": 365,
+    "川菜（扶霞·邓洛普）": 156,
+    "The Ultimate Cooking for One Cookbook": 144,
+    "鱼米之乡（扶霞·邓洛普）": 143,
+    "One: Simple One-Pan Wonders (Jamie Oliver)": 124,
+    "The Complete One Pot (America's Test Kitchen)": 108,
+    "Dinner in One (Melissa Clark)": 101,
+    "一人锅：一个人的小锅料理（小田真规子）": 96,
+    "One Pot, One Portion (Eleanor Wilkinson)": 95,
+    "Vietnamese Food Any Day (Andrea Nguyen)": 83,
+    "够味儿：80道经典家常菜烹饪详解": 80,
+    "Vietnamese (Uyen Luu)": 76
+  },
+  "top_fingerprint_clusters": [
+    {
+      "fingerprint": "none|other|炒|咸鲜|快炒",
+      "count": 20,
+      "examples": [
+        "辣椒炒肉",
+        "油泼辣子",
+        "蔗糖糖浆",
+        "耙耙柑茶",
+        "口水鸡"
+      ]
+    },
+    {
+      "fingerprint": "none|other|炖+煮||汤锅",
+      "count": 20,
+      "examples": [
+        "柑橘醋风味生姜家常锅",
+        "腌鲑鱼乡土石狩锅",
+        "温暖浓稠涮涮锅",
+        "牛蒡牛肉柳川锅",
+        "芝麻豆浆猪肉涮涮锅"
+      ]
+    },
+    {
+      "fingerprint": "none|other|调制|咸鲜|饮品",
+      "count": 11,
+      "examples": [
+        "印度奶茶",
+        "可乐桶",
+        "奶茶",
+        "杨枝甘露",
+        "长岛冰茶"
+      ]
+    },
+    {
+      "fingerprint": "egg|other|烤|奶香+清淡+酸甜口|烤/焗",
+      "count": 11,
+      "examples": [
+        "Cardamom Sour Cream Pound Cake",
+        "Ricotta Olive Oil Pound Cake",
+        "Tender Chocolate Coconut Cake",
+        "Easy Chocolate Fudge Torte",
+        "CHOCOLATE PARTY CAKE"
+      ]
+    },
+    {
+      "fingerprint": "none|other|烤|奶香+清淡+酸甜口|烤/焗",
+      "count": 11,
+      "examples": [
+        "LEMON BREAD + BUTTER PUDDING",
+        "BAKED PEACHES WITH CARAMEL SAUCE",
+        "CHOCOLATE CHIP COOKIE SKILLET",
+        "APPLE TARTE TATIN",
+        "APPLE CRUMBLE"
+      ]
+    },
+    {
+      "fingerprint": "soy|other|炖+煮||汤锅",
+      "count": 10,
+      "examples": [
+        "山药泥豆浆锅",
+        "鸡肉末青菜蛋花汤锅",
+        "柚子胡椒风味鳕鱼锅",
+        "金枪鱼韭菜豆腐锅",
+        "豆腐小银鱼海苔锅"
+      ]
+    },
+    {
+      "fingerprint": "none|other|煮|奶香+酸甜口|汤/煮",
+      "count": 9,
+      "examples": [
+        "GINGER + LIME POACHED PEAR",
+        "CARDAMOM + COCONUT RICE PUDDING WITH MANGO",
+        "BANOFFEE PIE MILKSHAKE",
+        "MAPLE NUT GRANOLA",
+        "Spinach and Cheese Quesadilla"
+      ]
+    },
+    {
+      "fingerprint": "none|oil|煮|奶香+蒜香+酸甜口|汤羹",
+      "count": 8,
+      "examples": [
+        "Orzo Minestrone with Fresh Corn, Zucchini, and Pesto",
+        "Creamy Carrot Soup",
+        "French Onion Soup",
+        "Chicken with Creamy Paprika Sauce",
+        "Beef Stroganoff"
+      ]
+    },
+    {
+      "fingerprint": "none|other|炒|咸鲜|主食",
+      "count": 7,
+      "examples": [
+        "手工水饺",
+        "炒河粉",
+        "凉粉",
+        "披萨饼皮",
+        "烙饼"
+      ]
+    },
+    {
+      "fingerprint": "none|other|烤|奶香+蒜香+酸甜口|烤/焗",
+      "count": 7,
+      "examples": [
+        "Sheet Pan Thanksgiving: Roast Turkey Breast, Maple-Glazed Sweet Potatoes, and Brussels Sprouts",
+        "Roasted Tuna with Brown Butter Corn, Tomatoes, and Chile",
+        "Roasted Garlic Cauliflower",
+        "Roasted Broccoli",
+        "Baked Chicken Tenders"
+      ]
+    }
+  ],
+  "classification_build_id": "2026-09-15-r63",
+  "build_id": "2026-09-15-r63",
+  "quality_metrics": {
+    "dish_category_coverage": 1.0,
+    "primary_ingredient_family_coverage": 0.9981,
+    "primary_protein_family_coverage": 1.0,
+    "classification_sample_accuracy": 0.9829,
+    "cross_category_cluster_count": 0,
+    "severe_protein_mislabel_count": 0,
+    "low_confidence_count": 3,
+    "low_confidence_reviewed_count": 3,
+    "unparseable_isolated_count": 15,
+    "exact_duplicate_recipes": 0,
+    "diversity_duplicate_recipes": 497
+  },
+  "cross_category_review_clusters": [
+    {
+      "semantic_cluster_key": "egg|炒",
+      "dish_categories": [
+        "breakfast",
+        "dessert",
+        "main_dish",
+        "side",
+        "soup",
+        "staple"
+      ],
+      "count": 39
+    },
+    {
+      "semantic_cluster_key": "grain|烤",
+      "dish_categories": [
+        "breakfast",
+        "dessert",
+        "main_dish",
+        "sauce_or_condiment",
+        "side",
+        "soup",
+        "staple"
+      ],
+      "count": 66
+    },
+    {
+      "semantic_cluster_key": "grain|炒",
+      "dish_categories": [
+        "breakfast",
+        "dessert",
+        "main_dish",
+        "side",
+        "soup",
+        "staple"
+      ],
+      "count": 44
+    },
+    {
+      "semantic_cluster_key": "grain|煮",
+      "dish_categories": [
+        "breakfast",
+        "dessert",
+        "side",
+        "soup",
+        "staple"
+      ],
+      "count": 37
+    },
+    {
+      "semantic_cluster_key": "egg|煮",
+      "dish_categories": [
+        "breakfast",
+        "dessert",
+        "main_dish",
+        "side",
+        "soup",
+        "staple"
+      ],
+      "count": 22
+    },
+    {
+      "semantic_cluster_key": "soy|炸",
+      "dish_categories": [
+        "beverage",
+        "breakfast",
+        "main_dish",
+        "soup",
+        "staple"
+      ],
+      "count": 6
+    },
+    {
+      "semantic_cluster_key": "root|蒸",
+      "dish_categories": [
+        "beverage",
+        "dessert",
+        "main_dish",
+        "side"
+      ],
+      "count": 8
+    },
+    {
+      "semantic_cluster_key": "egg|煎",
+      "dish_categories": [
+        "breakfast",
+        "dessert",
+        "main_dish"
+      ],
+      "count": 4
+    },
+    {
+      "semantic_cluster_key": "mushroom|炒",
+      "dish_categories": [
+        "sauce_or_condiment",
+        "side",
+        "soup",
+        "staple"
+      ],
+      "count": 5
+    },
+    {
+      "semantic_cluster_key": "dairy|调制",
+      "dish_categories": [
+        "beverage",
+        "dessert",
+        "main_dish",
+        "staple"
+      ],
+      "count": 8
+    },
+    {
+      "semantic_cluster_key": "fruit|调制",
+      "dish_categories": [
+        "beverage",
+        "dessert",
+        "main_dish",
+        "soup"
+      ],
+      "count": 11
+    },
+    {
+      "semantic_cluster_key": "nut|炒",
+      "dish_categories": [
+        "main_dish",
+        "sauce_or_condiment",
+        "side"
+      ],
+      "count": 4
+    },
+    {
+      "semantic_cluster_key": "fruit|煮",
+      "dish_categories": [
+        "beverage",
+        "dessert",
+        "main_dish",
+        "sauce_or_condiment",
+        "soup"
+      ],
+      "count": 10
+    },
+    {
+      "semantic_cluster_key": "egg|烤",
+      "dish_categories": [
+        "breakfast",
+        "dessert",
+        "main_dish",
+        "side",
+        "soup",
+        "staple"
+      ],
+      "count": 38
+    },
+    {
+      "semantic_cluster_key": "grain|调制",
+      "dish_categories": [
+        "dessert",
+        "main_dish",
+        "staple"
+      ],
+      "count": 7
+    },
+    {
+      "semantic_cluster_key": "fruit|炒",
+      "dish_categories": [
+        "sauce_or_condiment",
+        "side"
+      ],
+      "count": 3
+    },
+    {
+      "semantic_cluster_key": "fruit|蒸",
+      "dish_categories": [
+        "dessert",
+        "main_dish",
+        "side",
+        "soup"
+      ],
+      "count": 4
+    },
+    {
+      "semantic_cluster_key": "root|炸",
+      "dish_categories": [
+        "side",
+        "snack",
+        "staple"
+      ],
+      "count": 3
+    },
+    {
+      "semantic_cluster_key": "dairy|烤",
+      "dish_categories": [
+        "dessert",
+        "main_dish",
+        "side",
+        "staple"
+      ],
+      "count": 15
+    },
+    {
+      "semantic_cluster_key": "root|烤",
+      "dish_categories": [
+        "dessert",
+        "main_dish",
+        "sauce_or_condiment",
+        "side",
+        "soup"
+      ],
+      "count": 23
+    },
+    {
+      "semantic_cluster_key": "fruit|烤",
+      "dish_categories": [
+        "dessert",
+        "main_dish",
+        "side"
+      ],
+      "count": 24
+    },
+    {
+      "semantic_cluster_key": "dairy|煮",
+      "dish_categories": [
+        "dessert",
+        "soup",
+        "staple"
+      ],
+      "count": 12
+    },
+    {
+      "semantic_cluster_key": "nut|烤",
+      "dish_categories": [
+        "dessert",
+        "side"
+      ],
+      "count": 2
+    }
+  ],
+  "blocking_issues": [],
+  "warnings": [
+    "soft_cross_category_clusters_for_review"
+  ],
+  "audit_status": "passed_with_warnings",
+  "comparison_with_previous": {
+    "total_recipes": {
+      "previous": 1576
+    },
+    "parseable_recipes": {
+      "previous": 1571
+    },
+    "missing_primary_family": {
+      "previous": 390
+    },
+    "high_duplicate_recipes": {
+      "previous": 338
+    },
+    "dish_category_coverage": {
+      "previous": 1.0
+    },
+    "primary_ingredient_family_coverage": {
+      "previous": 0.9981
+    },
+    "primary_protein_family_coverage": {
+      "previous": 1.0
+    },
+    "classification_sample_accuracy": {
+      "previous": 0.9829
+    },
+    "cross_category_cluster_count": {
+      "previous": 1
+    }
+  }
+}

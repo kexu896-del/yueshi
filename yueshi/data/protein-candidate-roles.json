@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.1.0",
+  "说明": "蛋白质候选角色（round65）：默认候选以家常主力为主，探索型食材受额度与准入条件约束；不强制水产占位。被用户从核心候选删除的食材进入冷却，避免下一周又原样推荐。2026-09-18 全量对齐：catalog 全部 32 种蛋白质逐一登记；非 catalog 条目（泛称与别名）移除——未登记食材按 rotation 默认处理；鳕鱼按经济型预算口径由 staple 调整为 rotation。",
+  "candidate_role_enum": ["staple", "rotation", "exploratory"],
+  "roles": {
+    "staple": ["鸡蛋", "鸡腿", "鸡胸肉", "鸡翅中", "猪里脊", "猪五花", "猪排骨", "排骨", "牛里脊", "牛腩", "豆腐", "内酯豆腐", "带鱼", "鲈鱼", "巴沙鱼", "龙利鱼"],
+    "rotation": ["鸭腿", "鸭蛋", "羊肉卷", "肥牛卷", "三文鱼", "鳕鱼", "鲭鱼", "鳜鱼", "虾", "干丝", "香干", "无糖豆浆"],
+    "exploratory": ["蛤蜊", "扇贝", "生蚝", "纳豆"]
+  },
+  "mandatory_aquatic_slot": false,
+  "slots": {
+    "total": 5,
+    "minimum_staple": 3,
+    "maximum_exploratory": 1
+  },
+  "exploratory_core_requires_any": [
+    "user_open_to_exploration",
+    "positive_personal_history",
+    "explicit_user_request",
+    "staple_candidate_shortage"
+  ],
+  "candidate_suppression": {
+    "说明": "用户从核心候选删除某食材后的冷却规则，按周计；permanent_dislike 直接硬排除不走冷却。",
+    "first_core_deletion": {"cooldown_weeks": 4, "suppress_from_core": true, "allow_as_alternative": true},
+    "second_deletion_within_weeks": 8,
+    "second_deletion": {"cooldown_weeks": 8, "suppress_from_core": true, "allow_as_alternative": false},
+    "permanent_dislike": "exclude",
+    "explicit_user_request_overrides_suppression": true
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "说明": "饮食模式显示映射（round67，2026-09-18）：内部枚举只用于数据、日志与计算；正式用户文件只使用中文显示名称与通俗执行说明。模式仍由系统按周期、安全、断食经验与作息推算，不作为问卷选项。",
+  "modes": {
+    "hormone_balance": {
+      "display_name": "平衡激素模式",
+      "user_note": "规律进餐、保证蛋白质、主食适量，不刻意拉长两餐间隔。"
+    },
+    "keto_biologic": {
+      "display_name": "酮生物模式",
+      "user_note": "以绿叶蔬菜和优质脂肪为主，主食按安排少量摄入，减少精制碳水。"
+    }
+  },
+  "forbidden_display_terms": [
+    "hormone_balance",
+    "keto_biologic",
+    "mode_schedule_hash",
+    "source_verified",
+    "audit_status",
+    "protocol_version",
+    "均衡激素模式"
+  ]
+}

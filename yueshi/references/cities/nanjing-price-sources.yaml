@@ -1,0 +1,47 @@
+# 南京菜场价格数据源适配器（样板）
+# 用法：用户选择"菜场性价比型"采购策略时，按 priority 顺序取价，
+# 交给 scripts/market_price_normalizer.py 归一化为参考价。
+# 声明：所有输出价格必须标注"参考价，不代表用户附近摊位实际成交价"。
+city: 南京
+currency: CNY
+unit_standard: 元/500g   # 统一折算到斤
+sources:
+  - name: 南京市商务局"菜篮子"时点菜价
+    url: https://swj.nanjing.gov.cn/
+    cadence: daily
+    priority: 1
+    weight: 0.5
+    fields: [品种, 规格, 市场名, 价格, 发布日期]
+    note: 分市场报价，优先取离用户近的市场；需保留市场名
+  - name: 南京市发改委价格监测周平均
+    url: https://fgw.nanjing.gov.cn/
+    cadence: weekly
+    priority: 2
+    weight: 0.3
+    fields: [品种, 周均价, 周期]
+    note: 全市均值，作为稳定器
+  - name: 南京市农业农村局农产品每日行情
+    url: https://nyncj.nanjing.gov.cn/
+    cadence: daily
+    priority: 3
+    weight: 0.2
+    fields: [品种, 批发/零售, 价格, 发布日期]
+    note: 批发价需标注，零售价直接可用
+merge_rules:
+  - 多来源单位/品种能对齐：按时点 50% + 周均 30% + 行情 20% 加权
+  - 单位或品种无法对齐：不强行平均，输出价格区间 [min, max]
+  - 每条价格必须保留: 来源/发布日期/单位/品种/市场名/置信度(高=3源一致, 中=2源, 低=单源)
+fallback:
+  - 三个来源都无该品种 → 不输出价格，只输出采购清单与规格
+  - 数据超过 7 天未更新 → 标注"价格可能已过期"
+# 新增城市：复制本文件为 cities/<城市>-price-sources.yaml，
+# 换成本地商务局/发改委/农业农村局的公开价格栏目即可，字段结构不变。
+
+# 预算参考区间（2025 年下半年样本期，随价格数据滚动更新；仅为参考，不代表实时成交价）
+budget_reference:
+  as_of: "2025H2"
+  tiers:
+    预算紧张参考: "约 300 至 450 元/周（蛋、豆腐、鸡腿、应季叶菜、冷冻鱼为主）"
+    预算适中参考: "约 450 至 700 元/周（可加牛里脊、三文鱼、坚果、橄榄油）"
+    预算宽松参考: "700 元以上（草饲、深海鱼、有机、牛油果等）"
+  note: 具体区间以当周有效价格样本重算为准；无可靠价格样本时不显示参考金额。

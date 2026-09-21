@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "household-effective-plan.schema.json",
+  "title": "月食家庭版 effective_plan 数据契约（v0.3 RC2）",
+  "description": "运行时合并结果（base_plan + overrides），可随时重建、非权威源、不作为下次生成输入。必含 effective_meta（applied_override_ids 只存在于本层，禁止写回 base_plan）。合并器职责：缺席成员移除后重新归一 portion_ratios.selected_pct 并重算该餐 member_portions；采购差量与剩余去向按 shopping_delta 落账。",
+
+  "definitions": {
+    "plan_meta": { "$ref": "shared-definitions.schema.json#/definitions/plan_meta" },
+    "member": { "$ref": "shared-definitions.schema.json#/definitions/member" },
+    "shared_meal": { "$ref": "shared-definitions.schema.json#/definitions/shared_meal" },
+    "shopping_item": { "$ref": "shared-definitions.schema.json#/definitions/shopping_item" },
+    "reuse_chain": { "$ref": "shared-definitions.schema.json#/definitions/reuse_chain" },
+    "leftover_plan": { "$ref": "shared-definitions.schema.json#/definitions/leftover_plan" },
+    "cooking_gate": { "$ref": "shared-definitions.schema.json#/definitions/cooking_gate" },
+    "household_validation": { "$ref": "shared-definitions.schema.json#/definitions/household_validation" },
+    "household_layout_gate": { "$ref": "shared-definitions.schema.json#/definitions/household_layout_gate" }
+  },
+
+  "allOf": [
+    { "$ref": "household-base-plan.schema.json" }
+  ],
+
+  "required": ["effective_meta"],
+  "properties": {
+    "effective_meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["base_build_id", "applied_override_ids"],
+      "properties": {
+        "base_build_id": { "type": "string" },
+        "applied_override_ids": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "merged_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

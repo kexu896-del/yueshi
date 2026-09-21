@@ -1,0 +1,59 @@
+{
+  "taxonomy_version": "1.0.0",
+  "note": "食材族与主蛋白族权威枚举；由 ingredient-catalog.json 派生，分类器只使用本文件枚举值。",
+  "ingredient_family_enum": [
+    "beef",
+    "crucifer",
+    "dairy",
+    "egg",
+    "fish",
+    "flavor",
+    "fruit",
+    "gourd",
+    "grain",
+    "lamb",
+    "leafy_green",
+    "mushroom",
+    "nut",
+    "oil",
+    "other",
+    "other_protein",
+    "other_vegetable",
+    "pork",
+    "poultry",
+    "root",
+    "shellfish",
+    "soy"
+  ],
+  "protein_family_enum": [
+    "poultry",
+    "pork",
+    "beef",
+    "lamb",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy",
+    "soy",
+    "other_protein"
+  ],
+  "protein_priority": [
+    "poultry",
+    "pork",
+    "beef",
+    "lamb",
+    "fish",
+    "shellfish",
+    "other_protein",
+    "egg",
+    "dairy",
+    "soy"
+  ],
+  "priority_note": "主蛋白判定优先级：动物性肉水产 > 蛋/乳 > 豆制品；复合蛋白进入 secondary_protein_families。",
+  "non_primary_categories": [
+    "flavor",
+    "oil"
+  ],
+  "non_primary_note": "油与调味品不参与 primary_ingredient_family 判定。",
+  "protein_family_note": "主蛋白族枚举；egg/dairy/other_protein 由 ingredient_family 同名族映射（catalog 未单列 protein_family 时）。"
+}

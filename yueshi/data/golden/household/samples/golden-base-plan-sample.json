@@ -1,0 +1,288 @@
+{
+ "plan_meta": {
+  "build_id": "golden-20260825-01",
+  "plan_schema_version": "v0.3-rc2",
+  "rules_bundle_hash": "GOLDEN_HASH_PLACEHOLDER",
+  "skill_version": "yueshi-1.4.3",
+  "runtime_rules_version": "1.4.3",
+  "nutrition_rules_version": "1.3.0",
+  "output_policy_version": "1.3.0",
+  "recipe_manifest_version": "1.3.0",
+  "effective_parameters_version": "1.3.0",
+  "price_data_version": "1.0",
+  "generated_at": "2026-08-25T20:00:00+08:00"
+ },
+ "plan_mode": "shared_meal_personalized",
+ "household_id": "golden-household-01",
+ "members": [
+  {
+   "member_id": "primary",
+   "display_label": "减重份",
+   "is_primary": true,
+   "precision_level": "exact",
+   "goal": "weight_loss",
+   "restrictions": [],
+   "sex": "f",
+   "age_years": 56,
+   "height_cm": 162,
+   "weight_kg": 64,
+   "activity_factor": 1.375,
+   "menopause_flag": true,
+   "nutrition_target": {
+    "calories_kcal": 1300,
+    "calories_min_kcal": 1240,
+    "calories_max_kcal": 1360,
+    "net_carbs_g": 135,
+    "protein_floor_g": 70,
+    "protein_target_g": 75,
+    "book_reference_g": 50,
+    "fat_g": 55
+   },
+   "nutrition_confidence": "medium"
+  },
+  {
+   "member_id": "secondary",
+   "display_label": "健康调理份",
+   "is_primary": false,
+   "precision_level": "exact",
+   "goal": "maintain",
+   "restrictions": [],
+   "sex": "m",
+   "age_years": 58,
+   "height_cm": 173,
+   "weight_kg": 72,
+   "activity_factor": 1.375,
+   "nutrition_target": {
+    "calories_kcal": 1600,
+    "calories_min_kcal": 1520,
+    "calories_max_kcal": 1680,
+    "net_carbs_g": 150,
+    "protein_floor_g": 65,
+    "protein_target_g": 70,
+    "fat_g": 70
+   },
+   "nutrition_confidence": "medium"
+  }
+ ],
+ "shared_meals": [
+  {
+   "meal_id": "wed_lunch",
+   "date": "2026-08-26",
+   "meal_type": "lunch",
+   "meal_plan_mode": "planned",
+   "title": "老母鸡汤配米饭",
+   "structure_grade": "high",
+   "household_ingredients": [
+    {
+     "ingredient_id": "chicken_stew_hen",
+     "name": "老母鸡",
+     "quantity": {
+      "display_value": 260,
+      "display_unit": "g",
+      "canonical_grams": 260,
+      "canonical_basis": "edible"
+     }
+    },
+    {
+     "ingredient_id": "shiitake_soaked",
+     "name": "干香菇(水发)",
+     "quantity": {
+      "display_value": 60,
+      "display_unit": "g",
+      "canonical_grams": 60,
+      "canonical_basis": "soaked"
+     },
+     "conversion": {
+      "source_value": 12,
+      "source_unit": "g",
+      "source_basis": "edible",
+      "target_basis": "soaked",
+      "rule_id": "shiitake_dry_to_soaked_v1",
+      "factor": 5.0
+     }
+    },
+    {
+     "ingredient_id": "winter_melon",
+     "name": "冬瓜",
+     "quantity": {
+      "display_value": 300,
+      "display_unit": "g",
+      "canonical_grams": 300,
+      "canonical_basis": "edible"
+     }
+    },
+    {
+     "ingredient_id": "rice_cooked",
+     "name": "白米饭",
+     "quantity": {
+      "display_value": 405,
+      "display_unit": "g",
+      "canonical_grams": 405,
+      "canonical_basis": "cooked"
+     },
+     "is_separable": true
+    }
+   ],
+   "participant_member_ids": [
+    "primary",
+    "secondary"
+   ],
+   "attendance_plan": {
+    "primary": "expected",
+    "secondary": "expected"
+   },
+   "member_portions": [
+    {
+     "member_id": "primary",
+     "nutrition_confidence": "medium",
+     "items": [
+      {
+       "ingredient_id": "chicken_stew_hen",
+       "quantity": {
+        "display_value": 130,
+        "display_unit": "g",
+        "canonical_grams": 130,
+        "canonical_basis": "edible"
+       }
+      },
+      {
+       "ingredient_id": "rice_cooked",
+       "quantity": {
+        "display_value": 165,
+        "display_unit": "g",
+        "canonical_grams": 165,
+        "canonical_basis": "cooked"
+       },
+       "is_separable": true
+      }
+     ]
+    },
+    {
+     "member_id": "secondary",
+     "nutrition_confidence": "medium",
+     "items": [
+      {
+       "ingredient_id": "chicken_stew_hen",
+       "quantity": {
+        "display_value": 130,
+        "display_unit": "g",
+        "canonical_grams": 130,
+        "canonical_basis": "edible"
+       }
+      },
+      {
+       "ingredient_id": "rice_cooked",
+       "quantity": {
+        "display_value": 240,
+        "display_unit": "g",
+        "canonical_grams": 240,
+        "canonical_basis": "cooked"
+       },
+       "is_separable": true
+      }
+     ]
+    }
+   ],
+   "portion_method": "exact_split",
+   "portion_note": "鸡肉各130g，米饭减重份165g、调理份240g，汤与冬瓜各半",
+   "seasoning_strategy": {
+    "level": "L0_shared_base",
+    "shared_base_profile": "light"
+   }
+  }
+ ],
+ "shopping": [
+  {
+   "ingredient_id": "chicken_drumstick",
+   "name": "鸡腿（冰鲜）",
+   "household_required_amount": {
+    "display_value": 960,
+    "display_unit": "g",
+    "canonical_grams": 960,
+    "canonical_basis": "raw"
+   },
+   "inventory_used_amount": {
+    "display_value": 0,
+    "display_unit": "g",
+    "canonical_grams": 0,
+    "canonical_basis": "raw"
+   },
+   "new_purchase_amount": {
+    "display_value": 1,
+    "display_unit": "kg",
+    "canonical_grams": 1000,
+    "canonical_basis": "raw"
+   },
+   "recommended_package": "1kg/袋",
+   "package_quantity": {
+    "display_value": 1,
+    "display_unit": "袋",
+    "reference_grams": 1000
+   },
+   "new_purchase_cost": 26,
+   "inventory_reference_cost": 0,
+   "total_reference_cost": 26,
+   "price_basis": "category_estimate",
+   "price_source_note": "当地生鲜电商同类行情估算",
+   "substitutes": [
+    "鸡胸肉",
+    "鸭腿"
+   ],
+   "leftover_destination": "剩余约40g并入周一焖饭",
+   "leftover_attribution": "household",
+   "is_pantry": false
+  }
+ ],
+ "reuse_chains": [
+  {
+   "chain_id": "chicken_soup_01",
+   "source_meal_id": "wed_lunch",
+   "source_date": "2026-08-26",
+   "storage_action": "冷却后冷藏",
+   "reuse_meal_id": "fri_lunch",
+   "reuse_date": "2026-08-28",
+   "prep_instruction_date": "2026-08-27",
+   "safety_window_hours": 48,
+   "advice_text": "8/27 晚确认冷藏状态；8/28 午复热二炖，不再久炖"
+  }
+ ],
+ "leftover_plans": [],
+ "household_default_cooking_gate": {
+  "same_pot_allowed": true,
+  "separate_before_seasoning": false,
+  "separate_cookware_required": false,
+  "blocking_reasons": [],
+  "cross_contact_risk": "low"
+ },
+ "household_validation": {
+  "checks": [
+   {
+    "check_id": "PRIMARY_COUNT_EQUALS_ONE",
+    "status": "pass",
+    "detail": ""
+   },
+   {
+    "check_id": "PORTION_SET_EQUALS_PARTICIPANTS",
+    "status": "pass",
+    "detail": ""
+   },
+   {
+    "check_id": "CHECK_ID_COMPLETENESS",
+    "status": "pass",
+    "detail": "golden sample 节选"
+   }
+  ],
+  "ratio_split_confidence_rule": "区间宽度 >10pp 不得 high；>20pp 不得 medium",
+  "absence_rebuild_rule": "缺席触发整周重建记 audit warning 并回滚局部重算，不判 fatal"
+ },
+ "household_layout_gate": {
+  "one_ingredient_per_shopping_row": true,
+  "shopping_row_height": "auto",
+  "ingredient_word_break": "keep_all",
+  "nutrition_member_block_count_max_pdf": 3,
+  "portion_note_max_lines": 2,
+  "visible_font_min_pt": 8.5,
+  "no_fixed_row_height": true,
+  "disclaimer_separate": true
+ }
+}

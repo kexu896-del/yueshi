@@ -1,0 +1,855 @@
+{
+  "version": "1.0.0",
+  "说明": "结构化快手早餐模板库（round62）。全部模板语义为 meal_plan_mode=planned + preparation_mode=quick_self_prepare，include_in_nutrition / include_in_procurement 恒为 true（B01/B02：不得因快手降级为 guidance_only）。营养值由 scripts/build_breakfast_templates.py 依据 foods-table.json 计算，禁止手填。",
+  "templates": [
+    {
+      "template_id": "bt-nocook-01",
+      "name": "酸奶燕麦杯",
+      "category": "无需烹饪组合",
+      "meal_plan_mode": "planned",
+      "preparation_mode": "quick_self_prepare",
+      "include_in_nutrition": true,
+      "include_in_procurement": true,
+      "active_minutes": 3,
+      "total_minutes": 3,
+      "workday_suitable": true,
+      "prepare_ahead": true,
+      "ingredients": [
+        {
+          "food": "无糖希腊酸奶",
+          "grams": 200
+        },
+        {
+          "food": "燕麦片（生）",
+          "grams": 30
+        },
+        {
+          "food": "香蕉",
+          "grams": 80
+        },
+        {
+          "food": "核桃",
+          "grams": 10
+        }
+      ],
+      "nutrition": {
+        "net_carbs": 42.2,
+        "protein": 24.3,
+        "fat": 17.3,
+        "kcal": 432.5
+      },
+      "substitution_rules": [
+        "希腊酸奶 ↔ 无糖酸奶（普通）",
+        "香蕉 ↔ 苹果",
+        "核桃 ↔ 无糖花生酱 10g"
+      ]
+    },
+    {
+      "template_id": "bt-nocook-02",
+      "name": "牛奶燕麦香蕉碗",
+      "category": "无需烹饪组合",
+      "meal_plan_mode": "planned",
+      "preparation_mode": "quick_self_prepare",
+      "include_in_nutrition": true,
+      "include_in_procurement": true,
+      "active_minutes": 3,
+      "total_minutes": 5,
+      "workday_suitable": true,
+      "prepare_ahead": false,
+      "ingredients": [
+        {
+          "food": "全脂牛奶",
+          "grams": 250
+        },
+        {
+          "food": "燕麦片（生）",
+          "grams": 40
+        },
+        {
+          "food": "香蕉",
+          "grams": 100
+        }
+      ],
+      "nutrition": {
+        "net_carbs": 56.0,
+        "protein": 14.5,
+        "fat": 12.1,
+        "kcal": 411.1
+      },
+      "substitution_rules": [
+        "全脂牛奶 ↔ 无糖豆浆",
+        "香蕉 ↔ 蓝莓 60g"
+      ]
+    },
+    {
+      "template_id": "bt-nocook-03",
+      "name": "牛油果全麦吐司",
+      "category": "无需烹饪组合",
+      "meal_plan_mode": "planned",
+      "preparation_mode": "quick_self_prepare",
+      "include_in_nutrition": true,
+      "include_in_procurement": true,
+      "active_minutes": 5,
+      "total_minutes": 5,
+      "workday_suitable": true,
+      "prepare_ahead": false,
+      "ingredients": [
+        {
+          "food": "全麦面包",
+          "grams": 60
+        },
+        {
+          "food": "牛油果",
+          "grams": 70
+        },
+        {
+          "food": "鸡蛋（全蛋）",
+          "grams": 55
+        }
+      ],
+      "nutrition": {
+        "net_carbs": 24.1,
+        "protein": 15.5,
+        "fat": 18.4,
+        "kcal": 342.8
+      },
+      "substitution_rules": [
+        "牛油果 ↔ 无糖花生酱 15g",
+        "鸡蛋 ↔ 切达奶酪 20g"
+      ]
+    },
+    {
+      "template_id": "bt-asm5-01",
+      "name": "奶酪鸡蛋三明治",
+      "category": "5分钟组装",
+      "meal_plan_mode": "planned",
+      "preparation_mode": "quick_self_prepare",
+      "include_in_nutrition": true,
+      "include_in_procurement": true,
+      "active_minutes": 5,
+      "total_minutes": 5,
+      "workday_suitable": true,
+      "prepare_ahead": false,
+      "ingredients": [
+        {
+          "food": "全麦面包",
+          "grams": 60
+        },
+        {
+          "food": "切达奶酪",
+          "grams": 20
+        },
+        {
+          "food": "鸡蛋（全蛋）",
+          "grams": 55
+        },
+        {
+          "food": "黄瓜",
+          "grams": 60
+        }
+      ],
+      "nutrition": {
+        "net_carbs": 24.9,
+        "protein": 19.6,
+        "fat": 14.6,
+        "kcal": 319.7
+      },
+      "substitution_rules": [
+        "切达奶酪 ↔ 牛油果 50g",
+        "黄瓜 ↔ 番茄 80g"
+      ]
+    },
+    {
+      "template_id": "bt-asm5-02",
+      "name": "豆浆燕麦坚果杯",
+      "category": "5分钟组装",
+      "meal_plan_mode": "planned",
+      "preparation_mode": "quick_self_prepare",
+      "include_in_nutrition": true,
+      "include_in_procurement": true,
+      "active_minutes": 4,
+      "total_minutes": 4,
+      "workday_suitable": true,
+      "prepare_ahead": true,
+      "ingredients": [
+        {
+          "food": "无糖豆浆",
+          "grams": 300
+        },
+        {
+          "food": "燕麦片（生）",
+          "grams": 35
+        },
+        {
+          "food": "核桃",
+          "grams": 10
+        },
+        {
+          "food": "黑芝麻",
+          "grams": 5
+        }
+      ],
+      "nutrition": {
+        "net_carbs": 24.4,
+        "protein": 16.9,
+        "fat": 16.1,
+        "kcal": 328.5
+      },
+      "substitution_rules": [
+        "无糖豆浆 ↔ 全脂牛奶",
+        "核桃 ↔ 南瓜籽 10g"
+      ]
+    },
+    {
+      "template_id": "bt-pan10-01",
+      "name": "番茄炒蛋配全麦面包",
+      "category": "10分钟平底锅",
+      "meal_plan_mode": "planned",
+      "preparation_mode": "quick_self_prepare",
+      "include_in_nutrition": true,
+      "include_in_procurement": true,
+      "active_minutes": 8,
+      "total_minutes": 10,
+      "workday_suitable": true,
+      "prepare_ahead": false,
+      "ingredients": [
+        {
+          "food": "鸡蛋（全蛋）",
+          "grams": 110
+        },
+        {
+          "food": "番茄",
+          "grams": 150
+        },
+        {
+          "food": "全麦面包",
+          "grams": 50
+        },
+        {
+          "food": "特级初榨橄榄油",
+          "grams": 5
+        }
+      ],
+      "nutrition": {
+        "net_carbs": 23.8,
+        "protein": 21.2,
+        "fat": 18.3,
+        "kcal": 360.7
+      },
+      "substitution_rules": [
+        "番茄 ↔ 黄瓜 100g",
+        "全麦面包 ↔ 蒸红薯 120g"
+      ]
+    },
+    {
+      "template_id": "bt-pan10-02",
+      "name": "黄瓜炒蛋配玉米",
+      "category": "10分钟平底锅",
+      "meal_plan_mode": "planned",
+      "preparation_mode": "quick_self_prepare",
+      "include_in_nutrition": true,
+      "include_in_procurement": true,
+      "active_minutes": 8,
+      "total_minutes": 10,
+      "workday_suitable": true,
+      "prepare_ahead": false,
+      "ingredients": [
+        {
+          "food": "鸡蛋（全蛋）",
+          "grams": 110
+        },
+        {
+          "food": "黄瓜",
+          "grams": 120
+        },
+        {
+          "food": "鲜玉米",
+          "grams": 120
+        },
+        {
+          "food": "特级初榨橄榄油",
+          "grams": 5
+        }
+      ],
+      "nutrition": {
+        "net_carbs": 25.9,
+        "protein": 18.9,
+        "fat": 17.6,
+        "kcal": 342.4
+      },
+      "substitution_rules": [
+        "鲜玉米 ↔ 全麦面包 50g",
+        "黄瓜 ↔ 番茄 150g"
+      ]
+    },
+    {
+      "template_id": "bt-pan10-03",
+      "name": "香煎鸡胸牛油果盘",
+      "category": "10分钟平底锅",
+      "meal_plan_mode": "planned",
+      "preparation_mode": "quick_self_prepare",
+      "include_in_nutrition": true,
+      "include_in_procurement": true,
+      "active_minutes": 9,
+      "total_minutes": 12,
+      "workday_suitable": true,
+      "prepare_ahead": false,
+      "ingredients": [
+        {
+          "food": "鸡胸肉",
+          "grams": 80
+        },
+        {
+          "food": "牛油果",
+          "grams": 60
+        },
+        {
+          "food": "番茄",
+          "grams": 100
+        },
+        {
+          "food": "特级初榨橄榄油",
+          "grams": 5
+        }
+      ],
+      "nutrition": {
+        "net_carbs": 3.8,
+        "protein": 20.7,
+        "fat": 15.2,
+        "kcal": 247.8
+      },
+      "substitution_rules": [
+        "鸡胸肉 ↔ 水煮蛋 2 枚（前夜准备）"
+      ]
+    },
+    {
+      "template_id": "bt-prep-01",
+      "name": "隔夜燕麦杯",
+      "category": "可前夜准备",
+      "meal_plan_mode": "planned",
+      "preparation_mode": "quick_self_prepare",
+      "include_in_nutrition": true,
+      "include_in_procurement": true,
+      "active_minutes": 5,
+      "total_minutes": 5,
+      "workday_suitable": true,
+      "prepare_ahead": true,
+      "ingredients": [
+        {
+          "food": "全脂牛奶",
+          "grams": 200
+        },
+        {
+          "food": "燕麦片（生）",
+          "grams": 40
+        },
+        {
+          "food": "无糖希腊酸奶",
+          "grams": 100
+        },
+        {
+          "food": "蓝莓",
+          "grams": 50
+        }
+      ],
+      "nutrition": {
+        "net_carbs": 42.0,
+        "protein": 21.2,
+        "fat": 14.3,
+        "kcal": 402.1
+      },
+      "substitution_rules": [
+        "蓝莓 ↔ 香蕉 80g",
+        "希腊酸奶 ↔ 无糖酸奶（普通）"
+      ]
+    },
+    {
+      "template_id": "bt-prep-02",
+      "name": "前夜水煮蛋玉米盒",
+      "category": "可前夜准备",
+      "meal_plan_mode": "planned",
+      "preparation_mode": "quick_self_prepare",
+      "include_in_nutrition": true,
+      "include_in_procurement": true,
+      "active_minutes": 3,
+      "total_minutes": 3,
+      "workday_suitable": true,
+      "prepare_ahead": true,
+      "ingredients": [
+        {
+          "food": "鸡蛋（全蛋）",
+          "grams": 110
+        },
+        {
+          "food": "鲜玉米",
+          "grams": 150
+        },
+        {
+          "food": "无糖豆浆",
+          "grams": 250
+        }
+      ],
+      "nutrition": {
+        "net_carbs": 30.5,
+        "protein": 27.4,
+        "fat": 16.8,
+        "kcal": 391.5
+      },
+      "substitution_rules": [
+        "鲜玉米 ↔ 蒸山药 120g",
+        "无糖豆浆 ↔ 全脂牛奶 250ml"
+      ]
+    },
+    {
+      "template_id": "bt-go-01",
+      "name": "花生酱香蕉卷饼",
+      "category": "可带走",
+      "meal_plan_mode": "planned",
+      "preparation_mode": "quick_self_prepare",
+      "include_in_nutrition": true,
+      "include_in_procurement": true,
+      "active_minutes": 5,
+      "total_minutes": 5,
+      "workday_suitable": true,
+      "prepare_ahead": false,
+      "ingredients": [
+        {
+          "food": "全麦面包",
+          "grams": 70
+        },
+        {
+          "food": "无糖花生酱",
+          "grams": 16
+        },
+        {
+          "food": "香蕉",
+          "grams": 80
+        }
+      ],
+      "nutrition": {
+        "net_carbs": 45.3,
+        "protein": 13.3,
+        "fat": 11.0,
+        "kcal": 340.7
+      },
+      "substitution_rules": [
+        "无糖花生酱 ↔ 切达奶酪 20g",
+        "香蕉 ↔ 苹果 100g"
+      ]
+    },
+    {
+      "template_id": "bt-go-02",
+      "name": "鸡蛋黄瓜三明治",
+      "category": "可带走",
+      "meal_plan_mode": "planned",
+      "preparation_mode": "quick_self_prepare",
+      "include_in_nutrition": true,
+      "include_in_procurement": true,
+      "active_minutes": 6,
+      "total_minutes": 6,
+      "workday_suitable": true,
+      "prepare_ahead": true,
+      "ingredients": [
+        {
+          "food": "全麦面包",
+          "grams": 70
+        },
+        {
+          "food": "鸡蛋（全蛋）",
+          "grams": 55
+        },
+        {
+          "food": "黄瓜",
+          "grams": 60
+        },
+        {
+          "food": "切达奶酪",
+          "grams": 15
+        }
+      ],
+      "nutrition": {
+        "net_carbs": 28.6,
+        "protein": 19.5,
+        "fat": 13.3,
+        "kcal": 324.1
+      },
+      "substitution_rules": [
+        "切达奶酪 ↔ 无糖花生酱 12g"
+      ]
+    },
+    {
+      "template_id": "bt-nodairy-01",
+      "name": "豆浆燕麦蛋组合",
+      "category": "乳制品替代",
+      "meal_plan_mode": "planned",
+      "preparation_mode": "quick_self_prepare",
+      "include_in_nutrition": true,
+      "include_in_procurement": true,
+      "active_minutes": 4,
+      "total_minutes": 6,
+      "workday_suitable": true,
+      "prepare_ahead": true,
+      "ingredients": [
+        {
+          "food": "无糖豆浆",
+          "grams": 300
+        },
+        {
+          "food": "燕麦片（生）",
+          "grams": 35
+        },
+        {
+          "food": "鸡蛋（全蛋）",
+          "grams": 55
+        }
+      ],
+      "nutrition": {
+        "net_carbs": 23.8,
+        "protein": 21.4,
+        "fat": 12.8,
+        "kcal": 317.6
+      },
+      "substitution_rules": [
+        "无糖豆浆 ↔ 燕麦奶（无添加糖）",
+        "燕麦 ↔ 小米（生）25g 煮粥"
+      ]
+    },
+    {
+      "template_id": "bt-nodairy-02",
+      "name": "豆浆红薯蛋盘",
+      "category": "乳制品替代",
+      "meal_plan_mode": "planned",
+      "preparation_mode": "quick_self_prepare",
+      "include_in_nutrition": true,
+      "include_in_procurement": true,
+      "active_minutes": 5,
+      "total_minutes": 12,
+      "workday_suitable": true,
+      "prepare_ahead": true,
+      "ingredients": [
+        {
+          "food": "无糖豆浆",
+          "grams": 300
+        },
+        {
+          "food": "红薯",
+          "grams": 150
+        },
+        {
+          "food": "鸡蛋（全蛋）",
+          "grams": 55
+        }
+      ],
+      "nutrition": {
+        "net_carbs": 29.7,
+        "protein": 19.2,
+        "fat": 10.6,
+        "kcal": 316.5
+      },
+      "substitution_rules": [
+        "红薯 ↔ 鲜玉米 150g"
+      ]
+    },
+    {
+      "template_id": "bt-noegg-01",
+      "name": "豆浆豆腐燕麦碗",
+      "category": "鸡蛋替代",
+      "meal_plan_mode": "planned",
+      "preparation_mode": "quick_self_prepare",
+      "include_in_nutrition": true,
+      "include_in_procurement": true,
+      "active_minutes": 5,
+      "total_minutes": 8,
+      "workday_suitable": true,
+      "prepare_ahead": false,
+      "ingredients": [
+        {
+          "food": "无糖豆浆",
+          "grams": 250
+        },
+        {
+          "food": "内酯豆腐",
+          "grams": 120
+        },
+        {
+          "food": "燕麦片（生）",
+          "grams": 35
+        },
+        {
+          "food": "黑芝麻",
+          "grams": 5
+        }
+      ],
+      "nutrition": {
+        "net_carbs": 26.2,
+        "protein": 20.6,
+        "fat": 11.9,
+        "kcal": 321.0
+      },
+      "substitution_rules": [
+        "内酯豆腐 ↔ 北豆腐 100g",
+        "黑芝麻 ↔ 核桃 10g"
+      ]
+    },
+    {
+      "template_id": "bt-noegg-02",
+      "name": "鸡胸牛油果吐司",
+      "category": "鸡蛋替代",
+      "meal_plan_mode": "planned",
+      "preparation_mode": "quick_self_prepare",
+      "include_in_nutrition": true,
+      "include_in_procurement": true,
+      "active_minutes": 6,
+      "total_minutes": 8,
+      "workday_suitable": true,
+      "prepare_ahead": true,
+      "ingredients": [
+        {
+          "food": "鸡胸肉",
+          "grams": 70
+        },
+        {
+          "food": "牛油果",
+          "grams": 60
+        },
+        {
+          "food": "全麦面包",
+          "grams": 60
+        }
+      ],
+      "nutrition": {
+        "net_carbs": 23.3,
+        "protein": 24.7,
+        "fat": 12.2,
+        "kcal": 321.2
+      },
+      "substitution_rules": [
+        "鸡胸肉 ↔ 内酯豆腐 150g",
+        "牛油果 ↔ 无糖花生酱 15g"
+      ]
+    },
+    {
+      "template_id": "bt-carb-01",
+      "name": "蒸红薯酸奶盘",
+      "category": "不同碳水组",
+      "meal_plan_mode": "planned",
+      "preparation_mode": "quick_self_prepare",
+      "include_in_nutrition": true,
+      "include_in_procurement": true,
+      "active_minutes": 3,
+      "total_minutes": 15,
+      "workday_suitable": true,
+      "prepare_ahead": true,
+      "ingredients": [
+        {
+          "food": "红薯",
+          "grams": 180
+        },
+        {
+          "food": "无糖希腊酸奶",
+          "grams": 150
+        },
+        {
+          "food": "鸡蛋（全蛋）",
+          "grams": 55
+        }
+      ],
+      "nutrition": {
+        "net_carbs": 36.9,
+        "protein": 23.3,
+        "fat": 12.2,
+        "kcal": 376.5
+      },
+      "substitution_rules": [
+        "红薯 ↔ 蒸山药 150g / 鲜玉米 150g / 南瓜 200g"
+      ]
+    },
+    {
+      "template_id": "bt-carb-02",
+      "name": "小米粥配蛋",
+      "category": "不同碳水组",
+      "meal_plan_mode": "planned",
+      "preparation_mode": "quick_self_prepare",
+      "include_in_nutrition": true,
+      "include_in_procurement": true,
+      "active_minutes": 3,
+      "total_minutes": 20,
+      "workday_suitable": true,
+      "prepare_ahead": true,
+      "ingredients": [
+        {
+          "food": "小米（生）",
+          "grams": 30
+        },
+        {
+          "food": "鸡蛋（全蛋）",
+          "grams": 55
+        },
+        {
+          "food": "黄瓜",
+          "grams": 80
+        }
+      ],
+      "nutrition": {
+        "net_carbs": 25.1,
+        "protein": 10.2,
+        "fat": 6.5,
+        "kcal": 202.8
+      },
+      "substitution_rules": [
+        "小米 ↔ 燕麦片（生）30g",
+        "黄瓜 ↔ 番茄 100g"
+      ]
+    },
+    {
+      "template_id": "bt-savory-01",
+      "name": "咸豆浆豆腐脑风",
+      "category": "咸味早餐",
+      "meal_plan_mode": "planned",
+      "preparation_mode": "quick_self_prepare",
+      "include_in_nutrition": true,
+      "include_in_procurement": true,
+      "active_minutes": 5,
+      "total_minutes": 8,
+      "workday_suitable": true,
+      "prepare_ahead": false,
+      "ingredients": [
+        {
+          "food": "无糖豆浆",
+          "grams": 300
+        },
+        {
+          "food": "内酯豆腐",
+          "grams": 150
+        },
+        {
+          "food": "黑芝麻",
+          "grams": 5
+        }
+      ],
+      "nutrition": {
+        "net_carbs": 8.0,
+        "protein": 19.4,
+        "fat": 11.0,
+        "kcal": 219.9
+      },
+      "substitution_rules": [
+        "内酯豆腐 ↔ 北豆腐 120g"
+      ]
+    },
+    {
+      "template_id": "bt-savory-02",
+      "name": "番茄鸡蛋咸燕麦",
+      "category": "咸味早餐",
+      "meal_plan_mode": "planned",
+      "preparation_mode": "quick_self_prepare",
+      "include_in_nutrition": true,
+      "include_in_procurement": true,
+      "active_minutes": 8,
+      "total_minutes": 10,
+      "workday_suitable": true,
+      "prepare_ahead": false,
+      "ingredients": [
+        {
+          "food": "燕麦片（生）",
+          "grams": 35
+        },
+        {
+          "food": "鸡蛋（全蛋）",
+          "grams": 55
+        },
+        {
+          "food": "番茄",
+          "grams": 120
+        },
+        {
+          "food": "特级初榨橄榄油",
+          "grams": 3
+        }
+      ],
+      "nutrition": {
+        "net_carbs": 23.4,
+        "protein": 12.6,
+        "fat": 11.2,
+        "kcal": 268.0
+      },
+      "substitution_rules": [
+        "番茄 ↔ 黄瓜 100g"
+      ]
+    },
+    {
+      "template_id": "bt-warm-01",
+      "name": "热牛奶燕麦蛋",
+      "category": "温热早餐",
+      "meal_plan_mode": "planned",
+      "preparation_mode": "quick_self_prepare",
+      "include_in_nutrition": true,
+      "include_in_procurement": true,
+      "active_minutes": 5,
+      "total_minutes": 8,
+      "workday_suitable": true,
+      "prepare_ahead": false,
+      "ingredients": [
+        {
+          "food": "牛奶（加热）",
+          "grams": 250
+        },
+        {
+          "food": "燕麦片（生）",
+          "grams": 40
+        },
+        {
+          "food": "鸡蛋（全蛋）",
+          "grams": 55
+        }
+      ],
+      "nutrition": {
+        "net_carbs": 35.3,
+        "protein": 20.4,
+        "fat": 17.3,
+        "kcal": 400.6
+      },
+      "substitution_rules": [
+        "牛奶（加热）↔ 无糖豆浆（加热）",
+        "燕麦 ↔ 小米（生）30g"
+      ]
+    },
+    {
+      "template_id": "bt-warm-02",
+      "name": "蒸南瓜山药蛋盘",
+      "category": "温热早餐",
+      "meal_plan_mode": "planned",
+      "preparation_mode": "quick_self_prepare",
+      "include_in_nutrition": true,
+      "include_in_procurement": true,
+      "active_minutes": 5,
+      "total_minutes": 15,
+      "workday_suitable": true,
+      "prepare_ahead": true,
+      "ingredients": [
+        {
+          "food": "南瓜",
+          "grams": 200
+        },
+        {
+          "food": "山药",
+          "grams": 100
+        },
+        {
+          "food": "鸡蛋（全蛋）",
+          "grams": 55
+        }
+      ],
+      "nutrition": {
+        "net_carbs": 23.3,
+        "protein": 10.2,
+        "fat": 5.9,
+        "kcal": 195.5
+      },
+      "substitution_rules": [
+        "南瓜 ↔ 红薯 150g",
+        "山药 ↔ 鲜玉米 120g"
+      ]
+    }
+  ]
+}

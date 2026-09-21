@@ -1,0 +1,47 @@
+{
+  "request_id": "weekly-plan-2026-08-26-sample",
+  "items": [
+    {
+      "ingredient_id": "pork_lean",
+      "query": "猪瘦肉",
+      "required_grams": 700,
+      "search_terms": [
+        "猪瘦肉",
+        "猪里脊",
+        "精瘦肉"
+      ],
+      "positive_terms": [
+        "猪",
+        "瘦肉",
+        "里脊",
+        "精肉"
+      ],
+      "hard_excluded_terms": [
+        "黑椒",
+        "熟食",
+        "预制",
+        "腌制",
+        "水饺",
+        "馄饨",
+        "肉丸"
+      ],
+      "max_candidates": 5
+    },
+    {
+      "ingredient_id": "tofu_firm",
+      "query": "北豆腐",
+      "required_grams": 400,
+      "search_terms": [
+        "北豆腐",
+        "老豆腐"
+      ],
+      "positive_terms": [
+        "豆腐"
+      ],
+      "hard_excluded_terms": [
+        "内酯"
+      ],
+      "max_candidates": 5
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "schema_version": "1.0.0",
+  "说明": "商品概念验收档案（round67，2026-09-18）：按食材给出大品类召回词与验收条件，供查价清单生成与月食选择层使用。维护稳定品类、食材身份、属性要求、允许形态、排除结构与未知处理；不维护具体商品全称映射。",
+  "profiles": {
+    "无糖酸奶": {
+      "display_name": "无糖酸奶",
+      "search_scope": {"category_query": "酸奶"},
+      "acceptance_profile": {
+        "required_category": ["yogurt", "fermented_milk"],
+        "sweetening_requirement": "no_added_sugar",
+        "accepted_composition": ["plain_single_product"],
+        "excluded_composition": ["snack", "beverage", "dessert", "mixed_breakfast_cup"]
+      },
+      "uncertainty_policy": {"missing_label_action": "review_required", "no_accepted_candidate_action": "category_estimate"}
+    },
+    "全麦面包": {
+      "display_name": "全麦面包",
+      "search_scope": {"category_query": "面包"},
+      "acceptance_profile": {
+        "required_category": ["bread"],
+        "whole_grain_requirement": "whole_grain",
+        "excluded_composition": ["cake", "sweet_bread", "filled_bread", "snack"]
+      },
+      "uncertainty_policy": {"missing_label_action": "review_required", "no_accepted_candidate_action": "category_estimate"}
+    },
+    "豆腐": {
+      "display_name": "豆腐",
+      "search_scope": {"category_query": "豆腐"},
+      "acceptance_profile": {
+        "required_category": ["tofu"],
+        "accepted_composition": ["single_ingredient", "minimally_processed"],
+        "excluded_composition": ["composite_food", "prepared_dish", "snack", "beverage"],
+        "excluded_processing": ["fried", "ready_to_eat", "seasoned"]
+      },
+      "uncertainty_policy": {"missing_label_action": "review_required", "no_accepted_candidate_action": "category_estimate"}
+    },
+    "猪里脊": {
+      "display_name": "猪里脊",
+      "search_scope": {"category_query": "猪里脊", "fallback_category_query": "猪肉"},
+      "acceptance_profile": {
+        "species": "猪",
+        "animal_cut": "里脊",
+        "accepted_composition": ["single_ingredient"],
+        "excluded_composition": ["composite_food", "prepared_dish"],
+        "required_processing": ["fresh_raw", "frozen_raw"],
+        "excluded_processing": ["cooked", "seasoned", "fried", "ready_to_eat"]
+      },
+      "uncertainty_policy": {"missing_label_action": "review_required", "no_accepted_candidate_action": "replace_ingredient"}
+    },
+    "南瓜": {
+      "display_name": "南瓜",
+      "search_scope": {"category_query": "南瓜"},
+      "acceptance_profile": {
+        "required_category": ["pumpkin"],
+        "plant_part": "果实",
+        "accepted_composition": ["single_ingredient"],
+        "excluded_composition": ["snack", "composite_food", "prepared_dish"],
+        "required_processing": ["fresh_raw", "cut_raw"],
+        "excluded_processing": ["fried", "ready_to_eat", "seasoned"]
+      },
+      "uncertainty_policy": {"missing_label_action": "review_required", "no_accepted_candidate_action": "category_estimate"}
+    },
+    "芹菜": {
+      "display_name": "芹菜",
+      "search_scope": {"category_query": "芹菜"},
+      "acceptance_profile": {
+        "required_category": ["celery"],
+        "plant_part": "茎叶",
+        "accepted_composition": ["single_ingredient", "minimally_processed"],
+        "excluded_composition": ["composite_food", "prepared_dish"],
+        "required_processing": ["fresh_raw", "cleaned_raw"]
+      },
+      "uncertainty_policy": {"missing_label_action": "review_required", "no_accepted_candidate_action": "category_estimate"}
+    },
+    "带鱼": {
+      "display_name": "带鱼",
+      "search_scope": {"category_query": "带鱼"},
+      "acceptance_profile": {
+        "required_category": ["hairtail"],
+        "species": "带鱼",
+        "accepted_composition": ["single_ingredient"],
+        "excluded_composition": ["prepared_dish", "composite_food"],
+        "required_processing": ["fresh_raw", "frozen_raw", "cleaned_raw", "cut_raw"],
+        "excluded_processing": ["cooked", "seasoned", "fried", "ready_to_eat"]
+      },
+      "uncertainty_policy": {"missing_label_action": "review_required", "no_accepted_candidate_action": "category_estimate"}
+    }
+  }
+}

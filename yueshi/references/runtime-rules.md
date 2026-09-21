@@ -1,0 +1,218 @@
+# 月食运行规则（runtime-rules）
+
+本文件是 SKILL.md 的拆分部分，承载生成链路的详细运行规则：信息采集、餐次、早餐、做饭安排、日期、两次生成与预选、食堂外食、一人食、中医食养、采购、断食窗口。SKILL.md 只保留定位/优先级/路由/15 步与关键规则摘要；执行时本文件与 SKILL.md 同等效力。
+
+## 用户信息采集（关键八项一行式 + 动态追问）
+
+**形式规则（固定）**：用一条编号文字消息集中询问，**不调用结构化问卷工具**；只用大白话；不重复询问已提供的信息。引导语放在**复制框外**，框内每行一条、行内带示例答案，用户照着改写即可。问卷全文与模板见 `references/questionnaire.md`。
+
+- **问卷八行**：①基本情况（性别/年龄/身高/体重/目标四选一/所在地区）②避开的情况③周期情况（不需要写"不需要"）④吃饭做饭（一人食/工作日与周末各做哪几餐/每顿时间/厨具）⑤菜系口味⑥预算⑦中饭晚饭是否附做法（A 需要 / B 不需要，必选，无默认值）⑧输出格式（PDF/网页/Markdown/Word，选一种就只给一种，也可多选）。
+- **逐计划周期必显选答一行（`dingdong_price_choice`，round58 定稿：逐周选答 ≠ 每周默认否）**：⑨本周采购价格方式——A. 使用「月食叮咚查价助手」按叮咚当前页面商品和价格规划预算 / B. 按所在地公开参考价格估算。状态机：`pending`（新计划初始值，**不跨周继承**——上周选"是"或"否"都不自动沿用）→ 用户选 A 转 `use_helper`（等价于 `dingdong_helper_opt_in: yes`）→ 用户选 B 转 `use_estimate`；选择只对本次 `request_id` 有效。**`pending` 时可以展示食材预选，但不能进入预选后的正式生成链路**；该选项与食材删减在同一轮收集（预选清单末尾固定显示二选一，文案中的日期范围按本次计划动态生成，不写死），不单独再追问一轮；用户首轮已明确（如"用叮咚查价生成下周食谱"）则直接记录为 `use_helper`，预选时仅显示"本周价格方式：叮咚查价助手（已选择）"，不重复确认。**只有 `use_helper` 时才启用叮咚查价链路；预选阶段只登记意愿，不生成任何查价文件（无草稿）**；唯一正式的「月食-查价清单.json」在步骤 13 生成——七天菜单草案、做法、营养校验与最终新购需求汇总全部完成后，按最终 `new_purchase_amount`、最终 ingredient_id 与 request_id 生成并交付，交付后立即暂停（awaiting_price_result）。`use_estimate` 时全流程不生成查价清单、不出现助手引导、不走 `dingdong_web_direct`，价格按既有三层口径与回退链处理。用户在后续对话中明确表示"用叮咚查价"视为补开（转为 `use_helper`）。**禁止"本周默认不生成叮咚查价清单，需要的话回复……"一类静默按否处理的话术**——每个新计划周期都必须展示一次明确二选一。
+- **必填（缺了才追问）**：基本情况、避开情况、吃饭做饭、菜系口味、预算、做法选择；周期情况仅需要周期适配时必填。
+- **预算三态（round65 新增，规则 ID：BUDGET-001）**：预算必须同时记录 `budget_amount` 与 `budget_type`——`hard_cap`（硬上限，allowed_overrun_pct=0）/ `preferred_target`（优先目标，默认允许超出 5%）/ `flexible_target`（弹性参考，默认允许超出 15%），用户未选类型时合并追问 A/B/C，不得默认硬上限也不得静默按弹性处理。预计采购金额超出 `预算×(1+allowed_overrun_pct)` 时必须替换等价食材压回；`hard_cap` 下超出预算金额即视为超支，**未经用户明确批准不得定稿**（shopping_aggregator `--budget-type hard_cap` 超支时以退出码 2 阻止）；用户批准超支须显式记录。只有金额没有类型时，一律视为信息缺失。
+- **走默认值、不进问卷**：计划日期（默认发问次日起连续 7 天）。叮咚查价价格方式为**逐计划周期必显选答**（见上条），不走默认值、不静默按否处理。
+- **动态追问**：只问缺失且影响计划的项，最多一轮。
+- **非必填合并**：运动频率、断食经验、常吃食物、聚餐频率、食养偏好、家中库存，一律并入"有特别要求可以一起告诉我"，不提就用默认值。
+- **默认不询问排泄相关情况**；用户主动提到肠胃困扰时仅转为食材风格调整。
+
+## 餐次覆盖（先说清楚，再生成）
+
+- **默认提供三餐完整方案**。用户没提到某一餐（最常见是早餐）时，**必须在信息采集或动态追问阶段问一句**该餐怎么处理，不得默认安排、也不得默认省略。
+- **餐次三态（统一字段 `meal_plan_mode`，早餐必备，其他餐次同口径；round60 语义修正）**：餐次计划状态一律使用 `meal_plan_mode` = `planned` / `guidance_only` / `excluded`；餐次类型另用 `meal_type` = breakfast / lunch / dinner / snack。**不得同时存在 breakfast_mode / meal_mode / recipe_mode 等同义字段**；历史数据中的 `breakfast_mode` 仅按 schema 映射为 `meal_plan_mode`。`planned`（纳入菜单、采购清单与营养计算）；`guidance_only`（用户明确"只给原则、不用安排具体餐"：给 3 至 4 套可轮换的组合池建议、不逐日排固定食谱、默认不列具体采购，营养校验按低置信度估算该餐并在营养行注明口径）；`excluded`（用户明确不吃或该餐次不存在：不进采购、不参与营养计算，进入篮子前先确认补能选项）。三态由信息采集或追问确认，不得默认假设。**所有缺失餐次与其他必填项必须合并在同一轮动态追问中，不得逐餐连续追问**；用户明确要求直接生成时，仅使用本文件允许的降级状态。
+- **餐次语义映射表（round60 定稿：简单解决 ≠ 不计划、不采购）**：执行难度由独立字段 `preparation_mode` 描述，**不得为了"简单"而把餐次从计划/营养/采购中删除**。planned 餐次可带 `preparation_mode`（quick_self_prepare / assembly_only / external_purchase / none）、`max_active_minutes`、`include_in_nutrition`、`include_in_procurement`、`recipe_detail_level`（brief 等）。映射规则：
+
+  | 用户表达 | meal_plan_mode | preparation_mode | 营养 | 采购 |
+  |---|---|---|---|---|
+  | 自己做 / 自己解决（无时间或做法条件） | planned | none（另记 preparation_location=home、preparation_owner=self） | 计入 | 计入 |
+  | 自己简单解决 / 随便做点简单的（无时间条件） | planned | none（另记 preparation_preference=simple；不推断时长与免开火） | 计入 | 计入 |
+  | 早上只有几分钟 / 明确给出时间上限 | planned | quick_self_prepare（记 max_active_minutes=用户给出的分钟数） | 计入 | 计入 |
+  | 牛奶面包之类就行 | planned | assembly_only | 计入 | 计入 |
+  | 不用给具体早餐，只给原则 | guidance_only | none | 按规则估算 | 默认不列具体采购 |
+  | 早餐在外面买 | planned | external_purchase | 计入估算 | 不进家庭食材采购（或单列外购） |
+  | 不吃早餐 | excluded | none | 不计入 | 不计入 |
+  | 在父母家吃 | excluded（或 external_hosted） | none | 按用户需求决定 | 不进本周家庭采购 |
+
+  - **餐次状态契约（MEAL-STATE-001，2026-09-21 定稿）**：`planned` 表示该餐有明确安排，进入菜单、营养和采购；`guidance_only` 只提供原则或组合建议，不生成固定逐日克数；`excluded` 不生成菜单，也不进入采购和营养合计。
+    - "工作日早餐自己做"映射为 `planned`，计入菜单、营养和采购；
+    - "自己简单解决""随便做点"同样不等于"不做这餐"，不得降级为 `guidance_only`；
+    - 是否属于快手、免开火或提前备餐，应根据用户明确提供的时间和做法条件分别判断；
+    - 用户未提供早餐时间限制时，不得仅凭"自己做"或"简单解决"写入 `quick_self_prepare`；
+    - `preparation_mode`、`max_active_minutes`、`no_cook_allowed` 和 `advance_prep_allowed` 分别记录，不相互替代；
+    - 简单餐次不得路由为 guidance_only；只有"只给原则/不用安排/不纳入这份计划"类明确表达才允许 guidance_only。
+- **自炊事实与难度推断分离（round65 新增，规则 ID：MEAL-SELFCOOK-001）**：用户说早餐（或任一餐）"自己做"时，只能写入三个**事实字段**——`meal_plan_mode=planned`、`preparation_location=home`、`preparation_owner=self`，计入营养与采购；**不得仅凭"自己做"推断难度**，即不得附带 `quick_self_prepare`、`max_active_minutes=15`、免开火（no_cook）或只能简易搭配等限制。仅当用户另行给出明确时间或做法证据（如"早上只有 10 分钟""不想开火""随便做点简单的"）时才可叠加 quick_self_prepare / max_active_minutes；证据缺失时先按一般家常早餐规划，并在动态追问中合并一句"早餐大概几分钟"，用户补充后再决定 preparation_mode。自炊餐次不得被降级为 guidance_only 或仅给搭配建议——仅"只给原则/不用安排"类明确表达允许 guidance_only。
+- **用户输入边界（规则 ID：MODE-INPUT-001，round64 新增）**：内部饮食模式（酮生物 / 平衡激素）不是问卷项，问卷不得出现内部模式枚举或要求用户二选一；用户只提供周期日期、规律性、断食经验、作息等事实。用户输入 payload 携带 `mode_schedule`、`mode`、`mode_choice`、`diet_mode`、`protocol_choice` 等模式赋值字段时，**拒绝或清除该字段**并基于原始周期事实重新推算；历史遗留字段标记 deprecated，旧值只供迁移记录，不直接进入当前计算。推算失败（周期信息不足/不适用/规则文件缺失）时合并追问、进入非周期主线或失败关闭，**不得要求用户通过选择内部模式弥补系统无法推算**。
+- **模式参数唯一来源（round60 定稿）**：冻结与只读边界见规则 ID：MODE-FREEZE-001——用户纠正周期事实后必须重新推算并重新冻结，不得手工修改既有模式结果。周期模式决策完成后，先在生成链路最前端冻结 `mode_schedule.json`（`plan_id` + 逐日 `mode_schedule` + `mode_summary{keto_days,hormone_days}`），其规范化哈希为 `mode_schedule_hash`。`basket_builder.py` / `recipe_ranker.py` / 营养求解等所有下游脚本一律用 `--mode-schedule` 读取同一文件，**禁止再手写 `--keto-days/--hormone-days/--mode` 等独立模式参数**；任一脚本的模式摘要与 `mode_schedule_hash` 不一致即触发 M11 失败关闭（见 output-policy.md），不得继续生成菜单。
+- **删除反馈作用范围与跨周重复惩罚（round60）**：用户删除预选食材时必须区分四选项——A. 这周不想吃（`dislike_this_week`，**本周流程不得恢复该食材**）/ B. 平时也不喜欢，以后少推荐（`persistent_reduce`，降权不硬排除）/ C. 完全不要推荐（`permanent_dislike`，硬排除）/ D. 只是这次买不到或不方便（`temporarily_unavailable`，只影响本周采购渠道，不影响口味偏好）。未获用户明确选择前不得自动永久排除。维护跨周历史 `ingredient_history_4w` / `recipe_history_8w` / `protein_family_history_4w`：上周已出现 → 重复惩罚降权；最近 4 周出现 2 次以上 → 强重复惩罚；用户本周删除 → 本周禁止恢复；长期避开 → 硬排除。候选评分不得使用固定候选列表或"有包装规格"过强加分导致同一食材反复入篮；同一用户同一月份的周种子应使篮子随周变化。跨计划入篮频次/删除率统计仅供维护端调整基础分与候选采样，**不得读取其他用户个人内容，也不得把其他用户偏好写入当前用户计划**。
+- **商品形态强制（round65 新增，规则 ID：FORM-001）**：查价清单、叮咚助手与合并层共用 `data/ingredient-catalog.json`（query_profile.allowed_forms / excluded_states）与 `data/product-form-dictionary.json`（`scripts/common/product_forms.py`）。匹配优先级：ingredient_id → 部位 → 生鲜/加工形态 → 预制许可 → 包装 → 价格；命中 `excluded_states` 或识别出不在 `allowed_forms` 内的限制性形态，商品不得作为 exact/eligible 采购候选（validator P09 拒绝并置 `eligible_for_purchase=false`）。示例：红薯要求 root_tuber、排除叶/加工小吃/油炸/即食；鸡蛋要求带壳鲜蛋、排除蛋饼/糕点/熟蛋制品；猪里脊要求生鲜/冷冻生鲜、排除油炸/裹粉/熟食预制。
+- **商品变更日志（round65 新增，规则 ID：CHANGE-001，`scripts/common/selection_change_log.py`）**：查价回传后确定最终商品时，逐项记录 `provider_suggestion` → `final_selection`；发生变更必须写 `selection_change_reason_codes`（smaller_package / lower_waste / product_form_correction / prepared_food_rejected / non_member_price_required / better_required_amount_fit / fallback_to_estimate），统计时**纠错（product_form_correction / prepared_food_rejected / non_member_price_required / fallback_to_estimate）与包装优化（smaller_package / lower_waste / better_required_amount_fit）分开计数**；预选阶段的分项评分与淘汰原因见候选 JSON 的 `score_breakdown` 与 `selection_decision.top_rejected_candidates`。
+- **蛋白质候选角色与冷却（round65 新增，规则 ID：ROLE-001，数据 `data/protein-candidate-roles.json`）**：蛋白质核心候选默认以 staple（鸡蛋/鸡肉/猪瘦肉/牛肉/豆腐/常见鱼类等家常主力）为主：槽位 total 5、minimum_staple 3、maximum_exploratory 1；`mandatory_aquatic_slot: false`——**不强制水产占位**。exploratory（蛤蜊贝类/鱿鱼/内脏等）进入核心候选需满足任一准入条件：用户明确表示愿意尝试新食材 / 该食材有正向个人历史 / 用户点名要求 / staple 候选不足。用户从核心候选删除某食材后进入冷却（`candidate_suppression`）：首次删除冷却 4 周（可作替代、不进核心）；8 周内第二次删除冷却 8 周且不可作替代；`permanent_dislike` 直接硬排除；用户本周点名要求可覆盖冷却。
+- 用户回答"自己简单解决/随便做点"的餐次：按 `planned` 处理（计入营养与采购），菜品可参考快手早餐模板库或简单家常组合（模板是菜品来源，选择模板不回写 `quick_self_prepare` 等难度字段）；**不得降级为 guidance_only，也不得自动写入 quick_self_prepare**——只有用户另给时间或做法条件时才叠加对应字段（见 MEAL-STATE-001）。
+- **"简单处理"指烹饪过程简单、用时以用户给出的条件为准（未给出时不设固定上限），不是天天吃同一样东西**：简单餐次的搭配必须逐日轮换（见下节早餐轮换规则），禁止七天复制同一句建议。
+- 每日可用餐次少于 3 餐时，先在追问中提出补能选项（免煮早餐/加餐/加大正餐份量）由用户选择，再进入篮子生成——避免计划生成后才发现热量结构性不足。
+- 问卷"吃饭做饭"一行要求覆盖工作日与周末的**每一餐**（含早餐），示例中统一使用"**工作日早餐自己做**"写法；"自己做"只确认餐次纳入计划并由本人准备，不推断快手、免开火或时长。
+
+## 早餐强制轮换（硬规则，含用户自解决餐次）
+
+- **快手早餐模板库（round62）**：`planned + quick_self_prepare` 早餐优先从 `data/breakfast-templates.json` 选择——模板已带活跃操作时间 / 总时间 / 工作日适用 / 可前夜准备 / 食材克数 / 营养值（由 foods-table 计算，禁止手填）/ 替换规则，覆盖十类（无需烹饪组合 / 5分钟组装 / 10分钟平底锅 / 可前夜准备 / 可带走 / 乳制品替代 / 鸡蛋替代 / 不同碳水组 / 咸味早餐 / 温热早餐）；模板营养直接计入每日合计、食材计入采购汇总（B01）。**无快手条件的 planned 早餐按一般家常早餐规划，模板库仅作可选菜品来源、不作排除依据**——早餐模板不会因餐次缺少 quick 标记而被错误排除。模板不足以表达用户当周需求时才手工组合，且仍需满足下列轮换规则。
+- **碳水轮换四组**：A 薯类/南瓜、B 燕麦/小米粥、C 全麦面包/馒头、D 玉米/山药。7 天排列必须**相邻两天不同组**（如 B-D-C-A-B-D-C），每组一周 ≤2 至 3 次；首尾重复时强制调换。
+- **蛋白质来源四轮转**：蛋 / 奶 / 豆制品 / 肉类，同一来源不得连续超过 2 天。
+- 7 天早餐至少出现 **4 种不同结构**；同一文案（含"自行简单解决"建议句）不得重复出现。用户删除某组食材时同组内平行替换（红薯→紫薯），**不得回退到"牛奶+鸡蛋"万能模板**。
+- **食材充分利用**：周末在家早餐优先使用已锁定的采购食材（燕麦、玉米、酸奶等）并在用量上计入采购汇总；工作日"自行简单解决"的建议同样优先指向已购食材与常备基础，其次才是用户自购品。
+- 免煮与快手餐同样受菜谱指纹多样性约束；"不用开火的餐"不等于"天天同一碗"。
+
+## 做饭安排与逐日建议（两条硬规则）
+
+- **做饭安排按用户明确提供的逐日信息执行**；用户只说明工作日、未说明周末时，周末餐次标记"待确认"，不自行假设三餐全在家做；用户要求直接生成、不再追问时，周末默认沿用用户已明确的每日自炊餐数，但不自动复制"单位食堂"等仅适用于工作日的地点。七天可以出现相同就餐模式；只有与用户明确提供的信息冲突时才判定为错误。
+- **每日建议事项驱动**：仅在当天确有特殊事项时生成"当日建议"——需要提前解冻/提前腌制/利用前一天剩余食材/当天有外食/当天跨周期阶段/当天有特殊备餐衔接；无特殊事项时不强制生成建议，至多保留一行当日窗口提醒。**禁止为避免雷同编写七段同义提醒，也禁止把同一天建议复制给其他天**；建议内容必须对应当天实际事项。
+
+## 计划日期规则（日期口径统一）
+
+- 用户未指定日期时：`start_date = request_date + 1 天`，`end_date = start_date + 6 天`。
+- "一周" = 连续 7 天，**不默认自然周**；"两周" = 连续 14 天；"一个月" = 从开始日期顺延至下一个月同日前一天（目标月无对应日期时取目标月最后一天）。
+- 用户明确要求自然周或指定开始日期时，以用户要求为准。
+- 日期规则同步到页面标题、每日菜单、预算说明、采购清单和输出文件名；跨月跨年按真实日期连续显示。
+
+## 两次生成与菜谱库（第 6 至 9 步展开）
+
+1. **初步食材篮子**（`initial_basket`）：系统依据安全、周期、营养边界、所在地普遍可获得性、预算、当季（`data/seasonal-foods.json`）、烹饪时间、包装规格（`data/package-rules.json`）和保存期生成候选食材。草案工具：`scripts/basket_builder.py`。
+2. **用户食材预选**：用户仅需删除不喜欢的编号、接受替代或补充少量想吃的食材。预选列表末尾固定带一行"**常备基础确认**"（牛奶/酸奶/燕麦/芝麻等本周可能用到但常被忘记的耐储品），用户一并确认或删除，避免锁定篮子后再临时新增。用户明确跳过预选，或 fallback-flow 启用默认篮子时，将 `initial_basket` 转为 `provisional_locked_basket`，并标记 `user_reviewed: false`、`selection_mode: bypassed`。
+3. **锁定食材篮子**（`locked_basket`）：记录保留、删除（`removed_items`）、替换（`replacements`）、新增（`user_added_items`）、本周不喜欢（`week_only_dislikes`）和长期不喜欢（`permanent_dislikes`）。菜谱检索只能使用 `locked_basket` 中的核心食材；篮子之外只允许：①已确认存在的家庭库存；②基础调味料白名单（油盐醋生抽等）；③可完全省略且不影响菜谱成立的装饰性配料；④用户明确同意购买的一种低频调味料；⑤已完成营养/包装/预算/多样性复核的缺货平替。**新鲜蔬菜、新鲜香草、新蛋白质来源、新主食、仅服务一道菜的特殊配料不得作为默认例外**。对应字段 `allowed_pantry_items` / `allowed_optional_garnishes` / `approved_low_frequency_condiments`，契约见 `references/output-schema.md`。
+   - **预选交互语义**：正常多轮场景下，输出预选列表后当前回合停止，用户下一回合回复后再锁定篮子。用户对预选列表的回复分两类，语义不得混淆：
+   - **"都可以吃 / 全部保留"** → `user_reviewed: true`、`selection_mode: accepted_batch`：所有展示候选进入 `accepted_batch_items`，承担覆盖责任（入选或输出真实 reason_code，见"食材预选闭环"节）；
+   - **"直接生成 / 跳过预选 / 不用问我"**（含原始请求明确要求不再追问、当前调用模式不支持多轮、fallback-flow 确认默认篮子）→ `user_reviewed: false`、`selection_mode: bypassed`：把 `initial_basket` 转为 `provisional_locked_basket`，不记录偏好确认，不产生 accepted_batch 覆盖义务，每种核心食材保留缺货替代项。
+   "都可以吃/全部保留"**不得**被当作跳过预选处理。
+4. **菜谱检索**：生产候选来自统一菜谱池——① `data/recipe-index.json` 中通过审核的 HowToCook 索引；② `data/book-recipes.json` 中已批准入库的书籍明确菜谱及改造菜；③ `references/recipe-pool.md` 中已批准的本地家常母版和一锅出模板；④ 用户明确喜欢并通过安全与营养校验的菜。**维护区提取工作区（路径见 developer/maintenance-map.md）下的 candidate、proposed、lead、culture_note 和待批准去重记录不直接进入生产候选池**（状态隔离见 `data/library-manifest.json`）。五层过滤：① locked_basket 符合性（核心食材必须来自锁定篮子）→ ② 安全与模式适配（过敏原/医嘱/周期模式/营养边界）→ ③ 烹饪条件（时间/厨具/技能/主动操作）→ ④ 包装与余量（易腐复用/包装消耗/清库存）→ ⑤ 多样性（蛋白/蔬菜/烹法/味型/结构）。所在地常见可购性已在生成初步篮子时检查，此处仅作排序加分项。工具：`scripts/recipe_ranker.py`（默认只读取 record_status=production 的来源）。HowToCook 原始热量只用于初筛剔除明显高能量菜品；**入选菜谱必须按本计划克数用 `references/foods-table.md` 重算营养**。
+5. **菜谱指纹与列表字段规范化**（硬门禁，公共模块 `scripts/common/recipe_normalization.py`）：ranker、diversity checker、索引构建与去重脚本**必须共同调用**该模块，不得各自实现。规则：fingerprint/methods/main_protein 等列表字段缺失、None、[]、{} 均合法，归一化为空 tuple；**禁止无保护的 `[0]` 读取**（取首元素用 `first_of()`）；比较双方均为空字段时返回 `not_comparable`，不返回 0% 或 100%；相似度评分只对有数据的维度重新归一化。构建前残留搜索（命中即停止）：`fingerprint[0]`、`get("fingerprint")[0]`、`get("methods")[0]`、`get("main_protein")[0]`。
+6. **菜谱指纹多样性**（硬规则，校验工具 `scripts/diversity_checker.py`）：相邻两顿相似度 ≤70%；>85% 相似一周一次；同一主蛋白 2 至 3 次须换烹法/味型；同一蔬菜复用不总配同种蛋白；连续两顿不都汤羹、不都清淡蒸煮；高油重口每周 ≤2 次；一周烹法覆盖 ≥3 种。
+7. **备选菜谱池**：仅使用 `data/library-manifest.json` 中 `record_status: production` 的来源（由 `scripts/recipe_ranker.py` 的门禁强制）。池中没有的用户常吃菜**不得直接照用**，须走下方"用户临时菜谱通道"。
+
+### 用户临时菜谱通道（transient_user_recipe）
+
+用户提出生产池没有的常吃菜/拿手菜时，按以下流程处理，不得直接写进计划：
+
+1. **逐项确认（10 项检查）**：菜名与食材清单经用户确认；食材规范化映射；过敏原与用药冲突检查；符合 locked_basket；换算一人份克数（无法确认时标注估算）；用油量与调味估算；纳入当日营养重算；烹饪时间与厨具可行性；包装规格与剩菜处置；与生产池做指纹查重（避免重复收录）。
+2. **通过后**生成 `transient_user_recipe` 记录，标记 `record_status: transient_approved, scope: current_plan_only`——**仅限当前计划使用，不写入生产池**，计划结束后该记录失效。
+3. **长期复用**：用户明确表示以后常用 → 按状态机走 `candidate → proposed → approved_not_merged → production`，未经批准不提前入池。
+4. **服从 locked_basket**：用户常吃菜的核心食材若不在锁定清单中，本周不自动加入采购；可提示用户作为预选追加项，或记为 `next_week_candidate` 下周优先安排。
+
+### 食材预选展示上限
+
+一人食每日自炊 1 餐时，默认展示：蛋白质候选 5 至 7 种；蔬菜候选 8 至 12 种；天然碳水候选 3 至 5 种；风味候选 4 至 6 种。用户只需回复不想要的编号。基础油盐调味料不进入预选；低频调味料单独列为可选项。脚本可以有更多内部候选，但用户可见列表必须精简。
+
+> 食材预选属于固定工作流步骤，**不计入"动态追问最多一轮"**；动态追问只指必填项缺失后的补问。
+
+### 删除后的处理（最低可行性）
+
+- 删除后仍可满足营养、菜谱、包装和多样性要求时，直接删除，不强制补位。
+- 某类别低于最低数量时，只推荐 1 至 3 个同功能替代品。
+- 用户删除全部鱼类时，不劝其必须吃鱼，也不自动推荐补充剂。
+- 用户删除全部主要蛋白质且无法满足蛋白质下限时，停止生成"达标菜单"，只补问一个关键问题。
+- 任何被用户删除的食材及其别名不得通过辅料、平替或菜谱变体重新进入本周菜单。
+
+## 食堂/外食午餐（可执行模板，统一配置）
+
+- 工作日食堂午餐**不再只写"食堂（自选）"**：使用完整点餐结构"荤菜半份 + 素菜 2 份 + 米饭半碗 + 清汤"，并显示外食区间估算（净碳水/蛋白质/脂肪）与"大致区间，不保证精确"。
+- 模板与营养估算统一从 `data/cafeteria-meal-templates.json` 读取；菜单规划、营养校验、HTML/PDF 共用同一模板对象；渲染器只显示，不拼接营养数字；调整口径只改该文件。每个模板带 `template_id` / `version` / `estimate_basis` / `confidence` 字段，版本变更走 CHANGELOG。
+- 荤菜内部优先顺序（鱼/蛋/豆腐/瘦肉）只作点餐引导，不替代份量模板；用户说明食堂实际条件（无清汤/只能整份/主食不同）时按实际覆盖模板。
+- 外食营养为低置信度区间估算：纳入当天完整营养合计（不得只显示"自炊部分 + 食堂"）；有 low 置信度餐次时当天标"预计接近目标"，不得标"精确达标"；碳水/蛋白超限判断基于含食堂估算的全天数据；不得把固定克数伪装成现场称重。
+
+## 食材预选闭环（accepted_batch 不得静默消失）
+
+- **预选语义三档**：`explicitly_wanted`（用户点名想吃，高优先级，除安全/医嘱/预算/客观不可执行外应尽量入选）> `accepted_batch`（用户对整组预选回复"都可以"，中高优先级，系统应优先覆盖）> `merely_allowed`（只是不忌口，普通优先级）。
+- **覆盖门禁**：accepted_batch 中未入选的食材必须逐项执行补偿搜索（查生产池含该食材的菜 → 优先匹配现有蛋/豆腐/汤/蒸制设备 → 优先替换同类蛋白重复度高的一顿 → 重算营养/包装/预算/多样性）→ 通过则替换入选；不通过则记录真实 reason_code（标准码见 output-schema），并给出是否存在一键替换方案。
+- **点名食材可见原因**：explicitly_wanted（用户点名想吃）最终未入选时，必须在交付文件"执行提示"中写明该食材名称和具体原因（如"蛤蜊：本周预算上限内无法同时容纳牛肉与水产两类高价蛋白，已记入下周候选"），不得只在内部日志记录、让用户以为被遗漏。
+- **追溯**：每项预选后未使用的食材写入 `ingredient_selection_result`（内部 selection report）；用户点名食材未入选必须解释；原因只能来自 ranker 日志。
+- **采购联动**：最终菜单未使用的食材不进采购表数据行，只在"执行提示"一行说明去向；用户接受替换后重新汇总采购。
+
+## 家庭模式（plan_mode ≠ solo，round40 新增）
+
+- **数据契约**：`schemas/household/`（shared-definitions / household-base-plan / household-overrides / household-effective-plan + bundle 全解析版）。三层文件边界：base_plan 冻结不修改；overrides 独立校验、不写回 base；effective_plan 仅为运行时合并结果、不作为下次生成输入。跨引用一致性由 `scripts/household_reference_validator.py` 执行。
+- **信息采集**：关键八项之外，家庭模式只追加**一轮合并问卷**（成员清单 / 各成员限制 / 共同餐次 / 默认共锅策略 / 份量精度），不逐成员反复追问。
+- **计算节奏（性能硬约束）**：菜谱检索与共锅装配只运行一次；成员营养目标批量计算；份量一次性求解；全局微调最多两轮；缺席变化只合并 patch 并局部重算，**缺席触发整周重建记 audit warning 并回滚，不判 fatal**。
+- **安全冲突**：成员间存在过敏/医嘱冲突时 plan_mode 直接进 `split_safety_required`， seasoning L3 必须配 cooking_gate_override 且 gate 满足 same_pot_allowed=false 或 separate_cookware_required=true。
+- **包装消耗优先级（round45）**：选包装规格时按 ①本周能消耗的小包装 → ②散装称重 → ③较大包装但本周安排两餐 → ④无法消耗才续存下周（必须写明去向与下周优先安排）；剩余超过包装一半的应在平替中优先复核小包装或散装。
+- **米类生熟口径（round45 硬校验）**：菜单米饭按熟重（cooked）呈现，采购汇总必须换算为生米（raw）口径，并双行标注"生米约 Xg（对应熟米饭约 Yg）"；禁止以熟饭重充当生米/库存米重量。
+- **渲染容量**：家庭摘要页最多并排展示 3 名成员；成员总数可大于 3，超出部分进入成员附页，不为卡页数降低字号；超过正式支持的 max_members 时生成前返回 user_input_required 或换输出格式，不在渲染阶段静默截断（布局硬约束见 household_layout_gate）。
+
+## 一人食模式（家庭人数=1 且每日自炊 ≤2 餐时自动启用）
+
+**核心目标**：少买、吃完、少洗锅、食材跨餐复用——不是把四人份菜谱缩小。
+
+**执行顺序**：①食材种类按自炊餐次降低；②正餐优先一锅出；③每种新购易腐食材至少安排 2 顿；④先按包装规格规划再生成采购量；⑤新鲜水产优先单次购买现买现吃；⑥不为多样性采购只用一次的配菜；⑦每周 1 次清库存餐。
+
+**食材数量分层**（调味料与库存不计）：
+
+| 自炊情况 | 全周核心食材 | 新鲜易腐蔬菜 |
+|---|---|---|
+| 仅做晚餐 / 每日 1 餐 | 12 至 16 种 | 4 至 6 种 |
+| 每日 2 餐 | 16 至 22 种 | 6 至 8 种 |
+| 多人共餐 / 每日 3 餐 | 22 至 30 种 | 不限 |
+
+**食材复用（反向约束）**：新购绿叶菜/菌菇/豆制品/鲜肉/切开的瓜果至少安排 2 顿；单次少量且剩余无法保存的食材不进采购清单；同一核心食材一周 2 至 3 次靠调味烹法变化；现买单份水产、小包装酸奶、鸡蛋可只出现 1 次。
+
+**包装规格适配（先于采购量）**：采购量必须同时记录——菜单实际需求量 / 常见可购买规格 / 预计剩余量 / 剩余去向或储存方式。余量无法在安全储存期内消耗时，改小包装、冷冻品或等价食材。
+
+**烹饪约束**：正餐一锅出（蛋白质+蔬菜+可选主食一口锅）；工作日烹饪+洗涮 20 至 30 分钟；一周 3 至 4 种做法即可；晚餐可做 2 份次日便当复用（采购只计一次）。
+
+**一人食正餐结构白名单（硬规则）**：一餐只允许以下四种结构——① `true_one_pot`（一口锅完成全部，如焖饭/汤锅/烩菜）；② `synchronized_one_cooker`（同一厨具一次程序完成，如电饭煲上蒸下煮、蒸锅同屉组合）；③ `one_hot_dish_plus_ready_staple`（一个热菜 + 即食/免煮主食，如全麦面包、即食玉米）；④ `one_hot_dish_plus_no_cook_side`（一个热菜 + 免煮配菜，如酸奶、生菜沙拉、小番茄）。**拒绝结构**：`two_independent_hot_dishes`（两个独立热菜）、`two_dishes_one_soup`（两菜一汤）、`multi_pan`（多锅并行）——一人食正餐不得出现，唯一例外是用户明确要求多做几道菜。accepted_batch 食材若因结构限制无法入选，必须先尝试换成符合白名单的一锅出做法，仍不行才记录 reason_code（不得静默丢弃）。脚本实现：`scripts/recipe_ranker.py` 的 `apply_one_pot_rule`（ONE_POT_ALLOWED_STRUCTURES / ONE_POT_DENIED_STRUCTURES）。
+
+**一锅出五模板**：①平底锅全餐 ②汤菜同煮 ③电饭煲焖（平衡激素日加谷物薯类）④蒸锅组合 ⑤烩菜小炖锅（一份当晚一份便当）。详见 `references/recipe-pool.md` 一锅出专区。
+
+**清库存餐（每周 1 次）**：通用（杂蔬鸡蛋锅/剩余菌菇豆腐汤/清库存焖饭）；酮生物（杂蔬豆腐蛋锅等）；平衡激素（杂粮杂蔬焖饭等）。
+
+## 中医食养（食谱修饰器，不进入生成链路）
+
+先生成营养与采购可行的菜谱，再按偏好调整烹法/温度/味型。**用户可见仅五项**：当季食材 / 温度偏好（生冷或温热）/ 清淡或重口 / 汤羹或快炒 / 用餐时间。只吸收生活化原则：五味不过偏、顺时令、多熟食、有汤羹、规律进食、少厚味。
+
+**不做**：六经辨证、经方方剂、针灸、药材剂量、体质诊断标签、五脏疾病推断、由单一表现判断寒热虚实；不输出"你属于某体质"；计划正文不出现排泄类描述。九分法风格速查见 `references/tcm-food-style.md`。
+
+可选模块（默认只开"当地时令食材"与月相品牌条）：五运六气（`scripts/wuyun_liuqi.py`）、中医功法（`references/tcm-exercise.md`）、茶饮轮换——用户主动勾选才启用；五运六气启用时按岁运/主气/客气调食材（如湿土主令加薏米冬瓜）。
+
+## 采购输出（详见 workflows/procurement-flow.md）
+
+**保留**：所在城市；每周预算；所在地公开市场参考价格；菜单实际需求量；建议购买规格；平替和剩余去向。线上买菜平台接入与订单拆分的历史逻辑已删除。
+
+- **采购清单（默认输出）**：每种食材输出 食材 / 常用购买名称 / 建议购买量 / 常见购买规格 / 参考价 / 平替 / 剩余去向；用户可见表格只显示这些列，技术字段（price_confidence/price_type/budget_included/price_basis/归一化过程）只在内部日志。不承诺即时库存与即时价格。
+- **价格三层口径（`price_basis`，每条价格必须归入一层）**：① `direct_public_price`——所在地公开渠道直接价格（菜场公示/商超挂牌/政府监测），显示为 ¥X 或 ¥X–Y；② `category_estimate`——`data/price-estimates.json` 所在地同类行情估算（按品类区间取值），显示为 约¥X 或 约¥X–Y；③ `historical_estimate`——历史成交/往期计划价格外推，同样显示"约"前缀。渲染器按 price_basis 自动补"约"前缀；无 price_basis 字段时按原样显示并记入内部日志。每条价格同时带 `price_confidence`(high/medium/low/unavailable)、`price_type`(point/range)、`budget_included`(true/false) 三个内部字段（不进用户可见表格）。
+- **每行必须有价格（硬门禁）**：high/medium 用来源价；low/unavailable 一律走 `data/price-estimates.json` 的所在地同类行情估算（按品类上限取值），在清单尾注统一标注"参考价为当地近期同类公开行情估算，非实时报价"。**交付清单中禁止出现"暂无参考价"、"实价为准"、"待定"等占位字样**；价格字段为空 = 渲染门禁失败。**价格完整性不等于允许编造价格**：每项价格必须来自直接公开价、可解释的当地同类估算或有日期的历史公开价；三者均不可用时，在 plan.json 冻结前将该食材替换为可合理定价的同功能食材，不得带病进入 plan.json。
+- **预算合计**：全部食材按**区间上限**累加（本周预计支出按购买包装数 × 单包装价格计算，不按菜单净需求量），清单顶部显示"本周预计支出约 ¥XXX（估算口径，实际以购买时为准）"，并与用户周预算对照说明结余。
+- **所在地公开市场价**：城市适配器 `references/cities/<城市>-price-sources.yaml`（现有南京样板），归一化 `scripts/market_price_normalizer.py`；政府部门名称、数据日期、单位、区间门禁、数据源数量和置信度只保存在内部日志，不进入用户版文件。
+- **采购清单必须逐项列出具体参考价或估算区间**（见上条硬门禁），并按购买规格给出本周预计支出合计；**不出现"以实际成交价为准""实价为准"一类推责字样**；估算口径在尾注统一说明，不逐行堆砌"估算"二字。
+- **缺货替换闭环**：平替按营养等价替换，替换后重算营养、包装、价格与多样性；细则见 procurement-flow.md。
+- **反向汇总**：菜单→汇总→扣库存→按包装规格取整；`scripts/shopping_aggregator.py`（`--csv-out` 明细、`--search-list` 搜索清单含价格列、`--meals-per-day` 一人食校验）。
+- **外部价格 Provider 路由（price_provider_priority）**：价格来源优先级为 ① `dingdong_web_direct`（叮咚网页实时直接公开价）→ ② `other_public_direct`（其他公开直接价）→ ③ `category_estimate` → ④ `historical_estimate`；任一食材取可用最高层，高层失败即降级、不阻塞计划。**前置门禁**：`dingdong_web_direct` 仅当本周选答 `dingdong_price_choice = use_helper`（叮咚查价选 A）时启用并生成查价清单——`dingdong_helper_opt_in` 为派生只读字段（`use_helper` ⇔ `yes`），不得直接写入，冲突时以 `dingdong_price_choice` 为准；未选择时跳过 ① 直接走 ② 及以下层级。`provider`（数据来源：dingdong_web / public_market_page / historical_cache / category_model）与 `price_basis`（证据等级）是两个字段，不得混写。**抓价时机**：只在最终菜单食材与需求克数冻结、反向汇总 new_purchase 需求之后调用 Provider；只对 `new_purchase_amount > 0` 的食材查询（库存食材、excluded 日期、guidance_only 餐次、用户已移除项、候选阶段食材一律不查）。Provider 状态枚举 success / partial / user_action_required / unavailable / invalid_result 映射进既有三类门禁，不扩大 fatal_reason 枚举：user_action_required 在用户明确要求实时叮咚价时 → user_input_required，否则允许降级；unavailable 与 invalid_result 不判 fatal（invalid_result 拒绝结果文件且不记 corrupted_plan_json）。direct_public_price 收紧条件、direct_public_price_limited 降级、活动价/会员价口径与 P01–P09 门禁见 `references/price-provider-policy.md`；执行组件为 `scripts/price_result_validator.py`（P01–P08 校验 + price_result_hash；P09 价格元数据一致性在价格合并与渲染侧执行）与 `scripts/price_provider_router.py`（状态映射与 price_basis 赋值，纯函数，不启动浏览器）。**两阶段流程状态（`price_workflow_state`，round55 定稿）**：disabled（未选"是"，不生成清单）→ query_ready（链路已启用，正式清单生成中——预选阶段只登记意愿，**无查价草稿**）→ awaiting_price_result（唯一正式清单已交付用户，流程暂停；**G12：禁止渲染任何最终产物**，拒绝渲染属正常等待、不判 fatal）→ price_result_received（结果通过 G13 根级校验与 P01–P08，必要时迁移器迁移并重新校验（价格合并写 price_snapshot_meta 时再经 P09 一致性校验））→ final_plan_ready（价格合并完成，可一次性渲染最终版）。**产物矩阵**：disabled=一次性出最终版；query_ready/awaiting_price_result=只交付「月食-查价清单.json」与操作指引，不得输出最终食谱/PDF/Word/采购表；price_result_received/final_plan_ready=一次性渲染全部最终产物，此后不再回退到 awaiting_price_result。**opt_out_after_query**：清单已生成但用户在回传前表示"不查了/直接出计划"，视为放弃查价——允许估价生成（按价格回退链降级，category_estimate 等），直接进入 final_plan_ready 一次性渲染，并必须在结果说明中注明估价口径（"已按用户要求跳过叮咚查价，价格为估算"）。**固定执行顺序分支（round56 防直落）**：反向汇总采购需求 → 生成采购数据 → 未启用叮咚查价：按价格三层完成采购清单并直接生成最终文件；启用叮咚查价：生成唯一正式查价清单 → 暂停 awaiting_price_result → 收到并通过 G13 校验的价格结果 → 更新价格、包装和预算 → 按目标格式执行差异化渲染（不得跳过暂停直落最终渲染）。
+
+## 断食窗口安排（闭合计算，写进每日表）
+
+1. 先确定本日禁食时长 `fasting_hours`（取值按周期阶段的 approved 协议参数与 L0/L1 安全分级，两者冲突时取更保守者——分级时长为 `skill_safety_policy` 参数，见 `references/safety-rules.md`）；
+2. 再确定最后一餐结束时间 `last_meal_end`；
+3. 下一次进食开始时间 = `last_meal_end + fasting_hours`；
+4. 当日可用进食窗口 = 24 − fasting_hours；
+5. 不为凑禁食时长把晚餐推迟到临睡前；
+6. **禁食和进食窗口相加必须等于 24 小时**；
+7. 跨午夜时必须正确显示次日日期；
+8. 夜班或倒班按个人主要睡眠周期平移，不默认使用自然日零点切割；
+9. 每日标注："进食 XX:XX 至 XX:XX · 禁食 XX 小时"。
+
+计算用 `macros_calculator.py` 的 `fasting_window()`（示例：20:00 结束 + 12/14/15/16h 禁食 → 次日 08:00/10:00/11:00/12:00；示例数值仅为函数行为演示，属于边界测试样例，不是生产参数）。
+- 禁食期首选水，黑咖啡/无糖茶适量；血糖药用户先咨询医生。
+
+## 功能医学行为规则（round70 五书 A 级，data/functional-medicine-rules.json）
+
+round70 五书精读（The Disease Delusion / Good Energy / Why We Get Sick / Beat Autoimmune / Deep Nutrition）的 A 级 84 条已结构化入 `data/functional-medicine-rules.json`（round70.1），使用口径如下：
+
+- **提示选择**：执行提示中的功能医学部分只从 `auto_tip=true` 规则中选择，每份计划至多 2 条（tip_key 去重，同一行为建议由多本书印证时只取一条），总条数仍受 output-policy 执行提示上限约束；选择器 `scripts/functional_medicine_rules.py`（`--mode` / `--context` / `--limit`）。
+- **自动与不自动**：进食顺序、餐后步行、每餐五组件、发酵食品、十字花科、小型鱼、低温烹饪、睡眠与日常活动等行为与食物层面规则可自动提示；**协议类**（消除-回添 30 天、2 周排除-复引）、**安全转介**（自免/桥本、备孕、哺乳）、**监测建议**（腰围/腰高比、空腹胰岛素、体检加测）与**认知纠偏**一律不自动执行——用户主动发起时按原书口径介绍，并先过安全路由（`references/safety-rules.md`）。
+- **数值边界**：规则说明中的阈值、克数、时长、检验切点均为原书观点（`numeric_policy=reference_only`），不写入 `data/effective-parameters.json`、不进入计划计算；模式配额、蛋白目标与断食时长仍以批准参数与断食窗口安排为唯一生产来源。
+- **红线**：不设极低热量减重方案（FM-WW-11）；不承诺逆转疾病；不主动推荐补充剂。
+
+## 生成约束（逐条核对）
+
+1. 净碳水/蛋白/脂肪逐日达标：按 `references/foods-table.md` 每 100g 数值计算克数，凑整数克重。
+2. 烹饪时间分层：快手 ≤15min / 常规 15 至 30min / 慢炖 >30min（周末或预约）；上班族工作日每餐 ≤20min。
+3. 采购便利性：城市常见易购食材优先；偏远给替代品（三文鱼→鲭鱼/带鱼）。
+4. 预算层级不写死固定金额：根据用户填写的周预算、城市参考价、购买包装和价格置信度，动态判断为预算紧张、预算适中或预算宽松。仅在具体城市已有有效价格样本时才显示参考金额区间。南京参考价格来源见 `references/cities/nanjing-price-sources.yaml`；预算区间由价格归一化脚本根据有效样本动态计算，核心规则不引用固定城市金额文件。
+5. 口味与忌口全部规避；菜系只定调味风格，食材以当地当季可购为准；正餐主蛋白重复规则统一为 D01（优先不重复；确需重复时同一主蛋白最多 2 次且烹法或主风味必须不同，见 workflows/planning-flow.md「D01–D07 多样性硬门禁」，不再使用笼统的"同一主食材一周 ≤3 次"）。每道主菜可附最多 2 个平替（`data/substitutions.json`），但：平替不得包含用户删除、长期不喜欢、过敏或医嘱排除的食材；优先从 `locked_basket`、现有库存或同功能替换组中选择；平替只是缺货时的替换选项，不自动进入采购清单；平替若超出 `locked_basket`，替换发生后必须重新计算营养、包装、价格与多样性。素食/清真启用蛋白替换。
+6. 中医与时令：按修饰器结论调味型温度；调味五味均衡以淡为主。
+7. 慢病用户：不自动执行排除饮食、不生成补充剂剂量；仅在医嘱范围内做菜单与备餐适配。
+8. **聚餐例外**：当天其他餐次清淡正常量，不预先挨饿、不事后补偿；次日恢复原计划。

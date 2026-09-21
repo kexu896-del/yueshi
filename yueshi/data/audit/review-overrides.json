@@ -1,0 +1,48 @@
+{
+ "schema_version": "1.0.0",
+ "build_id": "2026-09-15-r63",
+ "policy": "人工覆写单独记录（round64 §11.2）：不覆盖原始自动判断，保留修改前后值与原因；下次分类器评估时统计同类错误；覆写数据不得直接作为未经区分的训练真值。",
+ "overrides": [
+  {
+   "name": "Red Lentil Soup with North African Spices",
+   "previous_value": "poultry",
+   "approved_value": "soy",
+   "reason_code": "dominant_ingredient_misclassified",
+   "note": "扁豆为主料，poultry 来自配料高汤带入；主蛋白应为 soy",
+   "reviewer": "maintainer-review-2026-09-15",
+   "reviewed_at": "2026-09-15T09:37:13",
+   "status": "applied_pending_rule_fix",
+   "recipe_id": "tcop-029",
+   "field_name": "primary_protein_family",
+   "source_recipe_hash": "sha256:d5a7ca8c0cf4e317c427285dcf84835fdc98818230b887c9fada1af0f48abdb2",
+   "taxonomy_bundle_hash": "sha256:a6049d126fcc7396198b142adb4932cf5c6d9174a72c937df61d6b11514344e8",
+   "ingredient_catalog_hash": "sha256:3ac5f07c04b18d14bdf4ebe0b5a7db0d693de6a1559f6fe7cbdc062cb6a2be67",
+   "restored_note": "绑定哈希与当前一致（净变化为零），自动解除 stale",
+   "stale_reason": "source/taxonomy/catalog hash 已变化，须重新审核"
+  },
+  {
+   "name": "BÁNH KẸP TRÀ XANH ĐÀO CHANH DÂY",
+   "previous_value": "soup",
+   "approved_value": "dessert",
+   "reason_code": "name_language_not_covered",
+   "note": "越南语 bánh kẹp = 糕点/糖果，应判 dessert；越语甜点关键词待补",
+   "reviewer": "maintainer-review-2026-09-15",
+   "reviewed_at": "2026-09-15T09:37:13",
+   "status": "applied_pending_rule_fix",
+   "recipe_id": "uyenluu-067",
+   "field_name": "dish_category",
+   "source_recipe_hash": "sha256:c16b12177c5a6a89e152b8911d1869492814b63c816a62ccae08df5acd02b000",
+   "taxonomy_bundle_hash": "sha256:a6049d126fcc7396198b142adb4932cf5c6d9174a72c937df61d6b11514344e8",
+   "ingredient_catalog_hash": "sha256:3ac5f07c04b18d14bdf4ebe0b5a7db0d693de6a1559f6fe7cbdc062cb6a2be67",
+   "restored_note": "绑定哈希与当前一致（净变化为零），自动解除 stale",
+   "stale_reason": "source/taxonomy/catalog hash 已变化，须重新审核"
+  }
+ ],
+ "status_enum": [
+  "applied_pending_rule_fix",
+  "resolved_in_classifier",
+  "rejected",
+  "review_required"
+ ],
+ "stale_policy": "原菜谱内容/taxonomy bundle/食材目录/分类规则任一变化即自动标记 stale 并重新审核；review_required 或 stale 阻断 release。"
+}

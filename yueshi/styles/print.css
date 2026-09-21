@@ -1,0 +1,193 @@
+/* 月食 打印/PDF 独立样式（硬约束） */
+
+/* ===== 首页 cover：方案A 浅暖灰背景 + 深墨色标题 + 深金月相 ===== */
+.cover-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 220px;
+  padding: 32px 36px 28px;
+  background: #EAE4D9 !important;
+  border: 1.5px solid #9B8C72;
+  border-radius: 16px;
+  color: #111111;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.cover-kicker, .cover-title, .cover-subtitle, .cover-meta, .cover-stat-value {
+  position: relative;
+  z-index: 3;
+  color: #111111 !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+.cover-date-range {
+  position: relative;
+  z-index: 3;
+  color: #7A5A12 !important;   /* 深棕金，禁止浅奶油色 */
+  opacity: 1 !important;
+  font-weight: 700;
+  text-shadow: none !important;
+}
+.moon-orbit, .moon-phase-row { position: relative; z-index: 2; opacity: 1 !important; }
+.moon-phase {
+  fill: #C18D17 !important;    /* 深金填充 */
+  stroke: #65490E !important;  /* 深棕描边，最浅月相也可见 */
+  stroke-width: 1.2px;
+}
+.moon-orbit-line { stroke: #80662C !important; opacity: 0.8 !important; }
+
+/* 备选方案B（深色标题带）：使用 .cover-header-band 时启用
+.cover-header-band { background:#263A33 !important; color:#FFFFFF !important; padding:28px 34px 24px; border-radius:14px 14px 0 0; }
+.cover-header-band .cover-title, .cover-header-band .cover-kicker, .cover-header-band .cover-subtitle { color:#FFFFFF !important; }
+.cover-header-band .cover-date-range { color:#F0C85C !important; }
+.cover-header-band .moon-phase { fill:#F0C85C !important; stroke:#FFFFFF !important; }
+*/
+
+/* 禁止的视觉组合：纯白底+浅奶油大日期、无描边浅黄月相、低 opacity 融入背景 */
+
+/* ===== 标题区域（兼容旧类名） ===== */
+.plan-title, .plan-title h1, .plan-title .date-range, .plan-title .subtitle {
+  color: #111111 !important; opacity: 1 !important; text-shadow: none !important;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.plan-title-content { position: relative; z-index: 2; color: #111111 !important; }
+
+/* ===== 采购清单：固定横向表格，禁止单字竖排 ===== */
+/* round54：7 列（食材/需要量/规格/参考价/替代/购买备注/剩余去向）；
+   食材列 22–25% 防叠字；行高不固定，内容自动撑高；跨页重复表头。 */
+.shopping-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.shopping-table td { padding: 7px 8px; vertical-align: top; word-break: normal; overflow-wrap: break-word; line-height: 1.45; }
+/* round58：长食材名允许换行（优先 overflow-wrap:anywhere，不用 break-all 防中英文品牌名过度逐字拆分） */
+.shopping-table .ingredient-name { white-space: normal; overflow-wrap: anywhere; word-break: break-word; }
+/* 叮咚商品名第二行：小 1pt（不低于正文下限）、浅灰、允许按词段换行 */
+.shopping-table .provider-product-name { display: block; white-space: normal; word-break: normal; overflow-wrap: break-word; font-size: 9.5pt; line-height: 1.4; color: #8a8577; margin-top: 2px; }
+.shopping-table thead { display: table-header-group; }  /* 跨页重复表头 */
+.shopping-table tr { break-inside: avoid; page-break-inside: avoid; }  /* round58：整行不跨页（页面剩余空间不足时整行移到下一页）；行高不固定，内容自动撑高 */
+.shopping-category { break-after: avoid; page-break-after: avoid; }  /* 分类标题与后续首行绑定，不孤立在页尾 */
+/* 禁止：word-break: break-all；writing-mode: vertical-rl；食材名列 width:1em/max-width:2em */
+
+/* ===== 分页修复：免责声明与页脚不独占页 ===== */
+.disclaimer { break-before: auto; page-break-before: auto; break-inside: auto; page-break-inside: auto; margin-top: 14px; padding-top: 8px; }
+.document-footer { break-before: auto; page-break-before: auto; }
+.page-section:last-child { break-after: auto; page-break-after: auto; }
+.empty-section, .page-break:last-child { display: none !important; }
+/* 禁止：免责声明包成独立 section.page；末尾空 section；100vh 固定高度；不必要的 margin-top:auto */
+
+/* ===== 午餐时间与状态分行 ===== */
+.meal-time, .meal-status { position: static; display: block; }
+.meal-time { white-space: nowrap; min-width: 4.8em; font-variant-numeric: tabular-nums; }
+.meal-status { white-space: normal; overflow-wrap: anywhere; line-height: 1.4; }
+
+@media print {
+  .daily-meal-grid { display: grid; grid-template-columns: 4.8em minmax(0,1fr); column-gap: 10px; }
+}
+
+/* ===== round24 打印端同步：奶油底/紫绿/黑标题/月相轨道 ===== */
+@page { background: #faf8f0; }
+body { background: #faf8f0; color: #5a564a; }
+.cover-hero { background: #f5f1e6 !important; border: 1px solid #e5e2d4; }
+.cover-title, .cover-date-range, .cover-subtitle, .plan-title, .plan-title h1 { color: #111111 !important; }
+.cover-kicker { color: #6f5a96; }
+.cover-stat { background: #ffffff; border: 1px solid #e5e2d4; }
+.cover-stat:nth-child(odd) { border-top: 3px solid #a08ac9; }
+.cover-stat:nth-child(even) { border-top: 3px solid #7fa283; }
+.moon-track { background: #2f2b23; }
+.moon-cell { color: #fff8df; }
+.page-section > h2::before { color: #a08ac9; }
+.day-card { border-top: 3px solid #7fa283; }
+.day-total { background: #eef3ec; border-left: 4px solid #4f7358; }
+.day-advice { background: #f1ecf7; border-left: 3px solid #a08ac9; }
+#shop { background: #fcfaf5; }
+/* 打印节墨：月相仅保留轮廓以外的结构（SVG 面积小，保留） */
+
+/* ===== round25 打印端同步 ===== */
+.meal { display: grid; grid-template-columns: 60px 1fr auto; gap: 4px 12px; align-items: baseline; }
+.meal .grams { display: block; font-size: 11.5px; }
+.shopping-category td { background: #efe9d8; font-weight: 700; }
+.shopping-table { table-layout: fixed; }
+/* round54/55：7 列宽度（食材列 22% 容纳双行商品名；顺序：食材/需要量/规格/参考价/购买备注/替代/剩余去向） */
+.shopping-table th:nth-child(1), .shopping-table td:nth-child(1) { width: 22%; }
+.shopping-table th:nth-child(2), .shopping-table td:nth-child(2) { width: 9%; }
+.shopping-table th:nth-child(3), .shopping-table td:nth-child(3) { width: 14%; }
+.shopping-table th:nth-child(4), .shopping-table td:nth-child(4) { width: 10%; }
+.shopping-table th:nth-child(5), .shopping-table td:nth-child(5) { width: 13%; }
+.shopping-table th:nth-child(6), .shopping-table td:nth-child(6) { width: 12%; }
+.shopping-table th:nth-child(7), .shopping-table td:nth-child(7) { width: 20%; }
+#why { background: #fcfaf5; }
+#tips { background: #fcfaf5; }
+.moon-cell { color: rgba(255,255,255,.85); }
+
+/* ---- round26 打印 ---- */
+.prep-block, .wisdom-block { break-inside:avoid; }
+.verify-table th { background:#eef3ec !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+
+/* ---- round26 尾页压缩：免责声明不得独占一页 ---- */
+@media print {
+  .page-section { margin-top: 5mm; }
+  .day-card { padding: 10px 12px; margin-bottom: 8px; }
+  .recipe-steps { font-size: 8.4pt; line-height: 1.45; }
+  .wisdom-block { margin: 4px 0 6px; }
+  .prep-block { margin: 4px 0 6px; }
+  .disclaimer { font-size: 8.2pt; line-height: 1.4; margin-top: 8px; }
+}
+
+/* ---- round56 定稿：PDF 固定不输出用量映射表，无相关打印规则 ---- */
+
+/* ---- round28 打印 ---- */
+@media print {
+  .prep-block { overflow:hidden; page-break-inside:avoid; }
+  .shopping-table, .verify-table, .stage-table { table-layout:fixed; }
+}
+
+/* ---- round29 页数控制：紧凑打印（一周计划 ≤9 页） ---- */
+@media print {
+  .page-section { margin-top: 4mm; padding: 4mm 5mm; }
+  .day-card { padding: 8px 11px; margin-bottom: 6px; }
+  .meal { gap: 2px 12px; }
+  .recipe-steps { font-size: 8.2pt; line-height: 1.4; margin-top: 3px; }
+  .shopping-table td, .shopping-table th { padding: 5px 7px; }
+  .verify-table td, .verify-table th { padding: 4px 7px; }
+  .wisdom-para { margin-bottom: 6px; }
+  .tips-list li { margin-bottom: 1px; }
+}
+
+/* ---- round30：防孤行断页 ---- */
+@media print {
+  h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  thead { display: table-header-group; }
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  .shopping-category { break-after: avoid; page-break-after: avoid; }
+  .day-card h3 + .window { break-before: avoid; }
+}
+@media print {
+  .day-card h3 { break-after: avoid; page-break-after: avoid; }
+  .day-card .window { break-after: avoid; page-break-after: avoid; break-before: avoid; }
+  .day-card .meal:first-of-type { break-before: avoid; page-break-before: avoid; }
+}
+@media print {
+  .day-card .window + .meal { break-before: avoid; page-break-before: avoid; }
+  .day-card .meal { break-inside: avoid; page-break-inside: avoid; }
+}
+
+/* ---- round33：食养节字体一致 / 建议贴卡 / 库存显示 ---- */
+@media print {
+  /* 食养之理与执行说明：自然段与项目符号同字号同行距，禁止列表继承默认小字号 */
+  #why { break-inside: avoid; page-break-inside: avoid; }
+  #why p, #why ul, #why li { font-size: 10.5pt; line-height: 1.6; color: #3F3D38; }
+  #why p { margin: 0 0 6px; }
+  #why ul { margin: 6px 0 0; padding-left: 1.4em; }
+  #why li { margin: 2px 0; }
+  /* 免责声明只允许比正文小 1–1.5pt */
+  .disclaimer { font-size: 9pt; line-height: 1.55; color: #68645C; }
+  /* 当日建议必须与所属日卡同页，不得漂入下一章节上方 */
+  .day-advice { break-before: avoid; page-break-before: avoid; break-inside: avoid; page-break-inside: avoid; }
+}
+/* round54：用量映射表 已整体从 PDF 移除；打印端仅保留结构说明样式 */
+@media print {
+  .structure-note { display: block; font-size: 8.5pt; color: #68645C; }
+}
+
+/* ---- round34：食养节子区块标题（与正文同字号，只加粗） ---- */
+@media print {
+  .wisdom-subheading { font-size: 10.5pt; font-weight: 700; margin: 10px 0 4px; color: #3F3D38; }
+}

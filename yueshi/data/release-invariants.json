@@ -1,0 +1,38 @@
+{
+  "skill_version": "yueshi-1.4.3",
+  "build_id": "2026-09-17-r63",
+  "library_release": "approved",
+  "tests": {
+    "total": 42,
+    "passed": 42,
+    "failed": 0
+  },
+  "invariants": {
+    "questionnaire_exposes_internal_mode": false,
+    "mode_schedule_system_derived": true,
+    "mode_schedule_frozen_before_basket": true,
+    "ranker_requires_approved_release": true,
+    "artifact_hashes_verified": true,
+    "taxonomy_drift_detected": true,
+    "catalog_drift_detected": true,
+    "cross_category_cluster_count": 0,
+    "severe_misclassification_count": 0,
+    "unreviewed_override_count": 0,
+    "stale_override_count": 0
+  },
+  "hard_expectations": {
+    "questionnaire_exposes_internal_mode": false,
+    "mode_schedule_system_derived": true,
+    "mode_schedule_frozen_before_basket": true,
+    "ranker_requires_approved_release": true,
+    "artifact_hashes_verified": true,
+    "taxonomy_drift_detected": true,
+    "catalog_drift_detected": true,
+    "cross_category_cluster_count": 0,
+    "severe_misclassification_count": 0,
+    "unreviewed_override_count": 0,
+    "stale_override_count": 0
+  },
+  "generated_by": "scripts/release_pack.py",
+  "note": "机器判断依据仅本 JSON；reports/release-summary.md 为展示摘要，不作门禁输入。"
+}

@@ -1,0 +1,347 @@
+{
+ "说明": "全局商品形态与加工状态词典（主库，通用食材名称库与候选匹配改进方案 §四）。叮咚查价助手在构建时导出为内置快照（src/config.py FORM_KEYWORDS），两侧版本必须一致；主库更新需人工审核并提升 form_dictionary_version。",
+ "form_dictionary_version": "1.4.0",
+ "negation_prefixes": [
+  "免",
+  "无",
+  "不含",
+  "未",
+  "去"
+ ],
+ "forms": {
+  "diced": {
+   "keywords": [
+    "丁"
+   ],
+   "restrictive": true,
+   "说明": "只有菜谱允许丁状时通过"
+  },
+  "shredded": {
+   "keywords": [
+    "丝"
+   ],
+   "restrictive": true,
+   "说明": "受菜谱形态约束"
+  },
+  "sliced": {
+   "keywords": [
+    "片"
+   ],
+   "restrictive": true,
+   "说明": "受菜谱形态约束"
+  },
+  "minced": {
+   "keywords": [
+    "末",
+    "糜",
+    "泥"
+   ],
+   "restrictive": true,
+   "说明": "受菜谱形态约束"
+  },
+  "cut_pieces": {
+   "keywords": [
+    "切块",
+    "块"
+   ],
+   "restrictive": true,
+   "说明": "不得自动等同整腿/整件；「整块」归 whole"
+  },
+  "filled": {
+   "keywords": [
+    "馅"
+   ],
+   "restrictive": true,
+   "说明": "通常不是原始整食材"
+  },
+  "ball": {
+   "keywords": [
+    "丸"
+   ],
+   "restrictive": true,
+   "说明": "通常不是原始整食材"
+  },
+  "patty": {
+   "keywords": [
+    "排"
+   ],
+   "restrictive": true,
+   "说明": "通常不是原始整食材"
+  },
+  "pie": {
+   "keywords": [
+    "饼"
+   ],
+   "restrictive": true,
+   "说明": "通常不是原始整食材"
+  },
+  "roll": {
+   "keywords": [
+    "卷"
+   ],
+   "restrictive": true,
+   "说明": "通常不是原始整食材"
+  },
+  "marinated": {
+   "keywords": [
+    "腌制",
+    "奥尔良",
+    "黑椒",
+    "孜然",
+    "调味"
+   ],
+   "restrictive": true,
+   "说明": "加工状态；否定前缀（免腌/未调味）不误伤"
+  },
+  "cooked": {
+   "keywords": [
+    "熟食",
+    "即食",
+    "烤",
+    "炸",
+    "卤",
+    "预制",
+    "调理",
+    "半成品"
+   ],
+   "restrictive": true,
+   "说明": "加工状态；生鲜需求直接拒绝"
+  },
+  "whole_leg": {
+   "keywords": [
+    "琵琶腿",
+    "整腿",
+    "鸡大腿",
+    "鸡腿"
+   ],
+   "restrictive": false,
+   "说明": "整件腿部原料"
+  },
+  "drumstick": {
+   "keywords": [
+    "琵琶腿"
+   ],
+   "restrictive": false,
+   "说明": "琵琶腿"
+  },
+  "wing": {
+   "keywords": [
+    "翅"
+   ],
+   "restrictive": false,
+   "说明": "翅类部位"
+  },
+  "breast": {
+   "keywords": [
+    "胸"
+   ],
+   "restrictive": false,
+   "说明": "胸类部位"
+  },
+  "whole": {
+   "keywords": [
+    "整只",
+    "整条",
+    "整根",
+    "整块",
+    "整"
+   ],
+   "restrictive": false,
+   "说明": "整件原料"
+  },
+  "whole_leaf": {
+   "keywords": [
+    "整棵",
+    "整颗"
+   ],
+   "restrictive": false,
+   "说明": "整棵叶菜"
+  },
+  "fresh": {
+   "keywords": [
+    "冷鲜",
+    "冰鲜",
+    "鲜"
+   ],
+   "restrictive": false,
+   "说明": "保鲜状态，仅标注"
+  },
+  "frozen": {
+   "keywords": [
+    "冷冻",
+    "速冻"
+   ],
+   "restrictive": false,
+   "说明": "保鲜状态，仅标注"
+  },
+  "shell_egg": {
+   "keywords": [
+    "带壳",
+    "鲜鸡蛋",
+    "土鸡蛋",
+    "谷物蛋",
+    "柴鸡蛋",
+    "可生食鸡蛋"
+   ],
+   "restrictive": false
+  },
+  "pancake": {
+   "keywords": [
+    "软饼",
+    "煎饼",
+    "蛋饼",
+    "手抓饼",
+    "鸡蛋饼"
+   ],
+   "restrictive": true
+  },
+  "pastry": {
+   "keywords": [
+    "蛋糕",
+    "蛋酥",
+    "蛋黄酥",
+    "糕点"
+   ],
+   "restrictive": true
+  },
+  "cooked_egg": {
+   "keywords": [
+    "卤蛋",
+    "茶叶蛋",
+    "熟蛋",
+    "溏心蛋",
+    "温泉蛋"
+   ],
+   "restrictive": true
+  },
+  "salted_egg": {
+   "keywords": [
+    "咸蛋",
+    "咸鸭",
+    "皮蛋",
+    "松花蛋"
+   ],
+   "restrictive": true
+  },
+  "cured": {
+   "keywords": [
+    "腊",
+    "腊制",
+    "腌腊",
+    "风干"
+   ],
+   "restrictive": true,
+   "说明": "腊制/风干加工（round58 新增）：查询鲜鸡腿等生鲜食材时，腊鸡腿等腌腊制品不得替代"
+  },
+  "sashimi": {
+   "keywords": [
+    "刺身",
+    "生鱼片",
+    "生食"
+   ],
+   "restrictive": true,
+   "说明": "刺身/生食形态（round58 新增）：刺身不是默认熟食烹饪候选，查询三文鱼等熟食用途食材时不得替代"
+  },
+  "raw": {
+   "keywords": [
+    "生鲜",
+    "生",
+    "原料"
+   ],
+   "restrictive": false,
+   "说明": "生鲜原料状态"
+  },
+  "root_tuber": {
+   "keywords": [
+    "红薯",
+    "地瓜",
+    "番薯",
+    "蜜薯",
+    "紫薯",
+    "根茎"
+   ],
+   "restrictive": false,
+   "说明": "根茎类整食材"
+  },
+  "frozen_raw": {
+   "keywords": [
+    "冷冻",
+    "速冻",
+    "冻品"
+   ],
+   "restrictive": false,
+   "说明": "冷冻生鲜原料"
+  },
+  "leaf": {
+   "keywords": [
+    "叶",
+    "苗",
+    "尖"
+   ],
+   "restrictive": true,
+   "说明": "茎叶部位；根茎/果实需求直接拒绝"
+  },
+  "fried": {
+   "keywords": [
+    "炸",
+    "酥",
+    "脆"
+   ],
+   "restrictive": true,
+   "说明": "油炸加工；生鲜需求直接拒绝"
+  },
+  "breaded": {
+   "keywords": [
+    "裹粉",
+    "面包糠",
+    "小方",
+    "鸡米花"
+   ],
+   "restrictive": true,
+   "说明": "裹粉预制；生鲜需求直接拒绝"
+  },
+  "ready_to_eat": {
+   "keywords": [
+    "即食",
+    "开袋即食",
+    "熟食"
+   ],
+   "restrictive": true,
+   "说明": "即食制品"
+  },
+  "cooked_snack": {
+   "keywords": [
+    "甘梅",
+    "烤肠",
+    "零食",
+    "小吃"
+   ],
+   "restrictive": true,
+   "说明": "加工小吃；原料需求直接拒绝"
+  }
+ },
+ "规则": [
+  "否定前缀先处理：命中位置前两字符内带 免/无/不含/未/去 时不计命中（仅 marinated/cooked 等加工状态词）。",
+  "cut_pieces 的「块」前一字为「整」时归 whole，不归 cut_pieces。",
+  "restrictive=true 的形态：查询项设置 allowed_forms 时，识别出且不在允许清单内即拒绝（form_not_allowed）。",
+  "形态无法确认的候选可保留，但不参与 suggested_purchase 自动推荐。"
+ ],
+ "conditional_accept": {
+  "说明": "本体合格但附独立调味包：接受候选并生成 purchase_note；本体已调味仍走 marinated 门禁",
+  "attach_prefixes": [
+   "附",
+   "赠",
+   "含",
+   "送",
+   "配"
+  ],
+  "packs": [
+   "调味包",
+   "酱料包",
+   "料包",
+   "酱汁包",
+   "蘸料"
+  ],
+  "note_template": "附独立{pack}，可不用"
+ }
+}

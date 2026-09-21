@@ -1,0 +1,16 @@
+{
+  "taxonomy_version": "1.0.0",
+  "note": "菜系标签采用多字段带置信度结构（P2 工作流 D，本轮仅冻结结构，不批量打标）。",
+  "cuisine_structure": {
+    "region": "如 chinese_jiangnan；无可靠证据时 null",
+    "tradition": "如 home_cooking",
+    "influences": "多值数组，允许融合菜",
+    "confidence": "high/medium/low",
+    "evidence_type": "source_metadata/ingredient_pattern/review_required"
+  },
+  "cuisine_rules": [
+    "不得仅根据作者国籍或书名确定菜系",
+    "无可靠证据时标记待复核，不强行归类",
+    "菜系标签不得覆盖安全、库存和采购约束"
+  ]
+}

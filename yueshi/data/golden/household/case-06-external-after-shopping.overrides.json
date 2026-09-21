@@ -1,0 +1,14 @@
+{
+  "base_build_id": "golden-hh-06",
+  "override_batch_id": "ov-06",
+  "overrides": [
+    {
+      "override_id": "ov-06-1",
+      "date": "2026-09-01",
+      "meal_id": "d1",
+      "member_id": "m_a",
+      "status": "external_meal",
+      "known_at": "after_shopping"
+    }
+  ]
+}

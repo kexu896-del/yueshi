@@ -1,0 +1,544 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://yueshi.local/schemas/price-result.schema.json",
+  "title": "月食外部价格结果批次（price-result.json）",
+  "description": "契约版本 price_data_version = 1.2（round52：匹配质量/形态标注/替代提示/字典建议/主库版本回显，结果瘦身候选不再必填 observed_at 与 data_source）。与 yueshi-dingdong-helper v2.0 模型对应。 round59：根级与单项结果级对附加字段保持开放（additionalProperties 放开），助手新增未登记字段不被 G13 误拒，未登记字段透传、不进价格计算；definitions 内部仍严格。",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "request_id",
+    "provider",
+    "started_at",
+    "completed_at",
+    "results"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.2"
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provider": {
+      "const": "dingdong_web"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "observed_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "2026-09-18 新增：批次级观察时间（= 本次查询完成时间）。v2.0 结果瘦身允许候选省略 observed_at，P02 判定接受「候选级或批次级至少一个存在」；price_snapshot_meta.observed_at 优先取本字段，其次 completed_at。"
+    },
+    "provider_version": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "2026-09-18 新增：助手版本号，供 price_snapshot_meta.provider_version 透传。"
+    },
+    "login_confirmed_by_user": {
+      "type": "boolean",
+      "default": false
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/query_result"
+      }
+    },
+    "run_warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "delivery_context_confirmed_by_user": {
+      "type": "boolean",
+      "default": false,
+      "description": "v1.3 定稿：助手不读取/保存/验证具体收货地址；仅记录用户已在叮咚网页确认当前配送会话。"
+    },
+    "price_changes": {
+      "type": "array",
+      "description": "v1.7：同一 request_id 重复查询时与上次结果的价格差异（down/up/new/removed）；首次或无上次结果时为空数组。v2.0：每条带 change_reason（price_update/newly_observed/no_longer_in_top_candidates/filtered_by_rule/unavailable），removed 不再误表述为下架。",
+      "items": {
+        "type": "object"
+      }
+    },
+    "catalog_version": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "v2.0：回显 price-query 的食材主库版本，供月食核对本次任务口径。"
+    },
+    "form_dictionary_version": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "v2.0：回显形态词典版本。"
+    },
+    "migration_log": {
+      "type": "object",
+      "description": "兼容迁移日志（G13）：旧版结果迁移时由 price_result_migrator 写入；随构建记录保存，不进入用户 PDF",
+      "required": [
+        "source_schema_version",
+        "target_schema_version",
+        "fields_added",
+        "migrator_version",
+        "revalidation_passed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "source_schema_version": {
+          "type": "string"
+        },
+        "target_schema_version": {
+          "type": "string"
+        },
+        "fields_added": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "migrator_version": {
+          "type": "string"
+        },
+        "revalidation_passed": {
+          "type": "boolean"
+        },
+        "migrated_at": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "query_result": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "ingredient_id",
+        "query",
+        "status"
+      ],
+      "properties": {
+        "ingredient_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "query": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "success",
+            "no_match",
+            "search_empty",
+            "candidates_filtered",
+            "candidates_unpriced",
+            "candidates_unavailable",
+            "login_required",
+            "parse_failed"
+          ]
+        },
+        "candidates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/product_candidate"
+          },
+          "default": []
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "attempted_queries": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "matched_query": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "match_strategy": {
+          "enum": [
+            "primary",
+            "alias_tier",
+            "none",
+            null
+          ],
+          "default": null
+        },
+        "suggested_purchase": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/suggested_purchase"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "v1.7：满足 required_grams 的最低总价组合（单一 SKU 整份购买）；无 required_grams 或无可用候选时为 null。v2.0：建议须先过匹配质量与形态门禁（exact/alias 优先；category_fallback 仅在清单允许同类替代时）。"
+        },
+        "substitution_notice": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "v2.0：建议采用宽泛同类候选时的明示（如「同类青菜候选，非精确上海青」）。"
+        },
+        "dictionary_suggestions": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          },
+          "default": [],
+          "description": "v2.0：字典建议（new_alias/negation_exception 等）；助手只建议，不自动回写主库，需人工确认入库并提升 catalog_version。"
+        }
+      },
+      "description": "round59：对附加字段开放，未登记字段透传。"
+    },
+    "product_candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ingredient_id",
+        "query",
+        "product_name"
+      ],
+      "properties": {
+        "provider": {
+          "const": "dingdong_web",
+          "default": "dingdong_web"
+        },
+        "ingredient_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "query": {
+          "type": "string",
+          "minLength": 1
+        },
+        "product_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "product_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "package_text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reference_grams": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "reference_milliliters": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "package_count": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "listed_price_yuan": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "regular_price_yuan": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "promotion_price_yuan": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "member_price_yuan": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "price_type": {
+          "enum": [
+            "regular",
+            "promotion",
+            "member",
+            "unknown"
+          ],
+          "default": "unknown"
+        },
+        "availability": {
+          "enum": [
+            "available",
+            "sold_out",
+            "unknown"
+          ],
+          "default": "unknown"
+        },
+        "product_url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "v2.0 结果瘦身：候选可省略抓取时间，统一使用批次 completed_at。"
+        },
+        "data_source": {
+          "enum": [
+            "network_response",
+            "page_dom"
+          ],
+          "default": "network_response",
+          "description": "v2.0 结果瘦身：缺省即接口响应来源，可省略。"
+        },
+        "parse_warnings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "matched_query": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "eligible_for_purchase": {
+          "type": "boolean",
+          "default": false
+        },
+        "unit_price_yuan_per_100g": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "v1.7：listed_price_yuan / reference_grams * 100；克重或价格不可确认时为 null。"
+        },
+        "count_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "v1.9：枚数/件数原文（如「15枚」）；无则为 null。"
+        },
+        "match_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "v1.9：相关性命中依据（如 term:青菜），供类别审计。"
+        },
+        "match_quality": {
+          "enum": [
+            "exact",
+            "alias",
+            "category_fallback",
+            "low_confidence",
+            null
+          ],
+          "description": "v2.0：匹配质量分层。exact=命中精确词；alias=命中审核别名；category_fallback=只命中宽泛上位词（不得冒充精确命中，进建议需清单允许同类替代）；low_confidence=无接口证据。"
+        },
+        "product_form": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "v2.0：形态词典识别出的形态/加工状态（多个以 | 连接，如 whole_leg|drumstick）；未识别为 null。"
+        },
+        "form_match": {
+          "enum": [
+            "exact",
+            "acceptable",
+            "rejected",
+            null
+          ],
+          "description": "v2.0：形态匹配结论。exact=正向满足 allowed_forms；acceptable=无形态冲突；rejected=形态冲突（不进正式候选）。"
+        },
+        "conditional_accept": {
+          "type": "boolean",
+          "description": "本体合格但附独立调味包，条件接受"
+        },
+        "purchase_note": {
+          "type": "string",
+          "description": "购买备注提示（如 附独立调味包，可不用）"
+        },
+        "candidate_decision": {
+          "enum": [
+            "accepted",
+            "rejected",
+            "review_required",
+            null
+          ],
+          "description": "round67：候选三态。accepted=必要条件有充分证据可进入包装与价格比较；rejected=存在明确冲突；review_required=证据不足不得自动采用。缺省（旧版助手）时由月食选择层按 eligible_for_purchase + 语义门禁保守判断。"
+        },
+        "evidence": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "round69：通用四维候选证据——identity（status/category/species/cut）、composition（single_ingredient/mixed_product/composite_food/prepared_dish/snack）、processing（ok/excluded/fried/seasoned/ready_to_eat）、attribute_evidence（no_added_sugar/whole_grain 等，含 evidence_level：title_claim 等）。"
+        },
+        "rejection_reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "round67：拒绝原因类别（species_conflict / snack_product / wrong_processing_state / composite_food / prepared_dish / non_food_product / category_conflict / requirement_not_verified / insufficient_identity_evidence）。维护原因类别，不维护具体商品全称。"
+        }
+      }
+    },
+    "suggested_purchase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "product_name",
+        "packages",
+        "total_grams",
+        "total_price_yuan"
+      ],
+      "properties": {
+        "product_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "product_name": {
+          "type": "string"
+        },
+        "packages": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "total_grams": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "total_price_yuan": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "unit_price_yuan_per_100g": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "total_count_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "v2.0：总枚数/件数原文（如「24枚」= 2 盒 × 12枚）；无枚数证据时为 null，不自行估算。"
+        },
+        "package_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "v2.0：单件包装原文（如「850g」），采购清单展示用。"
+        },
+        "match_quality": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "v2.0：建议商品的匹配质量；为 category_fallback 时单项必有 substitution_notice。"
+        },
+        "purchase_note": {
+          "type": "string",
+          "description": "条件接受提示，渲染进采购表购买备注列"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "canary_id": "keto_day_canary",
+  "说明": "酮生物模式端到端金丝雀：一份真实可执行的酮生物日菜单（数值由 foods-table 计算，禁止手填）。用于验证实际菜单满足净碳水上限、脂肪供能下限、热量安全线与蛋白基础需要。",
+  "mode": "keto",
+  "targets": {
+    "calories_safety_floor_kcal": 1559.5,
+    "net_carb_max_g": 50.0,
+    "fat_min_energy_pct": 60.0,
+    "protein_safety_floor_g": 70.0
+  },
+  "meals": [
+    {
+      "meal": "早餐",
+      "ingredients": [
+        {"food": "鸡蛋（全蛋）", "grams": 150},
+        {"food": "牛油果", "grams": 100},
+        {"food": "特级初榨橄榄油", "grams": 10},
+        {"food": "菠菜", "grams": 100}
+      ]
+    },
+    {
+      "meal": "午餐",
+      "ingredients": [
+        {"food": "三文鱼", "grams": 120},
+        {"food": "西兰花", "grams": 150},
+        {"food": "黄油", "grams": 15}
+      ]
+    },
+    {
+      "meal": "晚餐",
+      "ingredients": [
+        {"food": "猪五花（生）", "grams": 80},
+        {"food": "菠菜", "grams": 100},
+        {"food": "特级初榨橄榄油", "grams": 10}
+      ]
+    },
+    {
+      "meal": "加餐",
+      "ingredients": [
+        {"food": "核桃", "grams": 15},
+        {"food": "无糖希腊酸奶", "grams": 100}
+      ]
+    }
+  ]
+}

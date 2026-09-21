@@ -1,0 +1,3658 @@
+{
+  "title": "月食家庭版 schemas 合集（v0.3 RC2，bundled 全解析版）",
+  "description": "由 shared-definitions + base/overrides/effective 四个源文件内联生成；外部 $ref 已全部解析，可在无本地文件解析器的环境直接使用。",
+  "definitions": {
+    "plan_meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "build_id",
+        "plan_schema_version",
+        "rules_bundle_hash",
+        "skill_version",
+        "runtime_rules_version",
+        "nutrition_rules_version",
+        "output_policy_version",
+        "recipe_manifest_version",
+        "effective_parameters_version",
+        "price_data_version",
+        "generated_at"
+      ],
+      "properties": {
+        "build_id": {
+          "type": "string"
+        },
+        "plan_schema_version": {
+          "type": "string",
+          "const": "v0.3-rc2"
+        },
+        "rules_bundle_hash": {
+          "type": "string",
+          "description": "由脚本计算，模型只做版本字符串核对"
+        },
+        "skill_version": {
+          "type": "string"
+        },
+        "runtime_rules_version": {
+          "type": "string"
+        },
+        "nutrition_rules_version": {
+          "type": "string"
+        },
+        "output_policy_version": {
+          "type": "string"
+        },
+        "recipe_manifest_version": {
+          "type": "string"
+        },
+        "effective_parameters_version": {
+          "type": "string"
+        },
+        "price_data_version": {
+          "type": "string"
+        },
+        "generated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "quantity": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "营养/菜谱用量：用户显示读 display_value+display_unit；营养计算只读 canonical_grams；canonical_basis 为唯一口径标记（不再另设 weight_basis，避免同义字段漂移）",
+      "required": [
+        "display_value",
+        "display_unit",
+        "canonical_grams",
+        "canonical_basis"
+      ],
+      "properties": {
+        "display_value": {
+          "type": "number",
+          "minimum": 0
+        },
+        "display_unit": {
+          "type": "string",
+          "description": "g / ml / 枚 / 个 / 根 / 碗 等"
+        },
+        "canonical_grams": {
+          "type": "number",
+          "minimum": 0
+        },
+        "canonical_basis": {
+          "type": "string",
+          "enum": [
+            "raw",
+            "cooked",
+            "soaked",
+            "edible"
+          ]
+        }
+      }
+    },
+    "package_quantity": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "购物包装量（盒/袋/根），不复用营养 quantity，避免包装单位被强换可食部克数",
+      "required": [
+        "display_value",
+        "display_unit"
+      ],
+      "properties": {
+        "display_value": {
+          "type": "number",
+          "minimum": 0
+        },
+        "display_unit": {
+          "type": "string",
+          "description": "盒 / 袋 / 根 / 圈 等"
+        },
+        "reference_grams": {
+          "type": "number",
+          "minimum": 0,
+          "description": "包装标注重量，供采购核对"
+        }
+      }
+    },
+    "conversion": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "生/熟/水发换算依据。结果只落到 quantity.canonical_grams，此处不存第二个 canonical 值",
+      "required": [
+        "source_value",
+        "source_unit",
+        "source_basis",
+        "target_basis",
+        "rule_id"
+      ],
+      "properties": {
+        "source_value": {
+          "type": "number",
+          "minimum": 0
+        },
+        "source_unit": {
+          "type": "string"
+        },
+        "source_basis": {
+          "type": "string",
+          "enum": [
+            "raw",
+            "cooked",
+            "soaked",
+            "edible"
+          ]
+        },
+        "target_basis": {
+          "type": "string",
+          "enum": [
+            "raw",
+            "cooked",
+            "soaked",
+            "edible"
+          ]
+        },
+        "rule_id": {
+          "type": "string",
+          "description": "指向 data/unit-conversions.json，如 rice_raw_to_cooked_v1"
+        },
+        "factor": {
+          "type": "number",
+          "description": "审计用换算系数"
+        },
+        "rounding_policy": {
+          "type": "string",
+          "enum": [
+            "floor",
+            "round",
+            "ceil"
+          ]
+        }
+      }
+    },
+    "ingredient_amount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ingredient_id",
+        "quantity"
+      ],
+      "properties": {
+        "ingredient_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "quantity": {
+          "$ref": "#/definitions/quantity"
+        },
+        "conversion": {
+          "$ref": "#/definitions/conversion"
+        },
+        "is_separable": {
+          "type": "boolean",
+          "description": "是否可单独盛取（主食/肉块/完整蛋/牛奶等）"
+        }
+      }
+    },
+    "nutrition_target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "calories_kcal",
+        "net_carbs_g",
+        "protein_floor_g",
+        "protein_target_g"
+      ],
+      "properties": {
+        "calories_kcal": {
+          "type": "number",
+          "minimum": 0
+        },
+        "calories_min_kcal": {
+          "type": "number",
+          "minimum": 0
+        },
+        "calories_max_kcal": {
+          "type": "number",
+          "minimum": 0
+        },
+        "net_carbs_g": {
+          "type": "number",
+          "minimum": 0
+        },
+        "protein_floor_g": {
+          "type": "number",
+          "minimum": 0,
+          "description": "绝经/更年期减重人群不低于 1.1g/kg"
+        },
+        "protein_target_g": {
+          "type": "number",
+          "minimum": 0
+        },
+        "book_reference_g": {
+          "type": "number",
+          "minimum": 0
+        },
+        "medical_limit_g": {
+          "type": "number",
+          "minimum": 0
+        },
+        "fat_g": {
+          "type": "number",
+          "minimum": 0
+        },
+        "fat_energy_pct_min": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "member": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "member_id",
+        "display_label",
+        "precision_level",
+        "goal",
+        "restrictions",
+        "is_primary"
+      ],
+      "properties": {
+        "member_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "description": "primary 固定为发起请求的用户；全计划唯一"
+        },
+        "display_label": {
+          "type": "string",
+          "description": "减重份 / 健康调理份 / 儿童份"
+        },
+        "is_primary": {
+          "type": "boolean"
+        },
+        "precision_level": {
+          "type": "string",
+          "enum": [
+            "exact",
+            "portion_band"
+          ]
+        },
+        "goal": {
+          "type": "string",
+          "enum": [
+            "weight_loss",
+            "maintain",
+            "gain",
+            "health_conditioning"
+          ]
+        },
+        "restrictions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sex": {
+          "type": "string",
+          "enum": [
+            "f",
+            "m"
+          ]
+        },
+        "age_years": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 120
+        },
+        "height_cm": {
+          "type": "number",
+          "minimum": 50,
+          "maximum": 250
+        },
+        "weight_kg": {
+          "type": "number",
+          "minimum": 10,
+          "maximum": 400
+        },
+        "activity_factor": {
+          "type": "number",
+          "enum": [
+            1.2,
+            1.375,
+            1.55,
+            1.725
+          ]
+        },
+        "menopause_flag": {
+          "type": "boolean"
+        },
+        "portion_band": {
+          "type": "string",
+          "enum": [
+            "light",
+            "normal",
+            "heavy"
+          ]
+        },
+        "nutrition_target": {
+          "$ref": "#/definitions/nutrition_target"
+        },
+        "nutrition_confidence": {
+          "type": "string",
+          "enum": [
+            "high",
+            "medium",
+            "low"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "precision_level": {
+                "const": "exact"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "sex",
+              "age_years",
+              "height_cm",
+              "weight_kg",
+              "nutrition_target"
+            ]
+          }
+        }
+      ]
+    },
+    "portion_deviation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allowed",
+        "expected_range_pct",
+        "reason",
+        "affects_nutrition_confidence"
+      ],
+      "properties": {
+        "allowed": {
+          "type": "boolean"
+        },
+        "expected_range_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "reason": {
+          "type": "string"
+        },
+        "affects_nutrition_confidence": {
+          "type": "boolean"
+        }
+      }
+    },
+    "member_portion_block": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "member_id",
+        "items"
+      ],
+      "properties": {
+        "member_id": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/ingredient_amount"
+          }
+        },
+        "nutrition_confidence": {
+          "type": "string",
+          "enum": [
+            "high",
+            "medium",
+            "low"
+          ]
+        }
+      }
+    },
+    "portion_ratio_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "member_id",
+        "pct_min",
+        "pct_max"
+      ],
+      "properties": {
+        "member_id": {
+          "type": "string",
+          "description": "集合必须等于 participant_member_ids"
+        },
+        "pct_min": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "pct_max": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "selected_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "脚本生成的和为 100 的确定分配，渲染器不得临时猜比例；缺席重分配时由 override 合并器重新归一"
+        }
+      }
+    },
+    "seasoning_strategy": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "调味四级。默认 L0/L1；L2 仅炒/烩/焖类；L3 仅安全冲突且必须配 cooking_gate_override。简单原味餐可不填本字段或 level=not_applicable",
+      "required": [
+        "level"
+      ],
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": [
+            "L0_shared_base",
+            "L1_table_side",
+            "L2_finish_in_same_pot",
+            "L3_separate",
+            "not_applicable"
+          ]
+        },
+        "shared_base_profile": {
+          "type": "string",
+          "enum": [
+            "light",
+            "standard"
+          ]
+        },
+        "table_side_options": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "finish_in_same_pot": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "separate_reason": {
+          "type": "string"
+        },
+        "affects_member_nutrition": {
+          "type": "boolean"
+        },
+        "member_addition_nutrition": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "member_id",
+              "condiment",
+              "amount_g",
+              "calories_kcal"
+            ],
+            "properties": {
+              "member_id": {
+                "type": "string"
+              },
+              "condiment": {
+                "type": "string"
+              },
+              "amount_g": {
+                "type": "number",
+                "minimum": 0
+              },
+              "calories_kcal": {
+                "type": "number",
+                "minimum": 0
+              }
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "level": {
+                "not": {
+                  "const": "not_applicable"
+                }
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "shared_base_profile"
+            ]
+          }
+        }
+      ]
+    },
+    "cooking_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "same_pot_allowed",
+        "separate_before_seasoning",
+        "separate_cookware_required",
+        "cross_contact_risk",
+        "blocking_reasons"
+      ],
+      "properties": {
+        "same_pot_allowed": {
+          "type": "boolean"
+        },
+        "separate_before_seasoning": {
+          "type": "boolean"
+        },
+        "separate_cookware_required": {
+          "type": "boolean"
+        },
+        "blocking_reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cross_contact_risk": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "per_member_exceptions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "shared_meal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "meal_id",
+        "date",
+        "meal_type",
+        "title",
+        "household_ingredients",
+        "participant_member_ids",
+        "member_portions",
+        "portion_method"
+      ],
+      "properties": {
+        "meal_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]+$"
+        },
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "meal_type": {
+          "type": "string",
+          "enum": [
+            "breakfast",
+            "lunch",
+            "dinner",
+            "snack"
+          ]
+        },
+        "meal_plan_mode": {
+          "type": "string",
+          "enum": [
+            "planned",
+            "guidance_only",
+            "excluded"
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "structure_grade": {
+          "type": "string",
+          "enum": [
+            "high",
+            "medium",
+            "low",
+            "forbidden"
+          ]
+        },
+        "household_ingredients": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/ingredient_amount"
+          }
+        },
+        "participant_member_ids": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          },
+          "description": "本餐已分配份量的成员，集合必须等于 member_portions.member_id；not_participating 不得进入；uncertain 可以进入（份量为暂定）"
+        },
+        "attendance_plan": {
+          "type": "object",
+          "description": "计划期出席预期：expected=预计参加 / uncertain=暂不确定（份量计入采购，选菜优先可保存结构；确认后走 patch）/ not_participating=本就不参加（不得出现在 participant_member_ids 中）",
+          "additionalProperties": {
+            "type": "string",
+            "enum": [
+              "expected",
+              "uncertain",
+              "not_participating"
+            ]
+          }
+        },
+        "member_portions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/member_portion_block"
+          }
+        },
+        "portion_method": {
+          "type": "string",
+          "enum": [
+            "exact_split",
+            "component_split",
+            "ratio_split",
+            "equal_split",
+            "separate_before_seasoning",
+            "separate_cookware"
+          ]
+        },
+        "portion_note": {
+          "type": "string",
+          "description": "≤2 行；ratio_split 必须给出比例区间"
+        },
+        "portion_ratios": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/portion_ratio_entry"
+          },
+          "description": "多人比例结构：member_id 集合=participant_member_ids；Σmin≤100 且 Σmax≥100；selected_pct 由脚本生成且 Σ=100"
+        },
+        "portion_deviation": {
+          "$ref": "#/definitions/portion_deviation"
+        },
+        "seasoning_strategy": {
+          "description": "可选；简单原味餐省略或 level=not_applicable",
+          "$ref": "#/definitions/seasoning_strategy"
+        },
+        "cooking_gate_override": {
+          "description": "可选；无覆盖继承 household_default_cooking_gate",
+          "$ref": "#/definitions/cooking_gate"
+        },
+        "leftover_attribution": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "portion_method": {
+                "const": "ratio_split"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "portion_ratios",
+              "portion_deviation"
+            ]
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "seasoning_strategy"
+            ],
+            "properties": {
+              "seasoning_strategy": {
+                "type": "object",
+                "required": [
+                  "level"
+                ],
+                "properties": {
+                  "level": {
+                    "const": "L3_separate"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "cooking_gate_override"
+            ]
+          }
+        }
+      ]
+    },
+    "shopping_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ingredient_id",
+        "household_required_amount",
+        "recommended_package",
+        "price_basis"
+      ],
+      "properties": {
+        "ingredient_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "household_required_amount": {
+          "$ref": "#/definitions/quantity"
+        },
+        "inventory_used_amount": {
+          "$ref": "#/definitions/quantity"
+        },
+        "new_purchase_amount": {
+          "$ref": "#/definitions/quantity"
+        },
+        "recommended_package": {
+          "type": "string",
+          "description": "如 400g/盒 ×3"
+        },
+        "package_quantity": {
+          "$ref": "#/definitions/package_quantity"
+        },
+        "purchase_condition": {
+          "type": "string",
+          "description": "条件采购独立字段，禁止塞进食材名称"
+        },
+        "new_purchase_cost": {
+          "type": "number",
+          "minimum": 0
+        },
+        "inventory_reference_cost": {
+          "type": "number",
+          "minimum": 0,
+          "description": "显示为 库存（参考X元/规格）"
+        },
+        "total_reference_cost": {
+          "type": "number",
+          "minimum": 0
+        },
+        "price_basis": {
+          "type": "string",
+          "enum": [
+            "direct_public_price",
+            "category_estimate",
+            "historical_estimate"
+          ]
+        },
+        "price_source_note": {
+          "type": "string"
+        },
+        "substitutes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "leftover_destination": {
+          "type": "string"
+        },
+        "leftover_attribution": {
+          "type": "string"
+        },
+        "is_pantry": {
+          "type": "boolean"
+        }
+      }
+    },
+    "reuse_chain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "chain_id",
+        "source_meal_id",
+        "source_date",
+        "storage_action",
+        "reuse_meal_id",
+        "reuse_date",
+        "prep_instruction_date",
+        "safety_window_hours"
+      ],
+      "properties": {
+        "chain_id": {
+          "type": "string"
+        },
+        "source_meal_id": {
+          "type": "string"
+        },
+        "source_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "storage_action": {
+          "type": "string"
+        },
+        "reuse_meal_id": {
+          "type": "string"
+        },
+        "reuse_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "prep_instruction_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "safety_window_hours": {
+          "type": "number",
+          "minimum": 0
+        },
+        "advice_text": {
+          "type": "string",
+          "description": "仅由以上字段派生，禁止手写日期与星期"
+        }
+      }
+    },
+    "leftover_plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_meal_id",
+        "source_scope",
+        "leftover_quantity",
+        "amount_basis",
+        "destination",
+        "nutrition_transfer"
+      ],
+      "properties": {
+        "source_meal_id": {
+          "type": "string"
+        },
+        "source_scope": {
+          "type": "string",
+          "enum": [
+            "member",
+            "household"
+          ],
+          "description": "家庭公共损耗/整锅剩余用 household"
+        },
+        "source_member_id": {
+          "type": "string",
+          "description": "source_scope=member 时必填"
+        },
+        "leftover_quantity": {
+          "$ref": "#/definitions/quantity"
+        },
+        "amount_basis": {
+          "type": "string",
+          "enum": [
+            "one_member_portion",
+            "measured_weight",
+            "estimated_ratio"
+          ]
+        },
+        "destination": {
+          "type": "string",
+          "enum": [
+            "next_day_lunch",
+            "freeze",
+            "reassign_member",
+            "discard_if_unsafe"
+          ]
+        },
+        "assigned_member_id": {
+          "type": "string",
+          "description": "destination=reassign_member 时必填，其他 destination 禁止"
+        },
+        "storage_action": {
+          "type": "string"
+        },
+        "consume_by": {
+          "type": "string",
+          "format": "date"
+        },
+        "nutrition_transfer": {
+          "type": "boolean",
+          "description": "次日便当=true 转入次日对应成员；冷冻=false 入库不计本周摄入；external_meal 不产生 leftover"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "source_scope": {
+                "const": "member"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "source_member_id"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "source_member_id"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "destination": {
+                "const": "reassign_member"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "assigned_member_id"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "assigned_member_id"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "shopping_delta": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "缺席对采购的增量（direction+grams，不使用负克数）",
+      "required": [
+        "ingredient_id",
+        "direction",
+        "grams",
+        "destination"
+      ],
+      "properties": {
+        "ingredient_id": {
+          "type": "string"
+        },
+        "direction": {
+          "type": "string",
+          "enum": [
+            "reduce",
+            "add"
+          ]
+        },
+        "grams": {
+          "type": "number",
+          "minimum": 0
+        },
+        "destination": {
+          "type": "string",
+          "enum": [
+            "reduce_purchase",
+            "next_day_lunch",
+            "freeze",
+            "reassign_member"
+          ]
+        }
+      }
+    },
+    "attendance_override": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "缺席 patch 条目（只记录已发生/已确认变化；计划期不确定用 shared_meal.attendance_plan）。external_meal：该餐该成员份量不计家庭账、不产生 leftover、不触发 nutrition_transfer；仅 known_at=before_shopping 时允许 shopping_delta（且 destination 只能 reduce_purchase）。absent：按 known_at 要求 action（reduce_batch 或剩余去向）。present_confirmed：仅用于关闭 uncertain，不要求 action。",
+      "required": [
+        "override_id",
+        "date",
+        "meal_id",
+        "member_id",
+        "status",
+        "known_at"
+      ],
+      "properties": {
+        "override_id": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "meal_id": {
+          "type": "string"
+        },
+        "member_id": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "absent",
+            "external_meal",
+            "present_confirmed"
+          ]
+        },
+        "known_at": {
+          "type": "string",
+          "enum": [
+            "before_shopping",
+            "after_shopping",
+            "before_cooking",
+            "after_cooking"
+          ]
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "reduce_batch",
+            "keep_batch_for_leftover",
+            "freeze_portion",
+            "reassign_portion"
+          ]
+        },
+        "shopping_delta": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/shopping_delta"
+          }
+        },
+        "leftover_plan_id": {
+          "type": "string",
+          "description": "absent 且创建剩余时引用"
+        },
+        "note": {
+          "type": "string"
+        },
+        "merge_status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "applied",
+            "expired"
+          ]
+        },
+        "applied_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "absent"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "action"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "external_meal"
+              }
+            }
+          },
+          "then": {
+            "if": {
+              "properties": {
+                "known_at": {
+                  "const": "before_shopping"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "shopping_delta": {
+                  "items": {
+                    "properties": {
+                      "destination": {
+                        "const": "reduce_purchase"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "else": {
+              "not": {
+                "required": [
+                  "shopping_delta"
+                ]
+              }
+            },
+            "allOf": [
+              {
+                "not": {
+                  "required": [
+                    "action"
+                  ]
+                }
+              },
+              {
+                "not": {
+                  "required": [
+                    "leftover_plan_id"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "present_confirmed"
+              }
+            }
+          },
+          "then": {
+            "allOf": [
+              {
+                "not": {
+                  "required": [
+                    "action"
+                  ]
+                }
+              },
+              {
+                "not": {
+                  "required": [
+                    "shopping_delta"
+                  ]
+                }
+              },
+              {
+                "not": {
+                  "required": [
+                    "leftover_plan_id"
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "pending_attendance_resolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "计划期 uncertain 的悬置项：到期未确认时按 auto_resolve 处理（confirm_absent / keep_plan）",
+      "required": [
+        "resolution_id",
+        "meal_id",
+        "member_id",
+        "deadline",
+        "auto_resolve",
+        "status"
+      ],
+      "properties": {
+        "resolution_id": {
+          "type": "string"
+        },
+        "meal_id": {
+          "type": "string"
+        },
+        "member_id": {
+          "type": "string"
+        },
+        "deadline": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "auto_resolve": {
+          "type": "string",
+          "enum": [
+            "confirm_absent",
+            "keep_plan"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "open",
+            "resolved"
+          ]
+        }
+      }
+    },
+    "household_validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "校验结果；跨引用校验由 household_reference_validator.py 执行并回写，每个必需 check_id 恰好出现一次",
+      "required": [
+        "checks"
+      ],
+      "properties": {
+        "checks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "check_id",
+              "status"
+            ],
+            "properties": {
+              "check_id": {
+                "type": "string",
+                "enum": [
+                  "total_equals_portions_plus_loss",
+                  "member_nutrition_uses_member_portions",
+                  "purchase_matches_household_usage",
+                  "one_ingredient_per_shopping_row",
+                  "ratio_split_confidence_ok",
+                  "breakfast_portions_present",
+                  "portion_method_required",
+                  "reuse_dates_match_meals",
+                  "seasoning_strategy_resolved",
+                  "no_internal_terms_in_visible_text",
+                  "override_merge_consistent",
+                  "leftover_destination_resolved",
+                  "nutrition_transfer_consistent",
+                  "PRIMARY_COUNT_EQUALS_ONE",
+                  "MEMBER_ID_UNIQUE",
+                  "MEAL_PARTICIPANT_REFERENCE_VALID",
+                  "PORTION_MEMBER_REFERENCE_VALID",
+                  "OVERRIDE_MEMBER_REFERENCE_VALID",
+                  "LEFTOVER_MEMBER_REFERENCE_VALID",
+                  "CONDIMENT_MEMBER_REFERENCE_VALID",
+                  "PORTION_SET_EQUALS_PARTICIPANTS",
+                  "RATIO_SET_EQUALS_PARTICIPANTS",
+                  "RATIO_RANGE_COVERS_WHOLE",
+                  "SELECTED_PCT_SUM_EQUALS_100",
+                  "NOT_PARTICIPATING_EXCLUDED_FROM_PORTIONS",
+                  "CHECK_ID_COMPLETENESS"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "pass",
+                  "fail"
+                ]
+              },
+              "detail": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "ratio_split_confidence_rule": {
+          "type": "string",
+          "description": "单成员最大区间宽度 >10pp 不得 high；>20pp 不得 medium；Σmin≤100 且 Σmax≥100"
+        },
+        "absence_rebuild_rule": {
+          "type": "string",
+          "description": "缺席触发整周重建记 audit warning 并回滚局部重算，不判 fatal"
+        }
+      }
+    },
+    "household_layout_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "one_ingredient_per_shopping_row",
+        "shopping_row_height",
+        "ingredient_word_break",
+        "nutrition_member_block_count_max_pdf",
+        "portion_note_max_lines",
+        "visible_font_min_pt",
+        "no_fixed_row_height",
+        "disclaimer_separate"
+      ],
+      "properties": {
+        "one_ingredient_per_shopping_row": {
+          "type": "boolean",
+          "const": true
+        },
+        "shopping_row_height": {
+          "type": "string",
+          "const": "auto"
+        },
+        "ingredient_word_break": {
+          "type": "string",
+          "const": "keep_all"
+        },
+        "nutrition_member_block_count_max_pdf": {
+          "type": "number",
+          "const": 3
+        },
+        "portion_note_max_lines": {
+          "type": "number",
+          "const": 2
+        },
+        "visible_font_min_pt": {
+          "type": "number",
+          "const": 8.5
+        },
+        "no_fixed_row_height": {
+          "type": "boolean",
+          "const": true
+        },
+        "disclaimer_separate": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    }
+  },
+  "base_plan": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "household-base-plan.schema.json",
+    "title": "月食家庭版 base_plan 数据契约（v0.3 RC2）",
+    "description": "冻结的家庭计划（不修改）。校验对象只有 base 计划字段：出现 effective_meta、attendance_overrides 或 override 批次字段即校验失败。个人营养只读 member_portions；营养一律按 quantity.canonical_grams 计算。顶层与关键对象关闭 additionalProperties，旧字段与拼写错误直接报错。",
+    "definitions": {
+      "plan_meta": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "build_id",
+          "plan_schema_version",
+          "rules_bundle_hash",
+          "skill_version",
+          "runtime_rules_version",
+          "nutrition_rules_version",
+          "output_policy_version",
+          "recipe_manifest_version",
+          "effective_parameters_version",
+          "price_data_version",
+          "generated_at"
+        ],
+        "properties": {
+          "build_id": {
+            "type": "string"
+          },
+          "plan_schema_version": {
+            "type": "string",
+            "const": "v0.3-rc2"
+          },
+          "rules_bundle_hash": {
+            "type": "string",
+            "description": "由脚本计算，模型只做版本字符串核对"
+          },
+          "skill_version": {
+            "type": "string"
+          },
+          "runtime_rules_version": {
+            "type": "string"
+          },
+          "nutrition_rules_version": {
+            "type": "string"
+          },
+          "output_policy_version": {
+            "type": "string"
+          },
+          "recipe_manifest_version": {
+            "type": "string"
+          },
+          "effective_parameters_version": {
+            "type": "string"
+          },
+          "price_data_version": {
+            "type": "string"
+          },
+          "generated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "quantity": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "营养/菜谱用量：用户显示读 display_value+display_unit；营养计算只读 canonical_grams；canonical_basis 为唯一口径标记（不再另设 weight_basis，避免同义字段漂移）",
+        "required": [
+          "display_value",
+          "display_unit",
+          "canonical_grams",
+          "canonical_basis"
+        ],
+        "properties": {
+          "display_value": {
+            "type": "number",
+            "minimum": 0
+          },
+          "display_unit": {
+            "type": "string",
+            "description": "g / ml / 枚 / 个 / 根 / 碗 等"
+          },
+          "canonical_grams": {
+            "type": "number",
+            "minimum": 0
+          },
+          "canonical_basis": {
+            "type": "string",
+            "enum": [
+              "raw",
+              "cooked",
+              "soaked",
+              "edible"
+            ]
+          }
+        }
+      },
+      "package_quantity": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "购物包装量（盒/袋/根），不复用营养 quantity，避免包装单位被强换可食部克数",
+        "required": [
+          "display_value",
+          "display_unit"
+        ],
+        "properties": {
+          "display_value": {
+            "type": "number",
+            "minimum": 0
+          },
+          "display_unit": {
+            "type": "string",
+            "description": "盒 / 袋 / 根 / 圈 等"
+          },
+          "reference_grams": {
+            "type": "number",
+            "minimum": 0,
+            "description": "包装标注重量，供采购核对"
+          }
+        }
+      },
+      "conversion": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "生/熟/水发换算依据。结果只落到 quantity.canonical_grams，此处不存第二个 canonical 值",
+        "required": [
+          "source_value",
+          "source_unit",
+          "source_basis",
+          "target_basis",
+          "rule_id"
+        ],
+        "properties": {
+          "source_value": {
+            "type": "number",
+            "minimum": 0
+          },
+          "source_unit": {
+            "type": "string"
+          },
+          "source_basis": {
+            "type": "string",
+            "enum": [
+              "raw",
+              "cooked",
+              "soaked",
+              "edible"
+            ]
+          },
+          "target_basis": {
+            "type": "string",
+            "enum": [
+              "raw",
+              "cooked",
+              "soaked",
+              "edible"
+            ]
+          },
+          "rule_id": {
+            "type": "string",
+            "description": "指向 data/unit-conversions.json，如 rice_raw_to_cooked_v1"
+          },
+          "factor": {
+            "type": "number",
+            "description": "审计用换算系数"
+          },
+          "rounding_policy": {
+            "type": "string",
+            "enum": [
+              "floor",
+              "round",
+              "ceil"
+            ]
+          }
+        }
+      },
+      "ingredient_amount": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ingredient_id",
+          "quantity"
+        ],
+        "properties": {
+          "ingredient_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "quantity": {
+            "$ref": "#/definitions/quantity"
+          },
+          "conversion": {
+            "$ref": "#/definitions/conversion"
+          },
+          "is_separable": {
+            "type": "boolean",
+            "description": "是否可单独盛取（主食/肉块/完整蛋/牛奶等）"
+          }
+        }
+      },
+      "nutrition_target": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "calories_kcal",
+          "net_carbs_g",
+          "protein_floor_g",
+          "protein_target_g"
+        ],
+        "properties": {
+          "calories_kcal": {
+            "type": "number",
+            "minimum": 0
+          },
+          "calories_min_kcal": {
+            "type": "number",
+            "minimum": 0
+          },
+          "calories_max_kcal": {
+            "type": "number",
+            "minimum": 0
+          },
+          "net_carbs_g": {
+            "type": "number",
+            "minimum": 0
+          },
+          "protein_floor_g": {
+            "type": "number",
+            "minimum": 0,
+            "description": "绝经/更年期减重人群不低于 1.1g/kg"
+          },
+          "protein_target_g": {
+            "type": "number",
+            "minimum": 0
+          },
+          "book_reference_g": {
+            "type": "number",
+            "minimum": 0
+          },
+          "medical_limit_g": {
+            "type": "number",
+            "minimum": 0
+          },
+          "fat_g": {
+            "type": "number",
+            "minimum": 0
+          },
+          "fat_energy_pct_min": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          }
+        }
+      },
+      "member": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "member_id",
+          "display_label",
+          "precision_level",
+          "goal",
+          "restrictions",
+          "is_primary"
+        ],
+        "properties": {
+          "member_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]+$",
+            "description": "primary 固定为发起请求的用户；全计划唯一"
+          },
+          "display_label": {
+            "type": "string",
+            "description": "减重份 / 健康调理份 / 儿童份"
+          },
+          "is_primary": {
+            "type": "boolean"
+          },
+          "precision_level": {
+            "type": "string",
+            "enum": [
+              "exact",
+              "portion_band"
+            ]
+          },
+          "goal": {
+            "type": "string",
+            "enum": [
+              "weight_loss",
+              "maintain",
+              "gain",
+              "health_conditioning"
+            ]
+          },
+          "restrictions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sex": {
+            "type": "string",
+            "enum": [
+              "f",
+              "m"
+            ]
+          },
+          "age_years": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 120
+          },
+          "height_cm": {
+            "type": "number",
+            "minimum": 50,
+            "maximum": 250
+          },
+          "weight_kg": {
+            "type": "number",
+            "minimum": 10,
+            "maximum": 400
+          },
+          "activity_factor": {
+            "type": "number",
+            "enum": [
+              1.2,
+              1.375,
+              1.55,
+              1.725
+            ]
+          },
+          "menopause_flag": {
+            "type": "boolean"
+          },
+          "portion_band": {
+            "type": "string",
+            "enum": [
+              "light",
+              "normal",
+              "heavy"
+            ]
+          },
+          "nutrition_target": {
+            "$ref": "#/definitions/nutrition_target"
+          },
+          "nutrition_confidence": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ]
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "precision_level": {
+                  "const": "exact"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "sex",
+                "age_years",
+                "height_cm",
+                "weight_kg",
+                "nutrition_target"
+              ]
+            }
+          }
+        ]
+      },
+      "portion_deviation": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "allowed",
+          "expected_range_pct",
+          "reason",
+          "affects_nutrition_confidence"
+        ],
+        "properties": {
+          "allowed": {
+            "type": "boolean"
+          },
+          "expected_range_pct": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "reason": {
+            "type": "string"
+          },
+          "affects_nutrition_confidence": {
+            "type": "boolean"
+          }
+        }
+      },
+      "member_portion_block": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "member_id",
+          "items"
+        ],
+        "properties": {
+          "member_id": {
+            "type": "string"
+          },
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/definitions/ingredient_amount"
+            }
+          },
+          "nutrition_confidence": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ]
+          }
+        }
+      },
+      "portion_ratio_entry": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "member_id",
+          "pct_min",
+          "pct_max"
+        ],
+        "properties": {
+          "member_id": {
+            "type": "string",
+            "description": "集合必须等于 participant_member_ids"
+          },
+          "pct_min": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "pct_max": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "selected_pct": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "脚本生成的和为 100 的确定分配，渲染器不得临时猜比例；缺席重分配时由 override 合并器重新归一"
+          }
+        }
+      },
+      "seasoning_strategy": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "调味四级。默认 L0/L1；L2 仅炒/烩/焖类；L3 仅安全冲突且必须配 cooking_gate_override。简单原味餐可不填本字段或 level=not_applicable",
+        "required": [
+          "level"
+        ],
+        "properties": {
+          "level": {
+            "type": "string",
+            "enum": [
+              "L0_shared_base",
+              "L1_table_side",
+              "L2_finish_in_same_pot",
+              "L3_separate",
+              "not_applicable"
+            ]
+          },
+          "shared_base_profile": {
+            "type": "string",
+            "enum": [
+              "light",
+              "standard"
+            ]
+          },
+          "table_side_options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "finish_in_same_pot": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "separate_reason": {
+            "type": "string"
+          },
+          "affects_member_nutrition": {
+            "type": "boolean"
+          },
+          "member_addition_nutrition": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "member_id",
+                "condiment",
+                "amount_g",
+                "calories_kcal"
+              ],
+              "properties": {
+                "member_id": {
+                  "type": "string"
+                },
+                "condiment": {
+                  "type": "string"
+                },
+                "amount_g": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "calories_kcal": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              }
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "level": {
+                  "not": {
+                    "const": "not_applicable"
+                  }
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "shared_base_profile"
+              ]
+            }
+          }
+        ]
+      },
+      "cooking_gate": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "same_pot_allowed",
+          "separate_before_seasoning",
+          "separate_cookware_required",
+          "cross_contact_risk",
+          "blocking_reasons"
+        ],
+        "properties": {
+          "same_pot_allowed": {
+            "type": "boolean"
+          },
+          "separate_before_seasoning": {
+            "type": "boolean"
+          },
+          "separate_cookware_required": {
+            "type": "boolean"
+          },
+          "blocking_reasons": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "cross_contact_risk": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "per_member_exceptions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          }
+        }
+      },
+      "shared_meal": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "meal_id",
+          "date",
+          "meal_type",
+          "title",
+          "household_ingredients",
+          "participant_member_ids",
+          "member_portions",
+          "portion_method"
+        ],
+        "properties": {
+          "meal_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]+$"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "meal_type": {
+            "type": "string",
+            "enum": [
+              "breakfast",
+              "lunch",
+              "dinner",
+              "snack"
+            ]
+          },
+          "meal_plan_mode": {
+            "type": "string",
+            "enum": [
+              "planned",
+              "guidance_only",
+              "excluded"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "structure_grade": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "low",
+              "forbidden"
+            ]
+          },
+          "household_ingredients": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/definitions/ingredient_amount"
+            }
+          },
+          "participant_member_ids": {
+            "type": "array",
+            "minItems": 2,
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            },
+            "description": "本餐已分配份量的成员，集合必须等于 member_portions.member_id；not_participating 不得进入；uncertain 可以进入（份量为暂定）"
+          },
+          "attendance_plan": {
+            "type": "object",
+            "description": "计划期出席预期：expected=预计参加 / uncertain=暂不确定（份量计入采购，选菜优先可保存结构；确认后走 patch）/ not_participating=本就不参加（不得出现在 participant_member_ids 中）",
+            "additionalProperties": {
+              "type": "string",
+              "enum": [
+                "expected",
+                "uncertain",
+                "not_participating"
+              ]
+            }
+          },
+          "member_portions": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/definitions/member_portion_block"
+            }
+          },
+          "portion_method": {
+            "type": "string",
+            "enum": [
+              "exact_split",
+              "component_split",
+              "ratio_split",
+              "equal_split",
+              "separate_before_seasoning",
+              "separate_cookware"
+            ]
+          },
+          "portion_note": {
+            "type": "string",
+            "description": "≤2 行；ratio_split 必须给出比例区间"
+          },
+          "portion_ratios": {
+            "type": "array",
+            "minItems": 2,
+            "uniqueItems": true,
+            "items": {
+              "$ref": "#/definitions/portion_ratio_entry"
+            },
+            "description": "多人比例结构：member_id 集合=participant_member_ids；Σmin≤100 且 Σmax≥100；selected_pct 由脚本生成且 Σ=100"
+          },
+          "portion_deviation": {
+            "$ref": "#/definitions/portion_deviation"
+          },
+          "seasoning_strategy": {
+            "description": "可选；简单原味餐省略或 level=not_applicable",
+            "$ref": "#/definitions/seasoning_strategy"
+          },
+          "cooking_gate_override": {
+            "description": "可选；无覆盖继承 household_default_cooking_gate",
+            "$ref": "#/definitions/cooking_gate"
+          },
+          "leftover_attribution": {
+            "type": "string"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "portion_method": {
+                  "const": "ratio_split"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "portion_ratios",
+                "portion_deviation"
+              ]
+            }
+          },
+          {
+            "if": {
+              "required": [
+                "seasoning_strategy"
+              ],
+              "properties": {
+                "seasoning_strategy": {
+                  "type": "object",
+                  "required": [
+                    "level"
+                  ],
+                  "properties": {
+                    "level": {
+                      "const": "L3_separate"
+                    }
+                  }
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "cooking_gate_override"
+              ]
+            }
+          }
+        ]
+      },
+      "shopping_item": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ingredient_id",
+          "household_required_amount",
+          "recommended_package",
+          "price_basis"
+        ],
+        "properties": {
+          "ingredient_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "household_required_amount": {
+            "$ref": "#/definitions/quantity"
+          },
+          "inventory_used_amount": {
+            "$ref": "#/definitions/quantity"
+          },
+          "new_purchase_amount": {
+            "$ref": "#/definitions/quantity"
+          },
+          "recommended_package": {
+            "type": "string",
+            "description": "如 400g/盒 ×3"
+          },
+          "package_quantity": {
+            "$ref": "#/definitions/package_quantity"
+          },
+          "purchase_condition": {
+            "type": "string",
+            "description": "条件采购独立字段，禁止塞进食材名称"
+          },
+          "new_purchase_cost": {
+            "type": "number",
+            "minimum": 0
+          },
+          "inventory_reference_cost": {
+            "type": "number",
+            "minimum": 0,
+            "description": "显示为 库存（参考X元/规格）"
+          },
+          "total_reference_cost": {
+            "type": "number",
+            "minimum": 0
+          },
+          "price_basis": {
+            "type": "string",
+            "enum": [
+              "direct_public_price",
+              "category_estimate",
+              "historical_estimate"
+            ]
+          },
+          "price_source_note": {
+            "type": "string"
+          },
+          "substitutes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "leftover_destination": {
+            "type": "string"
+          },
+          "leftover_attribution": {
+            "type": "string"
+          },
+          "is_pantry": {
+            "type": "boolean"
+          }
+        }
+      },
+      "reuse_chain": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "chain_id",
+          "source_meal_id",
+          "source_date",
+          "storage_action",
+          "reuse_meal_id",
+          "reuse_date",
+          "prep_instruction_date",
+          "safety_window_hours"
+        ],
+        "properties": {
+          "chain_id": {
+            "type": "string"
+          },
+          "source_meal_id": {
+            "type": "string"
+          },
+          "source_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "storage_action": {
+            "type": "string"
+          },
+          "reuse_meal_id": {
+            "type": "string"
+          },
+          "reuse_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "prep_instruction_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "safety_window_hours": {
+            "type": "number",
+            "minimum": 0
+          },
+          "advice_text": {
+            "type": "string",
+            "description": "仅由以上字段派生，禁止手写日期与星期"
+          }
+        }
+      },
+      "leftover_plan": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_meal_id",
+          "source_scope",
+          "leftover_quantity",
+          "amount_basis",
+          "destination",
+          "nutrition_transfer"
+        ],
+        "properties": {
+          "source_meal_id": {
+            "type": "string"
+          },
+          "source_scope": {
+            "type": "string",
+            "enum": [
+              "member",
+              "household"
+            ],
+            "description": "家庭公共损耗/整锅剩余用 household"
+          },
+          "source_member_id": {
+            "type": "string",
+            "description": "source_scope=member 时必填"
+          },
+          "leftover_quantity": {
+            "$ref": "#/definitions/quantity"
+          },
+          "amount_basis": {
+            "type": "string",
+            "enum": [
+              "one_member_portion",
+              "measured_weight",
+              "estimated_ratio"
+            ]
+          },
+          "destination": {
+            "type": "string",
+            "enum": [
+              "next_day_lunch",
+              "freeze",
+              "reassign_member",
+              "discard_if_unsafe"
+            ]
+          },
+          "assigned_member_id": {
+            "type": "string",
+            "description": "destination=reassign_member 时必填，其他 destination 禁止"
+          },
+          "storage_action": {
+            "type": "string"
+          },
+          "consume_by": {
+            "type": "string",
+            "format": "date"
+          },
+          "nutrition_transfer": {
+            "type": "boolean",
+            "description": "次日便当=true 转入次日对应成员；冷冻=false 入库不计本周摄入；external_meal 不产生 leftover"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "source_scope": {
+                  "const": "member"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "source_member_id"
+              ]
+            },
+            "else": {
+              "not": {
+                "required": [
+                  "source_member_id"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "destination": {
+                  "const": "reassign_member"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "assigned_member_id"
+              ]
+            },
+            "else": {
+              "not": {
+                "required": [
+                  "assigned_member_id"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "household_validation": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "校验结果；跨引用校验由 household_reference_validator.py 执行并回写，每个必需 check_id 恰好出现一次",
+        "required": [
+          "checks"
+        ],
+        "properties": {
+          "checks": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "check_id",
+                "status"
+              ],
+              "properties": {
+                "check_id": {
+                  "type": "string",
+                  "enum": [
+                    "total_equals_portions_plus_loss",
+                    "member_nutrition_uses_member_portions",
+                    "purchase_matches_household_usage",
+                    "one_ingredient_per_shopping_row",
+                    "ratio_split_confidence_ok",
+                    "breakfast_portions_present",
+                    "portion_method_required",
+                    "reuse_dates_match_meals",
+                    "seasoning_strategy_resolved",
+                    "no_internal_terms_in_visible_text",
+                    "override_merge_consistent",
+                    "leftover_destination_resolved",
+                    "nutrition_transfer_consistent",
+                    "PRIMARY_COUNT_EQUALS_ONE",
+                    "MEMBER_ID_UNIQUE",
+                    "MEAL_PARTICIPANT_REFERENCE_VALID",
+                    "PORTION_MEMBER_REFERENCE_VALID",
+                    "OVERRIDE_MEMBER_REFERENCE_VALID",
+                    "LEFTOVER_MEMBER_REFERENCE_VALID",
+                    "CONDIMENT_MEMBER_REFERENCE_VALID",
+                    "PORTION_SET_EQUALS_PARTICIPANTS",
+                    "RATIO_SET_EQUALS_PARTICIPANTS",
+                    "RATIO_RANGE_COVERS_WHOLE",
+                    "SELECTED_PCT_SUM_EQUALS_100",
+                    "NOT_PARTICIPATING_EXCLUDED_FROM_PORTIONS",
+                    "CHECK_ID_COMPLETENESS"
+                  ]
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "pass",
+                    "fail"
+                  ]
+                },
+                "detail": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "ratio_split_confidence_rule": {
+            "type": "string",
+            "description": "单成员最大区间宽度 >10pp 不得 high；>20pp 不得 medium；Σmin≤100 且 Σmax≥100"
+          },
+          "absence_rebuild_rule": {
+            "type": "string",
+            "description": "缺席触发整周重建记 audit warning 并回滚局部重算，不判 fatal"
+          }
+        }
+      },
+      "household_layout_gate": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "one_ingredient_per_shopping_row",
+          "shopping_row_height",
+          "ingredient_word_break",
+          "nutrition_member_block_count_max_pdf",
+          "portion_note_max_lines",
+          "visible_font_min_pt",
+          "no_fixed_row_height",
+          "disclaimer_separate"
+        ],
+        "properties": {
+          "one_ingredient_per_shopping_row": {
+            "type": "boolean",
+            "const": true
+          },
+          "shopping_row_height": {
+            "type": "string",
+            "const": "auto"
+          },
+          "ingredient_word_break": {
+            "type": "string",
+            "const": "keep_all"
+          },
+          "nutrition_member_block_count_max_pdf": {
+            "type": "number",
+            "const": 3
+          },
+          "portion_note_max_lines": {
+            "type": "number",
+            "const": 2
+          },
+          "visible_font_min_pt": {
+            "type": "number",
+            "const": 8.5
+          },
+          "no_fixed_row_height": {
+            "type": "boolean",
+            "const": true
+          },
+          "disclaimer_separate": {
+            "type": "boolean",
+            "const": true
+          }
+        }
+      }
+    },
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "plan_meta",
+      "plan_mode",
+      "members",
+      "shared_meals",
+      "shopping",
+      "household_default_cooking_gate",
+      "household_validation",
+      "household_layout_gate"
+    ],
+    "properties": {
+      "plan_meta": {
+        "$ref": "#/definitions/plan_meta"
+      },
+      "plan_mode": {
+        "type": "string",
+        "enum": [
+          "shared_uniform",
+          "shared_meal_personalized",
+          "split_safety_required"
+        ],
+        "description": "家庭 schema 不含 solo"
+      },
+      "household_id": {
+        "type": "string"
+      },
+      "members": {
+        "type": "array",
+        "minItems": 2,
+        "items": {
+          "$ref": "#/definitions/member"
+        }
+      },
+      "shared_meals": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "$ref": "#/definitions/shared_meal"
+        }
+      },
+      "shopping": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "$ref": "#/definitions/shopping_item"
+        }
+      },
+      "reuse_chains": {
+        "type": "array",
+        "items": {
+          "$ref": "#/definitions/reuse_chain"
+        }
+      },
+      "leftover_plans": {
+        "type": "array",
+        "items": {
+          "$ref": "#/definitions/leftover_plan"
+        }
+      },
+      "household_default_cooking_gate": {
+        "$ref": "#/definitions/cooking_gate"
+      },
+      "household_validation": {
+        "$ref": "#/definitions/household_validation"
+      },
+      "household_layout_gate": {
+        "$ref": "#/definitions/household_layout_gate"
+      }
+    }
+  },
+  "overrides": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "household-overrides.schema.json",
+    "title": "月食家庭版 overrides 数据契约（v0.3 RC2）",
+    "description": "缺席/变化 patch（overrides_YYYYMMDD.json），独立校验，不写回 base_plan。status 分支：absent 必填 action 并可引用 leftover_plan_id；external_meal 不要求 action、禁止 leftover_plan_id、仅 known_at=before_shopping 时允许 shopping_delta（destination 只能 reduce_purchase）；present_confirmed 仅关闭 uncertain，禁止 action/shopping_delta/leftover_plan_id。计划期 uncertain 的悬置项放 pending_resolutions。",
+    "definitions": {
+      "shopping_delta": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "缺席对采购的增量（direction+grams，不使用负克数）",
+        "required": [
+          "ingredient_id",
+          "direction",
+          "grams",
+          "destination"
+        ],
+        "properties": {
+          "ingredient_id": {
+            "type": "string"
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "reduce",
+              "add"
+            ]
+          },
+          "grams": {
+            "type": "number",
+            "minimum": 0
+          },
+          "destination": {
+            "type": "string",
+            "enum": [
+              "reduce_purchase",
+              "next_day_lunch",
+              "freeze",
+              "reassign_member"
+            ]
+          }
+        }
+      },
+      "attendance_override": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "缺席 patch 条目（只记录已发生/已确认变化；计划期不确定用 shared_meal.attendance_plan）。external_meal：该餐该成员份量不计家庭账、不产生 leftover、不触发 nutrition_transfer；仅 known_at=before_shopping 时允许 shopping_delta（且 destination 只能 reduce_purchase）。absent：按 known_at 要求 action（reduce_batch 或剩余去向）。present_confirmed：仅用于关闭 uncertain，不要求 action。",
+        "required": [
+          "override_id",
+          "date",
+          "meal_id",
+          "member_id",
+          "status",
+          "known_at"
+        ],
+        "properties": {
+          "override_id": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "meal_id": {
+            "type": "string"
+          },
+          "member_id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "absent",
+              "external_meal",
+              "present_confirmed"
+            ]
+          },
+          "known_at": {
+            "type": "string",
+            "enum": [
+              "before_shopping",
+              "after_shopping",
+              "before_cooking",
+              "after_cooking"
+            ]
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "reduce_batch",
+              "keep_batch_for_leftover",
+              "freeze_portion",
+              "reassign_portion"
+            ]
+          },
+          "shopping_delta": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/definitions/shopping_delta"
+            }
+          },
+          "leftover_plan_id": {
+            "type": "string",
+            "description": "absent 且创建剩余时引用"
+          },
+          "note": {
+            "type": "string"
+          },
+          "merge_status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "applied",
+              "expired"
+            ]
+          },
+          "applied_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "absent"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "action"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "external_meal"
+                }
+              }
+            },
+            "then": {
+              "if": {
+                "properties": {
+                  "known_at": {
+                    "const": "before_shopping"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "shopping_delta": {
+                    "items": {
+                      "properties": {
+                        "destination": {
+                          "const": "reduce_purchase"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "else": {
+                "not": {
+                  "required": [
+                    "shopping_delta"
+                  ]
+                }
+              },
+              "allOf": [
+                {
+                  "not": {
+                    "required": [
+                      "action"
+                    ]
+                  }
+                },
+                {
+                  "not": {
+                    "required": [
+                      "leftover_plan_id"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "present_confirmed"
+                }
+              }
+            },
+            "then": {
+              "allOf": [
+                {
+                  "not": {
+                    "required": [
+                      "action"
+                    ]
+                  }
+                },
+                {
+                  "not": {
+                    "required": [
+                      "shopping_delta"
+                    ]
+                  }
+                },
+                {
+                  "not": {
+                    "required": [
+                      "leftover_plan_id"
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "pending_attendance_resolution": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "计划期 uncertain 的悬置项：到期未确认时按 auto_resolve 处理（confirm_absent / keep_plan）",
+        "required": [
+          "resolution_id",
+          "meal_id",
+          "member_id",
+          "deadline",
+          "auto_resolve",
+          "status"
+        ],
+        "properties": {
+          "resolution_id": {
+            "type": "string"
+          },
+          "meal_id": {
+            "type": "string"
+          },
+          "member_id": {
+            "type": "string"
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "auto_resolve": {
+            "type": "string",
+            "enum": [
+              "confirm_absent",
+              "keep_plan"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "open",
+              "resolved"
+            ]
+          }
+        }
+      }
+    },
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "base_build_id",
+      "override_batch_id",
+      "overrides"
+    ],
+    "properties": {
+      "base_build_id": {
+        "type": "string",
+        "description": "指向被覆盖的 base_plan.plan_meta.build_id"
+      },
+      "override_batch_id": {
+        "type": "string"
+      },
+      "generated_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "overrides": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "$ref": "#/definitions/attendance_override"
+        }
+      },
+      "pending_resolutions": {
+        "type": "array",
+        "items": {
+          "$ref": "#/definitions/pending_attendance_resolution"
+        }
+      }
+    }
+  },
+  "effective_plan": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "household-effective-plan.schema.json",
+    "title": "月食家庭版 effective_plan 数据契约（v0.3 RC2）",
+    "description": "运行时合并结果（base_plan + overrides），可随时重建、非权威源、不作为下次生成输入。必含 effective_meta（applied_override_ids 只存在于本层，禁止写回 base_plan）。合并器职责：缺席成员移除后重新归一 portion_ratios.selected_pct 并重算该餐 member_portions；采购差量与剩余去向按 shopping_delta 落账。",
+    "definitions": {
+      "plan_meta": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "build_id",
+          "plan_schema_version",
+          "rules_bundle_hash",
+          "skill_version",
+          "runtime_rules_version",
+          "nutrition_rules_version",
+          "output_policy_version",
+          "recipe_manifest_version",
+          "effective_parameters_version",
+          "price_data_version",
+          "generated_at"
+        ],
+        "properties": {
+          "build_id": {
+            "type": "string"
+          },
+          "plan_schema_version": {
+            "type": "string",
+            "const": "v0.3-rc2"
+          },
+          "rules_bundle_hash": {
+            "type": "string",
+            "description": "由脚本计算，模型只做版本字符串核对"
+          },
+          "skill_version": {
+            "type": "string"
+          },
+          "runtime_rules_version": {
+            "type": "string"
+          },
+          "nutrition_rules_version": {
+            "type": "string"
+          },
+          "output_policy_version": {
+            "type": "string"
+          },
+          "recipe_manifest_version": {
+            "type": "string"
+          },
+          "effective_parameters_version": {
+            "type": "string"
+          },
+          "price_data_version": {
+            "type": "string"
+          },
+          "generated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "member": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "member_id",
+          "display_label",
+          "precision_level",
+          "goal",
+          "restrictions",
+          "is_primary"
+        ],
+        "properties": {
+          "member_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]+$",
+            "description": "primary 固定为发起请求的用户；全计划唯一"
+          },
+          "display_label": {
+            "type": "string",
+            "description": "减重份 / 健康调理份 / 儿童份"
+          },
+          "is_primary": {
+            "type": "boolean"
+          },
+          "precision_level": {
+            "type": "string",
+            "enum": [
+              "exact",
+              "portion_band"
+            ]
+          },
+          "goal": {
+            "type": "string",
+            "enum": [
+              "weight_loss",
+              "maintain",
+              "gain",
+              "health_conditioning"
+            ]
+          },
+          "restrictions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sex": {
+            "type": "string",
+            "enum": [
+              "f",
+              "m"
+            ]
+          },
+          "age_years": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 120
+          },
+          "height_cm": {
+            "type": "number",
+            "minimum": 50,
+            "maximum": 250
+          },
+          "weight_kg": {
+            "type": "number",
+            "minimum": 10,
+            "maximum": 400
+          },
+          "activity_factor": {
+            "type": "number",
+            "enum": [
+              1.2,
+              1.375,
+              1.55,
+              1.725
+            ]
+          },
+          "menopause_flag": {
+            "type": "boolean"
+          },
+          "portion_band": {
+            "type": "string",
+            "enum": [
+              "light",
+              "normal",
+              "heavy"
+            ]
+          },
+          "nutrition_target": {
+            "$ref": "#/definitions/nutrition_target"
+          },
+          "nutrition_confidence": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ]
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "precision_level": {
+                  "const": "exact"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "sex",
+                "age_years",
+                "height_cm",
+                "weight_kg",
+                "nutrition_target"
+              ]
+            }
+          }
+        ]
+      },
+      "shared_meal": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "meal_id",
+          "date",
+          "meal_type",
+          "title",
+          "household_ingredients",
+          "participant_member_ids",
+          "member_portions",
+          "portion_method"
+        ],
+        "properties": {
+          "meal_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]+$"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "meal_type": {
+            "type": "string",
+            "enum": [
+              "breakfast",
+              "lunch",
+              "dinner",
+              "snack"
+            ]
+          },
+          "meal_plan_mode": {
+            "type": "string",
+            "enum": [
+              "planned",
+              "guidance_only",
+              "excluded"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "structure_grade": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "low",
+              "forbidden"
+            ]
+          },
+          "household_ingredients": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/definitions/ingredient_amount"
+            }
+          },
+          "participant_member_ids": {
+            "type": "array",
+            "minItems": 2,
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            },
+            "description": "本餐已分配份量的成员，集合必须等于 member_portions.member_id；not_participating 不得进入；uncertain 可以进入（份量为暂定）"
+          },
+          "attendance_plan": {
+            "type": "object",
+            "description": "计划期出席预期：expected=预计参加 / uncertain=暂不确定（份量计入采购，选菜优先可保存结构；确认后走 patch）/ not_participating=本就不参加（不得出现在 participant_member_ids 中）",
+            "additionalProperties": {
+              "type": "string",
+              "enum": [
+                "expected",
+                "uncertain",
+                "not_participating"
+              ]
+            }
+          },
+          "member_portions": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/definitions/member_portion_block"
+            }
+          },
+          "portion_method": {
+            "type": "string",
+            "enum": [
+              "exact_split",
+              "component_split",
+              "ratio_split",
+              "equal_split",
+              "separate_before_seasoning",
+              "separate_cookware"
+            ]
+          },
+          "portion_note": {
+            "type": "string",
+            "description": "≤2 行；ratio_split 必须给出比例区间"
+          },
+          "portion_ratios": {
+            "type": "array",
+            "minItems": 2,
+            "uniqueItems": true,
+            "items": {
+              "$ref": "#/definitions/portion_ratio_entry"
+            },
+            "description": "多人比例结构：member_id 集合=participant_member_ids；Σmin≤100 且 Σmax≥100；selected_pct 由脚本生成且 Σ=100"
+          },
+          "portion_deviation": {
+            "$ref": "#/definitions/portion_deviation"
+          },
+          "seasoning_strategy": {
+            "description": "可选；简单原味餐省略或 level=not_applicable",
+            "$ref": "#/definitions/seasoning_strategy"
+          },
+          "cooking_gate_override": {
+            "description": "可选；无覆盖继承 household_default_cooking_gate",
+            "$ref": "#/definitions/cooking_gate"
+          },
+          "leftover_attribution": {
+            "type": "string"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "portion_method": {
+                  "const": "ratio_split"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "portion_ratios",
+                "portion_deviation"
+              ]
+            }
+          },
+          {
+            "if": {
+              "required": [
+                "seasoning_strategy"
+              ],
+              "properties": {
+                "seasoning_strategy": {
+                  "type": "object",
+                  "required": [
+                    "level"
+                  ],
+                  "properties": {
+                    "level": {
+                      "const": "L3_separate"
+                    }
+                  }
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "cooking_gate_override"
+              ]
+            }
+          }
+        ]
+      },
+      "shopping_item": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ingredient_id",
+          "household_required_amount",
+          "recommended_package",
+          "price_basis"
+        ],
+        "properties": {
+          "ingredient_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "household_required_amount": {
+            "$ref": "#/definitions/quantity"
+          },
+          "inventory_used_amount": {
+            "$ref": "#/definitions/quantity"
+          },
+          "new_purchase_amount": {
+            "$ref": "#/definitions/quantity"
+          },
+          "recommended_package": {
+            "type": "string",
+            "description": "如 400g/盒 ×3"
+          },
+          "package_quantity": {
+            "$ref": "#/definitions/package_quantity"
+          },
+          "purchase_condition": {
+            "type": "string",
+            "description": "条件采购独立字段，禁止塞进食材名称"
+          },
+          "new_purchase_cost": {
+            "type": "number",
+            "minimum": 0
+          },
+          "inventory_reference_cost": {
+            "type": "number",
+            "minimum": 0,
+            "description": "显示为 库存（参考X元/规格）"
+          },
+          "total_reference_cost": {
+            "type": "number",
+            "minimum": 0
+          },
+          "price_basis": {
+            "type": "string",
+            "enum": [
+              "direct_public_price",
+              "category_estimate",
+              "historical_estimate"
+            ]
+          },
+          "price_source_note": {
+            "type": "string"
+          },
+          "substitutes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "leftover_destination": {
+            "type": "string"
+          },
+          "leftover_attribution": {
+            "type": "string"
+          },
+          "is_pantry": {
+            "type": "boolean"
+          }
+        }
+      },
+      "reuse_chain": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "chain_id",
+          "source_meal_id",
+          "source_date",
+          "storage_action",
+          "reuse_meal_id",
+          "reuse_date",
+          "prep_instruction_date",
+          "safety_window_hours"
+        ],
+        "properties": {
+          "chain_id": {
+            "type": "string"
+          },
+          "source_meal_id": {
+            "type": "string"
+          },
+          "source_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "storage_action": {
+            "type": "string"
+          },
+          "reuse_meal_id": {
+            "type": "string"
+          },
+          "reuse_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "prep_instruction_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "safety_window_hours": {
+            "type": "number",
+            "minimum": 0
+          },
+          "advice_text": {
+            "type": "string",
+            "description": "仅由以上字段派生，禁止手写日期与星期"
+          }
+        }
+      },
+      "leftover_plan": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_meal_id",
+          "source_scope",
+          "leftover_quantity",
+          "amount_basis",
+          "destination",
+          "nutrition_transfer"
+        ],
+        "properties": {
+          "source_meal_id": {
+            "type": "string"
+          },
+          "source_scope": {
+            "type": "string",
+            "enum": [
+              "member",
+              "household"
+            ],
+            "description": "家庭公共损耗/整锅剩余用 household"
+          },
+          "source_member_id": {
+            "type": "string",
+            "description": "source_scope=member 时必填"
+          },
+          "leftover_quantity": {
+            "$ref": "#/definitions/quantity"
+          },
+          "amount_basis": {
+            "type": "string",
+            "enum": [
+              "one_member_portion",
+              "measured_weight",
+              "estimated_ratio"
+            ]
+          },
+          "destination": {
+            "type": "string",
+            "enum": [
+              "next_day_lunch",
+              "freeze",
+              "reassign_member",
+              "discard_if_unsafe"
+            ]
+          },
+          "assigned_member_id": {
+            "type": "string",
+            "description": "destination=reassign_member 时必填，其他 destination 禁止"
+          },
+          "storage_action": {
+            "type": "string"
+          },
+          "consume_by": {
+            "type": "string",
+            "format": "date"
+          },
+          "nutrition_transfer": {
+            "type": "boolean",
+            "description": "次日便当=true 转入次日对应成员；冷冻=false 入库不计本周摄入；external_meal 不产生 leftover"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "source_scope": {
+                  "const": "member"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "source_member_id"
+              ]
+            },
+            "else": {
+              "not": {
+                "required": [
+                  "source_member_id"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "destination": {
+                  "const": "reassign_member"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "assigned_member_id"
+              ]
+            },
+            "else": {
+              "not": {
+                "required": [
+                  "assigned_member_id"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "cooking_gate": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "same_pot_allowed",
+          "separate_before_seasoning",
+          "separate_cookware_required",
+          "cross_contact_risk",
+          "blocking_reasons"
+        ],
+        "properties": {
+          "same_pot_allowed": {
+            "type": "boolean"
+          },
+          "separate_before_seasoning": {
+            "type": "boolean"
+          },
+          "separate_cookware_required": {
+            "type": "boolean"
+          },
+          "blocking_reasons": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "cross_contact_risk": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "per_member_exceptions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          }
+        }
+      },
+      "household_validation": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "校验结果；跨引用校验由 household_reference_validator.py 执行并回写，每个必需 check_id 恰好出现一次",
+        "required": [
+          "checks"
+        ],
+        "properties": {
+          "checks": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "check_id",
+                "status"
+              ],
+              "properties": {
+                "check_id": {
+                  "type": "string",
+                  "enum": [
+                    "total_equals_portions_plus_loss",
+                    "member_nutrition_uses_member_portions",
+                    "purchase_matches_household_usage",
+                    "one_ingredient_per_shopping_row",
+                    "ratio_split_confidence_ok",
+                    "breakfast_portions_present",
+                    "portion_method_required",
+                    "reuse_dates_match_meals",
+                    "seasoning_strategy_resolved",
+                    "no_internal_terms_in_visible_text",
+                    "override_merge_consistent",
+                    "leftover_destination_resolved",
+                    "nutrition_transfer_consistent",
+                    "PRIMARY_COUNT_EQUALS_ONE",
+                    "MEMBER_ID_UNIQUE",
+                    "MEAL_PARTICIPANT_REFERENCE_VALID",
+                    "PORTION_MEMBER_REFERENCE_VALID",
+                    "OVERRIDE_MEMBER_REFERENCE_VALID",
+                    "LEFTOVER_MEMBER_REFERENCE_VALID",
+                    "CONDIMENT_MEMBER_REFERENCE_VALID",
+                    "PORTION_SET_EQUALS_PARTICIPANTS",
+                    "RATIO_SET_EQUALS_PARTICIPANTS",
+                    "RATIO_RANGE_COVERS_WHOLE",
+                    "SELECTED_PCT_SUM_EQUALS_100",
+                    "NOT_PARTICIPATING_EXCLUDED_FROM_PORTIONS",
+                    "CHECK_ID_COMPLETENESS"
+                  ]
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "pass",
+                    "fail"
+                  ]
+                },
+                "detail": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "ratio_split_confidence_rule": {
+            "type": "string",
+            "description": "单成员最大区间宽度 >10pp 不得 high；>20pp 不得 medium；Σmin≤100 且 Σmax≥100"
+          },
+          "absence_rebuild_rule": {
+            "type": "string",
+            "description": "缺席触发整周重建记 audit warning 并回滚局部重算，不判 fatal"
+          }
+        }
+      },
+      "household_layout_gate": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "one_ingredient_per_shopping_row",
+          "shopping_row_height",
+          "ingredient_word_break",
+          "nutrition_member_block_count_max_pdf",
+          "portion_note_max_lines",
+          "visible_font_min_pt",
+          "no_fixed_row_height",
+          "disclaimer_separate"
+        ],
+        "properties": {
+          "one_ingredient_per_shopping_row": {
+            "type": "boolean",
+            "const": true
+          },
+          "shopping_row_height": {
+            "type": "string",
+            "const": "auto"
+          },
+          "ingredient_word_break": {
+            "type": "string",
+            "const": "keep_all"
+          },
+          "nutrition_member_block_count_max_pdf": {
+            "type": "number",
+            "const": 3
+          },
+          "portion_note_max_lines": {
+            "type": "number",
+            "const": 2
+          },
+          "visible_font_min_pt": {
+            "type": "number",
+            "const": 8.5
+          },
+          "no_fixed_row_height": {
+            "type": "boolean",
+            "const": true
+          },
+          "disclaimer_separate": {
+            "type": "boolean",
+            "const": true
+          }
+        }
+      }
+    },
+    "allOf": [
+      {
+        "$ref": "#/base_plan"
+      }
+    ],
+    "required": [
+      "effective_meta"
+    ],
+    "properties": {
+      "effective_meta": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "base_build_id",
+          "applied_override_ids"
+        ],
+        "properties": {
+          "base_build_id": {
+            "type": "string"
+          },
+          "applied_override_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "merged_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  }
+}

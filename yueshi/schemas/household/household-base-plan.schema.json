@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "household-base-plan.schema.json",
+  "title": "月食家庭版 base_plan 数据契约（v0.3 RC2）",
+  "description": "冻结的家庭计划（不修改）。校验对象只有 base 计划字段：出现 effective_meta、attendance_overrides 或 override 批次字段即校验失败。个人营养只读 member_portions；营养一律按 quantity.canonical_grams 计算。顶层与关键对象关闭 additionalProperties，旧字段与拼写错误直接报错。",
+
+  "definitions": {
+    "plan_meta": { "$ref": "shared-definitions.schema.json#/definitions/plan_meta" },
+    "quantity": { "$ref": "shared-definitions.schema.json#/definitions/quantity" },
+    "package_quantity": { "$ref": "shared-definitions.schema.json#/definitions/package_quantity" },
+    "conversion": { "$ref": "shared-definitions.schema.json#/definitions/conversion" },
+    "ingredient_amount": { "$ref": "shared-definitions.schema.json#/definitions/ingredient_amount" },
+    "nutrition_target": { "$ref": "shared-definitions.schema.json#/definitions/nutrition_target" },
+    "member": { "$ref": "shared-definitions.schema.json#/definitions/member" },
+    "portion_deviation": { "$ref": "shared-definitions.schema.json#/definitions/portion_deviation" },
+    "member_portion_block": { "$ref": "shared-definitions.schema.json#/definitions/member_portion_block" },
+    "portion_ratio_entry": { "$ref": "shared-definitions.schema.json#/definitions/portion_ratio_entry" },
+    "seasoning_strategy": { "$ref": "shared-definitions.schema.json#/definitions/seasoning_strategy" },
+    "cooking_gate": { "$ref": "shared-definitions.schema.json#/definitions/cooking_gate" },
+    "shared_meal": { "$ref": "shared-definitions.schema.json#/definitions/shared_meal" },
+    "shopping_item": { "$ref": "shared-definitions.schema.json#/definitions/shopping_item" },
+    "reuse_chain": { "$ref": "shared-definitions.schema.json#/definitions/reuse_chain" },
+    "leftover_plan": { "$ref": "shared-definitions.schema.json#/definitions/leftover_plan" },
+    "household_validation": { "$ref": "shared-definitions.schema.json#/definitions/household_validation" },
+    "household_layout_gate": { "$ref": "shared-definitions.schema.json#/definitions/household_layout_gate" }
+  },
+
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["plan_meta", "plan_mode", "members", "shared_meals", "shopping", "household_default_cooking_gate", "household_validation", "household_layout_gate"],
+  "properties": {
+    "plan_meta": { "$ref": "#/definitions/plan_meta" },
+    "plan_mode": { "type": "string", "enum": ["shared_uniform", "shared_meal_personalized", "split_safety_required"], "description": "家庭 schema 不含 solo" },
+    "household_id": { "type": "string" },
+    "members": { "type": "array", "minItems": 2, "items": { "$ref": "#/definitions/member" } },
+    "shared_meals": { "type": "array", "minItems": 1, "items": { "$ref": "#/definitions/shared_meal" } },
+    "shopping": { "type": "array", "minItems": 1, "items": { "$ref": "#/definitions/shopping_item" } },
+    "reuse_chains": { "type": "array", "items": { "$ref": "#/definitions/reuse_chain" } },
+    "leftover_plans": { "type": "array", "items": { "$ref": "#/definitions/leftover_plan" } },
+    "household_default_cooking_gate": { "$ref": "#/definitions/cooking_gate" },
+    "household_validation": { "$ref": "#/definitions/household_validation" },
+    "household_layout_gate": { "$ref": "#/definitions/household_layout_gate" }
+  }
+}
