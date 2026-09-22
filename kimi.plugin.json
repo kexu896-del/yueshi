@@ -1,0 +1,13 @@
+{
+  "name": "yueshi",
+  "version": "1.4.3",
+  "description": "月食：采购驱动的周期断食周饮食计划技能——7 天菜单 + 采购清单 + 营养校验，可选叮咚查价",
+  "skills": "./yueshi/",
+  "interface": {
+    "displayName": "月食 yueshi",
+    "shortDescription": "一周饮食计划：买得到、做得完、吃得完",
+    "longDescription": "根据身体周期、所在地价格和做饭条件，生成可执行的一周饮食方案：先定食材篮子，再从结构化菜谱库选菜，最后反向汇总采购清单。支持一人食与家庭模式、女性周期阶段适配、叮咚买菜查价。",
+    "developerName": "kexu896-del",
+    "websiteURL": "https://github.com/kexu896-del/yueshi"
+  }
+}
