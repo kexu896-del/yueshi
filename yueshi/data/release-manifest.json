@@ -1,22 +1,22 @@
 {
   "release_version": "yueshi-1.4.3",
-  "created_at": "2026-09-21T06:51:59+00:00",
-  "build_source": "candidates/round44",
+  "created_at": "2026-10-23T01:43:04+00:00",
+  "build_source": "round79g-2026-09-21",
   "build_tool_version": "release_pack.py@587e90e13a01",
   "artifacts": [
     {
       "name": "yueshi.skill",
-      "size_bytes": 1226188,
-      "sha256": "f6b2fb92db30eb02befc5d5d17c8a3208993fb47b25f055f89b6bc4f8eea81ef"
+      "size_bytes": 1315473,
+      "sha256": "9c3f3ff5fa8185cdc340bd3cfd125c8c4040f279e24743922c47b5127546f24b"
     },
     {
       "name": "yueshi.zip",
-      "size_bytes": 1226188,
-      "sha256": "f6b2fb92db30eb02befc5d5d17c8a3208993fb47b25f055f89b6bc4f8eea81ef"
+      "size_bytes": 1315473,
+      "sha256": "9c3f3ff5fa8185cdc340bd3cfd125c8c4040f279e24743922c47b5127546f24b"
     }
   ],
-  "package_file_count": 248,
-  "uncompressed_size_bytes": 6879376,
+  "package_file_count": 277,
+  "uncompressed_size_bytes": 7195529,
   "size_reduction_note": "round43 起排除维护区工作目录：仅移除非运行期维护材料，无运行依赖变化",
   "excluded_paths": [
     "book-extraction/",
@@ -27,9 +27,9 @@
   "exclusion_reason": "维护期书籍审计工作目录与候选轮次工作区；含不进入发布包的版权原文与中间材料；runtime_dependency=false；仅保留于受控源码/维护环境",
   "runtime_dependency": false,
   "source_retention_policy": "维护区材料仅保留于受控源码/维护环境，不进入公开分发产物",
-  "rules_bundle_hash_solo": "3cc5029e4a6dd617",
-  "rules_bundle_hash_household": "7fba469fcceea9ba",
-  "pipeline_bundle_hash": "735ac3c2114def14",
+  "rules_bundle_hash_solo": "e43c33147005a057",
+  "rules_bundle_hash_household": "14d07e24139f7b74",
+  "pipeline_bundle_hash": "12e907220e347bb7",
   "schemas": [
     "base_plan",
     "overrides",
@@ -46,7 +46,7 @@
   "runtime_dependency_check": {
     "passed": true,
     "missing": [],
-    "closure_size": 50
+    "closure_size": 53
   },
   "reproducible_build": true,
   "release_invariants_hard_ok": true,
@@ -54,17 +54,17 @@
     {
       "step": "renderer_import",
       "ok": true,
-      "tail": "3cc5029e4a6dd617\n"
+      "tail": "e43c33147005a057\n"
     },
     {
       "step": "identity_merge",
       "ok": true,
-      "tail": "merged: <identity> (applied 0 overrides) -> C:\\Users\\22408913\\AppData\\Local\\Temp\\tmpa4zxah3o\\pkg\\_smoke_identity.json\n"
+      "tail": "merged: <identity> (applied 0 overrides) -> C:\\Users\\22408913\\AppData\\Local\\Temp\\tmplqij9uf1\\pkg\\_smoke_identity.json\n"
     },
     {
       "step": "override_merge",
       "ok": true,
-      "tail": "merged: C:\\Users\\22408913\\AppData\\Local\\Temp\\tmpa4zxah3o\\pkg\\data\\golden\\household\\samples\\golden-override-sample.json (applied 1 overrides) -> C:\\Users\\22408913\\AppData\\Local\\Temp\\tmpa4zxah3o\\pkg\\_smoke_override.json\n"
+      "tail": "merged: C:\\Users\\22408913\\AppData\\Local\\Temp\\tmplqij9uf1\\pkg\\data\\golden\\household\\samples\\golden-override-sample.json (applied 1 overrides) -> C:\\Users\\22408913\\AppData\\Local\\Temp\\tmplqij9uf1\\pkg\\_smoke_override.json\n"
     },
     {
       "step": "effective_validation",
@@ -74,7 +74,7 @@
     {
       "step": "solo_golden_render",
       "ok": true,
-      "tail": "已渲染 C:\\Users\\22408913\\AppData\\Local\\Temp\\tmpa4zxah3o\\pkg\\_smoke_solo.html（include_recipe_steps=True）\n"
+      "tail": "已渲染 C:\\Users\\22408913\\AppData\\Local\\Temp\\tmplqij9uf1\\pkg\\_smoke_solo.html（include_recipe_steps=True）\n"
     },
     {
       "step": "family_effective_render",
@@ -91,8 +91,7 @@
     "passed": true
   },
   "test_summary": {
-    "total": 42,
-    "passed": 42,
-    "failed": 0
+    "passed": 80,
+    "total": 80
   }
 }

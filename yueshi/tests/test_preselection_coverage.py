@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """预选闭环回归：ranker 支持三档语义、补偿搜索与追溯报告。"""
 import io, json, os, subprocess, sys, tempfile
+import rule_corpus  # noqa: E402  合并语料唯一助手（round78）
 
 base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 rr = os.path.join(base, "scripts", "recipe_ranker.py")
@@ -35,7 +36,7 @@ else:
         if x["menu_status"] == "compensation_candidate" and not x.get("can_swap"):
             fails.append(f"{x['ingredient']} 补偿候选未标 can_swap")
 # SKILL/规则文本
-sk = io.open(os.path.join(base, "SKILL.md"), encoding="utf-8").read() + "".join(open(os.path.join(base, p), encoding="utf-8").read() for p in ("references/runtime-rules.md", "references/nutrition-routing.md", "references/output-policy.md")) + "".join(open(os.path.join(base, p), encoding="utf-8").read() for p in ("references/runtime-rules.md", "references/nutrition-routing.md", "references/output-policy.md"))
+sk = rule_corpus.load_corpus()  # round78：合并语料唯一助手
 for kw in ["accepted_batch", "explicitly_wanted", "merely_allowed", "补偿搜索", "reason_code"]:
     if kw not in sk:
         fails.append(f"SKILL 缺: {kw}")

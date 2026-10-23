@@ -11,8 +11,8 @@ render_docx.py —— plan.json → Word 渲染器（四渲染器之一，只读
 import argparse, json, os, shutil, subprocess, sys, tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from render_plan import (REQUIRED_PLAN_KEYS, check_plan_meta,  # noqa: E402
-                         check_provider_name_leak)
+# round74：门禁统一走 render_gates（与 Markdown 同一套计划级 + 文字门禁）。
+from render_gates import enforce, validate_user_text  # noqa: E402
 from render_markdown import _md  # noqa: E402
 
 
@@ -54,12 +54,13 @@ def main():
     ap.add_argument("--output", required=True)
     a = ap.parse_args()
     plan = json.load(open(a.input, encoding="utf-8"))
-    missing = [k for k in REQUIRED_PLAN_KEYS if k not in plan]
-    if missing:
-        raise SystemExit(f"plan.json 缺字段: {missing}")
-    check_plan_meta(plan)
-    check_provider_name_leak(plan)  # 商品名泄漏门禁对全部格式生效
+    # round74：四格式统一门禁（必填键/版本/泄漏/价格/流转），并新增产物文字门禁。
+    enforce(plan, "docx")
     md = _md(plan)
+    errs = validate_user_text(md)
+    if errs:
+        print("渲染门禁未通过：" + "; ".join(errs), file=sys.stderr)
+        sys.exit(3)
     if shutil.which("pandoc"):
         with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False, encoding="utf-8") as f:
             f.write(md)

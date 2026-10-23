@@ -15,6 +15,14 @@ import json, os
 
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "data")
 
+# round73：否定前缀守卫适用的加工状态形态（唯一来源 data/commodity-vocabulary.json）
+try:
+    _VOCAB = json.load(open(os.path.join(DATA, "commodity-vocabulary.json"), encoding="utf-8"))
+    NEGATION_GUARD_FORMS = tuple(_VOCAB.get("processing_state_forms") or [])
+except OSError:
+    NEGATION_GUARD_FORMS = ("marinated", "cooked", "cured", "sashimi",
+                            "fried", "breaded", "ready_to_eat", "cooked_snack")
+
 
 def load_catalog(path=None):
     return json.load(open(path or os.path.join(DATA, "ingredient-catalog.json"), encoding="utf-8"))
@@ -24,17 +32,41 @@ def load_dictionary(path=None):
     return json.load(open(path or os.path.join(DATA, "product-form-dictionary.json"), encoding="utf-8"))
 
 
+def _negated(name, idx, prefixes):
+    """命中位置前两字符内带否定前缀（免/无/不含/未/去）。"""
+    window = name[max(0, idx - 2):idx]
+    return any(window.endswith(p) for p in prefixes)
+
+
 def detect_forms(title, dictionary=None):
-    """从商品标题识别形态集合（否定前缀忽略，如"非油炸"）。"""
+    """从商品标题识别形态集合。
+
+    round73 与主词典「规则」及助手端对齐：
+    - 否定前缀守卫只作用于加工状态形态（NEGATION_GUARD_FORMS），窗口为前两字符；
+    - cut_pieces 的「块」前一字为「整」时归 whole，不归 cut_pieces。
+    """
     dictionary = dictionary or load_dictionary()
-    neg = tuple(dictionary.get("negation_prefixes", ["非", "不", "无"]))
+    prefixes = tuple(dictionary.get("negation_prefixes") or ["免", "无", "不含", "未", "去"])
     found = set()
     for form, spec in dictionary.get("forms", {}).items():
         for kw in spec.get("keywords", []):
-            if kw and kw in title:
-                i = title.find(kw)
-                if i > 0 and title[i - 1] in neg:
+            if not kw:
+                continue
+            start = 0
+            hit = False
+            while True:
+                i = title.find(kw, start)
+                if i < 0:
+                    break
+                if form in NEGATION_GUARD_FORMS and _negated(title, i, prefixes):
+                    start = i + 1
                     continue
+                if form == "cut_pieces" and title[max(0, i - 1):i] == "整":
+                    start = i + 1
+                    continue
+                hit = True
+                break
+            if hit:
                 found.add(form)
                 break
     return found

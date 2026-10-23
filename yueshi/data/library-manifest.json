@@ -98,15 +98,15 @@
   "protocol_version": "2026-08-21",
   "release": {
     "release_status": "approved",
-    "build_id": "2026-09-17-r63",
+    "build_id": "2026-09-21-r73",
     "artifact_hashes": {
       "recipe_index": "sha256:2ae977de3e99cabe714ad22bf5d17d8be72287a4b6f42beae4e30ee967a167e5",
       "book_recipes": "sha256:a7ef984eecdb7ad6c436cb7fd0cf9c0bd9ffccebeff48151859f5e79bd07795d",
-      "classification_output": "sha256:52de132136cc1ef31d42c67b8779d73b5835303b05a2935fd5d61fd9211074de",
-      "fingerprints": "sha256:be56239df296f825b62a5afdd80cf52166a7970b3efbd65bafa346891eeaeb50",
-      "audit_data": "sha256:dcb1b8625717cf60b54463e75a532afb6059b7ee80c98c59707c11a04e137518",
-      "ingredient_catalog": "sha256:3ac5f07c04b18d14bdf4ebe0b5a7db0d693de6a1559f6fe7cbdc062cb6a2be67",
-      "review_overrides": "sha256:bf5af2c2b09ad2f34cee6d125171f4c93d3a84d27cfb8eb67b96e096014ecf9d",
+      "classification_output": "sha256:5cff40af4f0072dd58044baff252655732d992d55746d0e497419f6f85fbf904",
+      "fingerprints": "sha256:a17934365849c982dbaa463e50e98393ceff54afb58e6dab1a2442f391e00ac7",
+      "audit_data": "sha256:3c2ae07d3e3b51e39d03085f71a2950b20b572ef009aff238669cbbf95a5c7b3",
+      "ingredient_catalog": "sha256:dd055112154041cad27df8c47cd356f90f16581f48f8d61daed23767769e05c8",
+      "review_overrides": "sha256:e4e1d3542ba09675af6278921b3d92ffeab767c78a515fa1a7759e522b3de03b",
       "taxonomy_bundle": "sha256:a6049d126fcc7396198b142adb4932cf5c6d9174a72c937df61d6b11514344e8"
     },
     "quality_thresholds": {
@@ -162,8 +162,8 @@
     "warnings": [
       "soft_cross_category_clusters_for_review"
     ],
-    "approved_by": "round64-test-restore",
-    "approved_at": "2026-09-21T14:52:36",
+    "approved_by": "round64_1-test-restore",
+    "approved_at": "2026-10-21T16:12:29",
     "gate": "scripts/recipe_release_gate.py",
     "note": "release_status 只能由本脚本依据审计结果写入；审计失败不得手工改状态绕过。修改菜谱数据、分类器或指纹算法后必须重新审计并重新过门禁。artifact_hashes 冻结全部生产产物内容哈希；taxonomy 或食材目录变更后必须重跑完整构建链，否则哈希失配即拒绝。"
   }

@@ -3,7 +3,8 @@
 """round44：发布链路定稿（泄漏防线 / 依赖闭包 / 可复现构建 / 7 步烟测 / 家庭渲染 / 1.1.0）。"""
 import json, os, subprocess, sys, tempfile, zipfile
 
-BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from sandbox import make_sandbox  # round77：写库测试在临时副本中运行
+BASE = make_sandbox()
 SK = open(os.path.join(BASE, "SKILL.md"), encoding="utf-8").read()
 sys.path.insert(0, os.path.join(BASE, "scripts"))
 import release_pack as rp

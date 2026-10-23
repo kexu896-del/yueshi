@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # 收口轮 P1-3：营养超限必须在渲染前自动修正（管线顺序与禁令写死在 SKILL.md）
 import os, re
+import rule_corpus  # noqa: E402  合并语料唯一助手（round78）
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sk = open(os.path.join(ROOT, "SKILL.md"), encoding="utf-8").read() + "".join(open(os.path.join(ROOT, p), encoding="utf-8").read() for p in ("references/runtime-rules.md", "references/nutrition-routing.md", "references/output-policy.md"))
+sk = rule_corpus.load_corpus()  # round78：合并语料唯一助手
 
 # 1) 固定管线完整出现且顺序正确
 pipeline = ["菜单草案", "批量营养计算", "自动微调克数", "最终复核", "冻结 plan.json", "渲染 HTML/PDF"]

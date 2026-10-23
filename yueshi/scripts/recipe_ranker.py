@@ -18,6 +18,7 @@ import argparse, json, os, sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "common"))
 from mode_schedule import load_mode_schedule  # noqa: E402
+import constitution  # noqa: E402  round79：用户自述体质的食养软偏置
 
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data")
 INDEX = os.path.join(DATA, "recipe-index.json")
@@ -218,12 +219,20 @@ def main():
     ap.add_argument("--categories", default="荤菜,素菜,水产,汤羹,早餐,主食", help="参与检索的分类")
     ap.add_argument("--wanted", default="", help="用户点名想吃食材，逗号分隔（explicitly_wanted，最高权重）")
     ap.add_argument("--accepted", default="", help="整批接受的预选食材，逗号分隔（accepted_batch，中高权重）")
+    ap.add_argument("--constitution", default="",
+                    help="用户自述体质（如 阳虚/怕冷/湿气重）；仅显式自述时启用，作用于菜谱同分排序")
     ap.add_argument("--selection-report", default=None, help="输出预选闭环追溯 JSONL（含未入选原因码与可替换方案）")
     ap.add_argument("--limit", type=int, default=20)
     ap.add_argument("--no-books", action="store_true", help="只搜 HowToCook 池")
     ap.add_argument("--book-quota", type=float, default=0.5,
                     help="书本菜谱在输出中的最大占比（默认 0.5，来源配比见 references/book-recipe-extraction.md）")
     args = ap.parse_args()
+
+    ck, cstatus = constitution.resolve_status(args.constitution) if args.constitution else (None, "ok")
+    if args.constitution and not ck:
+        hint = ("识别到多个体质方向，无法确定单一方向" if cstatus == "ambiguous"
+                else "未识别体质描述")
+        print("! %s：%s（不启用食养偏置）" % (hint, args.constitution), file=sys.stderr)
 
     # M11 模式一致性：--mode-schedule 为唯一权威来源（取整周多数模式作为检索口径）
     mode_schedule_hash = None
@@ -305,6 +314,8 @@ def main():
                 score += DECISION_BONUS["explicitly_wanted"]
             elif c in accepted_set:
                 score += DECISION_BONUS["accepted_batch"]
+        if ck:
+            score += constitution.recipe_score_bonus(r, ck)
         scored.append((score, sorted(missing), src_tag, r))
 
     scored.sort(key=lambda x: -x[0])

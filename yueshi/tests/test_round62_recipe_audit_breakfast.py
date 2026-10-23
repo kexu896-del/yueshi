@@ -6,7 +6,8 @@ import subprocess
 import sys
 import tempfile
 
-ROOT = pathlib.Path(__file__).resolve().parent.parent
+from sandbox import make_sandbox  # round77：写库测试在临时副本中运行
+ROOT = pathlib.Path(make_sandbox())
 fails = []
 
 

@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # 收口轮 P0-5："都可以吃"=accepted_batch(user_reviewed:true)，"直接生成/跳过"=bypassed，二者不得混淆
 import os, re
+import rule_corpus  # noqa: E402  合并语料唯一助手（round78）
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sk = open(os.path.join(ROOT, "SKILL.md"), encoding="utf-8").read() + "".join(open(os.path.join(ROOT, p), encoding="utf-8").read() for p in ("references/runtime-rules.md", "references/nutrition-routing.md", "references/output-policy.md"))
+sk = rule_corpus.load_corpus()  # round78：合并语料唯一助手
 
 # 1) accepted_batch 分支存在且 user_reviewed: true
 m = re.search(r"都可以吃 / 全部保留[^\n]*`user_reviewed: true`[^\n]*accepted_batch", sk)

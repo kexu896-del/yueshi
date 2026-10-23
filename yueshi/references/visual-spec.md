@@ -1,6 +1,6 @@
 # 视觉与输出规范（网页/Markdown/PDF 通用）
 
-> 本节规则为**硬性约束**，网页版以 `templates/plan-template.html` 为权威骨架（奶油纸白+薰衣草紫/鼠尾草绿的编辑式长页，样式与结构以模板文件为准）。
+> 本节规则为**硬性约束**，网页版以 `templates/plan-template.html` 为参考骨架（奶油纸白+薰衣草紫/鼠尾草绿的编辑式长页；运行时以 scripts/render_plan.py 固定组件与 styles/*.css 为准）。
 
 ## 写作约定（所有格式通用）
 
@@ -124,7 +124,7 @@ text = text.replace("\u200b", "")   # 零宽空格
 - 每次只生成用户单选的一种最终格式（pdf/html/md/docx）；中间文件写 tmp，不作为附件。
 # 视觉与输出规范（网页/Markdown/PDF 通用）
 
-> 本节规则为**硬性约束**，网页版以 `templates/plan-template.html` 为权威骨架（奶油纸白+薰衣草紫/鼠尾草绿的编辑式长页，样式与结构以模板文件为准）。
+> 本节规则为**硬性约束**，网页版以 `templates/plan-template.html` 为参考骨架（奶油纸白+薰衣草紫/鼠尾草绿的编辑式长页；运行时以 scripts/render_plan.py 固定组件与 styles/*.css 为准）。
 
 ## 写作约定（所有格式通用）
 

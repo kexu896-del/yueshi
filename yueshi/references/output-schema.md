@@ -472,3 +472,19 @@ order_template: balanced_standard   # data/cafeteria-meal-templates.json 的模�
 - `meal.order_template` 取值仅限 `data/cafeteria-meal-templates.json` 的 `templates` 键（当前：`balanced_standard` / `no_soup`）；HTML 渲染、PDF 转换与营养校验必须读取同一模板对象，不得各自硬编码。
 - 用户说明食堂实际情况后允许覆盖默认模板：在 plan.json 该餐次写 `template_override`（`display` 与 `nutrition_estimate{net_carbs_g, protein_g, fat_g, confidence}` 完整四字段），置信度不高于原模板；覆盖记录写入内部日志。
 - 低置信度外食日的当日营养行只写"预计接近目标"，不得写精确达标。
+
+## 体质上下文（可选，round79）
+
+plan.json 顶层可选块，仅在用户**明确自述**体质或体感时写入：
+
+```json
+"constitution_context": {
+  "declared": "yang_deficiency",
+  "rules_version": "1.0.0",
+  "applied": true
+}
+```
+
+- 只记录用户自述，不是体质判定；未自述时不出现该块；
+- 软偏置只影响预选候选排序与菜谱同分裁决，不改变营养、安全、预算与锁定篮子；
+- 用户可见文案用生活化复述（`scripts/common/constitution.py` 的 `user_line()`），不得出现体质判定、辨证/证型/疗效类词。

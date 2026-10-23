@@ -1,0 +1,47 @@
+{
+  "说明": "商品语义判定词汇契约（round73，2026-09-21）。商品语义门禁（scripts/common/product_semantics.py）与叮咚查价助手（src/semantics.py）的判定词表唯一来源；两侧代码不再持有词表，只持有判定逻辑。改词只改本文件并提升 version，随后运行 scripts/export_helper_semantics.py 刷新助手快照（src/semantics-snapshot.json）。processing_state_forms 为形态词典的否定前缀守卫适用形态集合（与 data/product-form-dictionary.json 规则一致）。",
+  "vocabulary_version": "1.0.0",
+  "decisions": ["accepted", "rejected", "review_required"],
+  "rejection_reasons": [
+    "non_food_product", "category_conflict", "species_conflict", "wrong_plant_part",
+    "wrong_animal_cut", "composite_food", "prepared_dish", "snack_product",
+    "wrong_processing_state", "requirement_not_verified", "insufficient_identity_evidence",
+    "flavored_product", "mixed_composition"
+  ],
+  "species_terms": {
+    "猪": ["猪"], "牛": ["牛"], "羊": ["羊"], "鸡": ["鸡"], "鸭": ["鸭"], "鹅": ["鹅"]
+  },
+  "species_term_exceptions": {
+    "牛": ["牛奶", "奶油", "牛油果", "牛油", "蜗牛"],
+    "鸡": ["鸡蛋"]
+  },
+  "category_terms": {
+    "yogurt": ["酸奶", "发酵乳", "乳酪"],
+    "fermented_milk": ["发酵乳", "酸奶"],
+    "bread": ["面包", "吐司", "欧包", "贝果", "法棍", "餐包", "列巴", "司康"],
+    "tofu": ["豆腐"],
+    "pumpkin": ["南瓜"],
+    "celery": ["芹菜", "香芹"],
+    "hairtail": ["带鱼"]
+  },
+  "composite_terms": ["香干", "炒", "沙拉", "汉堡", "三明治", "披萨", "寿司", "便当",
+                      "盖饭", "炒饭", "拌面", "套餐", "组合", "拼盘", "串", "粗粮包", "混合装"],
+  "composition_prepared_terms": ["预制", "半成品", "料理包", "快手菜", "王牌菜", "加热即食"],
+  "snack_terms": ["零食", "小吃", "脆片", "薯片", "果干", "果脯", "点心", "饼干"],
+  "fried_terms": ["油炸", "炸", "酥", "天妇罗", "脆皮", "油豆腐", "油面筋"],
+  "seasoned_terms": ["香煎", "秘制", "红烧", "糖醋", "腌制", "调味", "奥尔良",
+                     "黑椒", "孜然", "麻辣", "藤椒"],
+  "ready_to_eat_terms": ["即食", "开袋即食", "熟食", "凉菜", "凉拌", "卤味", "卤制", "卤蛋", "卤肉"],
+  "non_food_terms": ["火锅", "特惠", "任选", "折", "券", "水", "湿巾", "垃圾袋"],
+  "no_sugar_terms": ["无糖", "无蔗糖", "0蔗糖", "0%蔗糖", "零蔗糖", "0添加蔗糖",
+                     "不加蔗糖", "裸酸奶", "断糖", "0糖"],
+  "sugar_present_terms": ["含糖", "风味", "果粒", "果味", "黄桃", "草莓", "芒果", "蓝莓", "甜", "糖"],
+  "flavor_mix_terms": ["果味", "风味", "西柚", "脐橙", "草莓", "黄桃", "芒果", "蓝莓",
+                       "爆珠", "燕麦", "坚果", "巧克力", "香草", "果粒", "椰果", "啵啵",
+                       "果汁", "果酱", "混合"],
+  "whole_wheat_terms": ["全麦", "全谷物"],
+  "other_grain_terms": ["黑麦", "裸麦", "杂粮", "多谷物", "粗粮", "燕麦"],
+  "white_bread_terms": ["白吐司", "牛奶吐司", "奶油面包", "甜面包", "蛋糕", "夹心"],
+  "processing_state_forms": ["marinated", "cooked", "cured", "sashimi",
+                             "fried", "breaded", "ready_to_eat", "cooked_snack"]
+}

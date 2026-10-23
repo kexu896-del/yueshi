@@ -2,9 +2,10 @@
 # -*- coding: utf-8 -*-
 """做法规则回归：问卷必选无默认；选B不读取不渲染；选A只展开复杂中晚饭；模板有插槽。"""
 import io, os, sys
+import rule_corpus  # noqa: E402  合并语料唯一助手（round78）
 
 base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sk = io.open(os.path.join(base, "SKILL.md"), encoding="utf-8").read() + "".join(open(os.path.join(base, p), encoding="utf-8").read() for p in ("references/runtime-rules.md", "references/nutrition-routing.md", "references/output-policy.md")) + "".join(open(os.path.join(base, p), encoding="utf-8").read() for p in ("references/runtime-rules.md", "references/nutrition-routing.md", "references/output-policy.md"))
+sk = rule_corpus.load_corpus()  # round78：合并语料唯一助手
 q = io.open(os.path.join(base, "references", "questionnaire.md"), encoding="utf-8").read()
 osch = io.open(os.path.join(base, "references", "output-schema.md"), encoding="utf-8").read()
 tpl = io.open(os.path.join(base, "templates", "plan-template.html"), encoding="utf-8").read()

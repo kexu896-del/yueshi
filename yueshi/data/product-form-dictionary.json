@@ -1,6 +1,6 @@
 {
- "说明": "全局商品形态与加工状态词典（主库，通用食材名称库与候选匹配改进方案 §四）。叮咚查价助手在构建时导出为内置快照（src/config.py FORM_KEYWORDS），两侧版本必须一致；主库更新需人工审核并提升 form_dictionary_version。",
- "form_dictionary_version": "1.4.0",
+  "说明": "全局商品形态与加工状态词典（主库，通用食材名称库与候选匹配改进方案 §四）。叮咚查价助手在构建时由 scripts/export_helper_semantics.py 导出为内置快照（src/semantics-snapshot.json），两侧版本必须一致；主库更新需人工审核并提升 form_dictionary_version。",
+  "form_dictionary_version": "1.5.0",
  "negation_prefixes": [
   "免",
   "无",
@@ -320,12 +320,12 @@
    "说明": "加工小吃；原料需求直接拒绝"
   }
  },
- "规则": [
-  "否定前缀先处理：命中位置前两字符内带 免/无/不含/未/去 时不计命中（仅 marinated/cooked 等加工状态词）。",
-  "cut_pieces 的「块」前一字为「整」时归 whole，不归 cut_pieces。",
-  "restrictive=true 的形态：查询项设置 allowed_forms 时，识别出且不在允许清单内即拒绝（form_not_allowed）。",
-  "形态无法确认的候选可保留，但不参与 suggested_purchase 自动推荐。"
- ],
+  "规则": [
+   "否定前缀先处理：命中位置前两字符内带 免/无/不含/未/去 时不计命中（仅加工状态形态：marinated/cooked/cured/sashimi/fried/breaded/ready_to_eat/cooked_snack，round73 与商品语义词汇契约 processing_state_forms 一致）。",
+   "cut_pieces 的「块」前一字为「整」时归 whole，不归 cut_pieces。",
+   "restrictive=true 的形态：查询项设置 allowed_forms 时，识别出且不在允许清单内即拒绝（form_not_allowed）。",
+   "形态无法确认的候选可保留，但不参与 suggested_purchase 自动推荐。"
+  ],
  "conditional_accept": {
   "说明": "本体合格但附独立调味包：接受候选并生成 purchase_note；本体已调味仍走 marinated 门禁",
   "attach_prefixes": [

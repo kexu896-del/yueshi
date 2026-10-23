@@ -186,8 +186,8 @@ def test_compact_query_schema_and_e_gates():
 def test_catalog_rules_written_back():
     cat = json.loads(read("data/ingredient-catalog.json"))
     fd = json.loads(read("data/product-form-dictionary.json"))
-    assert cat["catalog_version"] == "1.6.0"
-    assert fd["form_dictionary_version"] == "1.4.0"
+    assert cat["catalog_version"] == "1.7.0"
+    assert fd["form_dictionary_version"] == "1.5.0"
     for form in ("cured", "sashimi"):
         assert form in fd["forms"] and fd["forms"][form]["restrictive"] is True
     leg = cat["items"]["鸡腿"]["query_profile"]

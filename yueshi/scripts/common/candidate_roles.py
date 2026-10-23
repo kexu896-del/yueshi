@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """蛋白质候选角色与冷却（round65，数据：data/protein-candidate-roles.json）
 
+- 稳定规则 ID：ROLE-001（references/rule-index.md）。
 - candidate_role：staple（家常主力）/ rotation（轮换）/ exploratory（探索型）。
 - 核心槽位：total 5、minimum_staple 3、maximum_exploratory 1；不强制水产占位。
 - exploratory 进入核心需满足 exploratory_core_requires_any 任一条件。

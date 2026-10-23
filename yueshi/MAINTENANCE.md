@@ -11,7 +11,8 @@
 1. 先把 `SKILL.md` 交给 AI 作为系统提示/知识库。
 2. 让 AI 按其中"文件地图"读取 workflows/ 与 references/ 下的支撑文件。
 3. 告诉 AI 用户问卷中的关键八项（以及叮咚查价选答）。
-4. `scripts/` 维护命令按用途分层（全部为纯 Python 标准库；PDF 渲染额外调用本机 Chromium 浏览器，非 Python 包）。当前没有统一总控脚本，以下均为**生产链组件**，不是可独立运行的完整入口：
+4. `scripts/` 维护命令按用途分层（全部为纯 Python 标准库；PDF 渲染额外调用本机 Chromium 浏览器，非 Python 包）。生产链仍按组件调用，但**确定性收尾**可一键编排（round79）：
+   - `run_week.py --plan plan.json --out-dir out [--targets daily_targets.json] [--price-result price-result.json --request-id <id>] [--meals menu.csv --prices prices.csv] [--format html]`：目标校验 → 价格结果校验 → 采购汇总 → 渲染，任一步失败即停（rc 0 通过 / 2 参数 / 3 步骤失败），输出步骤报告；不替代菜单设计与用户确认。
    - **正式生产链组件**（生成计划的正规链路，由规划流程按序调用）：
      - `macros_calculator.py --cycle --last-period YYYY-MM-DD` → 周期阶段
      - `macros_calculator.py --sex f --age 28 --height 163 --weight 70 --goal lose --mode <系统推算的本周安排>` → 营养素目标；该参数只能从已冻结的 mode_schedule 读取，不接受人工选择
@@ -24,7 +25,10 @@
      - `market_price_normalizer.py prices.csv --city references/cities/nanjing-price-sources.yaml` → 菜场参考价
      - `wuyun_liuqi.py 2026-08-27` → 五运六气与时令
    - **菜谱库构建链**（内部固定链路，必须按固定顺序、同一 build_id、同一 taxonomy bundle 与食材目录版本执行，不得单独重跑后直接替换生产产物）：
-     - `recipe_classifier.py` → `recipe_fingerprint_builder.py` → `recipe_library_auditor.py` → `recipe_release_gate.py`
+     - 统一运行 `build_library.py`（round76 起由代码强制顺序，不再依赖本段文字）：
+       `python scripts/build_library.py --build-id <id>`；门禁有 warnings 时按提示追加 `--approve --approved-by <审批人>`；
+       只读校验（门禁状态 + 产物哈希 + 快速索引新鲜度）用 `--check`。
+       内部实际顺序：`recipe_classifier.py` → `recipe_fingerprint_builder.py` → `recipe_library_auditor.py` → `recipe_release_gate.py` → `build_quick_indices.py`（快速索引）。任一步失败即停。
    - **只读审计工具**（只产出报告，不改写生产数据）：
      - `recipe_library_auditor.py` → 菜谱库审计/验收报告（reports/ 与 data/audit/；同时是构建链第三环）
    - **禁止单独运行的内部组件**：
@@ -41,4 +45,4 @@
 - references/               安全规则 · 问卷 · 输出契约 · 视觉规范 · 协议库 · 食材表 · 菜谱池 · 城市价格源
 - data/                     结构化菜谱索引（当前已验证菜谱数量以 data/library-manifest.json 为准，不手工维护）· 包装规格 · 平替表 · 味型公式 · 时令食材
 - scripts/                  营养计算 · 篮子生成 · 菜谱检索 · 多样性校验 · 采购汇总 · 价格归一化
-- templates/                网页模板（月相图/环形图/时间轴）
+- templates/                网页结构参考骨架（正式渲染走 render_plan.py 固定组件；环形图/时间轴为禁用组件）

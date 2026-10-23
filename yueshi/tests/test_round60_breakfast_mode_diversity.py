@@ -158,8 +158,8 @@ need("SKILL.md", "S01–S04", "S")
 
 # ---------- 6. 目录族标注 ----------
 cat = json.loads((ROOT / "data/ingredient-catalog.json").read_text(encoding="utf-8"))
-if cat["catalog_version"] != "1.6.0":
-    fails.append("目录版本未提升 1.6.0")
+if cat["catalog_version"] != "1.7.0":
+    fails.append("目录版本未提升 1.7.0")
 if cat["items"]["鸡腿"].get("ingredient_family") != "poultry":
     fails.append("目录缺 ingredient_family 标注")
 

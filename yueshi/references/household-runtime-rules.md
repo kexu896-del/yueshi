@@ -1,6 +1,7 @@
 # 家庭模式运行规则（household-runtime-rules）
 
 > 状态：已并入（round41）· 与 `schemas/` RC2 契约配套 · 待评审后并入 `references/runtime-rules.md` 或作为独立规则文件。
+> 稳定规则 ID：HOUSEHOLD-001（索引见 references/rule-index.md）。
 > 适用：`plan_mode` = `shared_uniform` / `shared_meal_personalized` / `split_safety_required`。
 > 与单人 runtime-rules 的关系：单人规则为基底（餐次三态、价格三层、预选闭环、采购输出、断食窗口、生成约束全部继承），本文只写家庭增量；冲突时按 SKILL.md 的领域裁决，安全规则永远最高。
 > 核心不变量（冻结）：①每餐 `household_ingredients` 总量 = Σ `member_portions` + 可解释损耗/剩余；②个人营养只读 `member_portions`，禁止家庭总量除以人数；③营养一律按 `quantity.canonical_grams` 计算；④数值全部由脚本计算，模型只填决策字段。

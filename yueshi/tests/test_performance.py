@@ -2,9 +2,10 @@
 # -*- coding: utf-8 -*-
 """快速模式回归：SKILL 规定默认 fast 与禁令；轻量索引存在且只含检索必需字段。"""
 import io, json, os, sys
+import rule_corpus  # noqa: E402  合并语料唯一助手（round78）
 
 base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sk = io.open(os.path.join(base, "SKILL.md"), encoding="utf-8").read() + "".join(open(os.path.join(base, p), encoding="utf-8").read() for p in ("references/runtime-rules.md", "references/nutrition-routing.md", "references/output-policy.md")) + "".join(open(os.path.join(base, p), encoding="utf-8").read() for p in ("references/runtime-rules.md", "references/nutrition-routing.md", "references/output-policy.md"))
+sk = rule_corpus.load_corpus()  # round78：合并语料唯一助手
 
 fails = []
 for kw in ["execution_mode", "fast", "maintenance_audit", "不运行", "全库", "内部性能日志"]:

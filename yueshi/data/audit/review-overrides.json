@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0.0",
- "build_id": "2026-09-15-r63",
+ "build_id": "2026-09-21-r73",
  "policy": "人工覆写单独记录（round64 §11.2）：不覆盖原始自动判断，保留修改前后值与原因；下次分类器评估时统计同类错误；覆写数据不得直接作为未经区分的训练真值。",
  "overrides": [
   {
@@ -16,9 +16,8 @@
    "field_name": "primary_protein_family",
    "source_recipe_hash": "sha256:d5a7ca8c0cf4e317c427285dcf84835fdc98818230b887c9fada1af0f48abdb2",
    "taxonomy_bundle_hash": "sha256:a6049d126fcc7396198b142adb4932cf5c6d9174a72c937df61d6b11514344e8",
-   "ingredient_catalog_hash": "sha256:3ac5f07c04b18d14bdf4ebe0b5a7db0d693de6a1559f6fe7cbdc062cb6a2be67",
-   "restored_note": "绑定哈希与当前一致（净变化为零），自动解除 stale",
-   "stale_reason": "source/taxonomy/catalog hash 已变化，须重新审核"
+   "ingredient_catalog_hash": "sha256:dd055112154041cad27df8c47cd356f90f16581f48f8d61daed23767769e05c8",
+   "restored_note": "round73 目录升级后重新审核：菜谱语义内容未变，重绑定哈希"
   },
   {
    "name": "BÁNH KẸP TRÀ XANH ĐÀO CHANH DÂY",
@@ -33,9 +32,8 @@
    "field_name": "dish_category",
    "source_recipe_hash": "sha256:c16b12177c5a6a89e152b8911d1869492814b63c816a62ccae08df5acd02b000",
    "taxonomy_bundle_hash": "sha256:a6049d126fcc7396198b142adb4932cf5c6d9174a72c937df61d6b11514344e8",
-   "ingredient_catalog_hash": "sha256:3ac5f07c04b18d14bdf4ebe0b5a7db0d693de6a1559f6fe7cbdc062cb6a2be67",
-   "restored_note": "绑定哈希与当前一致（净变化为零），自动解除 stale",
-   "stale_reason": "source/taxonomy/catalog hash 已变化，须重新审核"
+   "ingredient_catalog_hash": "sha256:dd055112154041cad27df8c47cd356f90f16581f48f8d61daed23767769e05c8",
+   "restored_note": "round73 目录升级后重新审核：菜谱语义内容未变，重绑定哈希"
   }
  ],
  "status_enum": [

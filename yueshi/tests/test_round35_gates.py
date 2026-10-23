@@ -17,6 +17,7 @@ OP = read("references/output-policy.md")
 RR = read("references/runtime-rules.md")
 MM = read("developer/maintenance-map.md")
 RP = read("scripts/render_plan.py")
+RG = read("scripts/render_gates.py")
 
 
 def _plan(**kw):
@@ -102,7 +103,7 @@ def test_meal_plan_mode_unified():
 def test_banned_terms_expanded():
     for t in ("accepted_batch", "locked_basket", "provisional_locked_basket",
               "plan.json", "gate_result", "low confidence", "runtime-rules", "nutrition-routing"):
-        assert t in RP, t
+        assert t in RG, t
     # 显示转换表
     assert "已确认食材" in OP and "本周食材" in OP and "区间估算" in OP
     # 副标题出现扩充后的内部词 → 渲染失败
@@ -128,7 +129,8 @@ def test_maintenance_map_marks_render_plan_not_router():
 
 
 def test_rules_bundle_hash_covers_safety_rules():
-    assert "references/safety-rules.md" in RP
+    # round74：rules_bundle_hash 实现在 render_gates.py（render_plan re-export）。
+    assert "references/safety-rules.md" in RG
     assert "safety-rules" in OP.split("rules_bundle_hash")[1][:200] or "safety-rules" in OP
 
 

@@ -12,19 +12,12 @@ import json, os, re, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
 sys.path.insert(0, os.path.join(ROOT, "scripts", "common"))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from product_semantics import evaluate_candidate, load_profiles  # noqa: E402
+import probe_common as pc  # noqa: E402
 
 fails = []
 profiles = load_profiles()
-
-
-def helper_src(*parts):
-    """助手源码探针读取（兼容平铺 src/ 与嵌套 yueshi-dingdong-helper/src/ 两种布局）。"""
-    base = os.path.join(ROOT, "..", "yueshi-dingdong-helper")
-    cands = [os.path.join(base, *parts),
-             os.path.join(base, "yueshi-dingdong-helper", *parts)]
-    return open(next((p for p in cands if os.path.exists(p)), cands[0]),
-                encoding="utf-8").read()
 
 
 def ev_of(name, key):
@@ -104,21 +97,24 @@ for i, line in enumerate(sem_src.splitlines(), 1):
 if branch_hits:
     fails.append("判定器出现品类/ingredient 硬编码分支：%s" % branch_hits[:3])
 
-# helper 端同样探针（判定器不得按品类分支）
-helper_semantics = helper_src("src", "semantics.py")
-for i, line in enumerate(helper_semantics.splitlines(), 1):
-    code = line.split("#", 1)[0]
-    if re.match(r"\s*(if|elif)\b", code) and any(
-            k in code for k in ("酸奶", "面包", "豆腐", "猪里脊", "南瓜", "带鱼")):
-        fails.append("助手判定器出现品类硬编码：L%d %s" % (i, line.strip()[:80]))
-
-# ---------- 3) 概念关系类型（helper 源码探针） ----------
-helper_app = helper_src("src", "app.py")
-for needle in ("parent_category_query", "search_recall_only", "relation_type"):
-    if needle not in helper_app:
-        fails.append("助手概念关系缺：%s" % needle)
-if '"type": "new_alias"' in helper_app:
-    fails.append("助手仍把父品类写入 new_alias")
+# helper 端探针（round75：经 probe_common；助手缺席时 SKIP，ADR 0003）
+_helper_semantics = pc.read_helper("semantics.py")
+_helper_app = pc.read_helper("app.py")
+if _helper_semantics is None or _helper_app is None:
+    pc.skip("助手源码不在位（%s）" % os.path.join(ROOT, "..", "yueshi-dingdong-helper"))
+else:
+    # ---- 2b) helper 判定器不得按品类硬编码分支 ----
+    for i, line in enumerate(_helper_semantics.splitlines(), 1):
+        code = line.split("#", 1)[0]
+        if re.match(r"\s*(if|elif)\b", code) and any(
+                k in code for k in ("酸奶", "面包", "豆腐", "猪里脊", "南瓜", "带鱼")):
+            fails.append("助手判定器出现品类硬编码：L%d %s" % (i, line.strip()[:80]))
+    # ---- 3) 概念关系类型（helper 源码契约探针） ----
+    for needle in ("parent_category_query", "search_recall_only", "relation_type"):
+        if needle not in _helper_app:
+            fails.append("助手概念关系缺：%s" % needle)
+    if '"type": "new_alias"' in _helper_app:
+        fails.append("助手仍把父品类写入 new_alias")
 
 # ---------- 4) 酮生物模式金丝雀 ----------
 canary = json.load(open(os.path.join(ROOT, "data", "golden", "keto-canary-menu.json"),

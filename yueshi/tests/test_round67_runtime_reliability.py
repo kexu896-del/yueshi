@@ -11,7 +11,9 @@ import json, os, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
 sys.path.insert(0, os.path.join(ROOT, "scripts", "common"))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from plan_patch import apply_patch, content_hash  # noqa: E402
+import probe_common as pc  # noqa: E402
 
 fails = []
 
@@ -37,16 +39,15 @@ if len(tips) != len(set(tips)):
 if tips.count("新提示：按需加餐") != 1:
     fails.append("同一提示被重复插入")
 
-# 助手窗口诊断：源码级探针（兼容平铺 src/ 与嵌套 yueshi-dingdong-helper/src/ 两种布局）
-_hbase = os.path.join(ROOT, "..", "yueshi-dingdong-helper")
-_hcands = [os.path.join(_hbase, "src", "app.py"),
-           os.path.join(_hbase, "yueshi-dingdong-helper", "src", "app.py")]
-helper_app = open(next((p for p in _hcands if os.path.exists(p)), _hcands[0]),
-                  encoding="utf-8").read()
-for needle in ("run-summary.json", "write_run_summary", "search_not_triggered",
-               "review_required_only"):
-    if needle not in helper_app:
-        fails.append("助手窗口诊断缺：%s" % needle)
+# 助手窗口诊断：源码契约探针（round75：经 probe_common；助手缺席时 SKIP，ADR 0003）
+helper_app = pc.read_helper("app.py")
+if helper_app is None:
+    pc.skip("助手源码不在位（%s）" % os.path.join(ROOT, "..", "yueshi-dingdong-helper"))
+else:
+    for needle in ("run-summary.json", "write_run_summary", "search_not_triggered",
+                   "review_required_only"):
+        if needle not in helper_app:
+            fails.append("助手窗口诊断缺：%s" % needle)
 
 # 契约文档
 policy = open(os.path.join(ROOT, "references", "price-provider-policy.md"),

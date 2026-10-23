@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # round24：餐次覆盖追问 + 默认三餐 + 早餐轮换 防回退
 import os
+import rule_corpus  # noqa: E402  合并语料唯一助手（round78）
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sk = open(os.path.join(ROOT, "SKILL.md"), encoding="utf-8").read() + "".join(open(os.path.join(ROOT, p), encoding="utf-8").read() for p in ("references/runtime-rules.md", "references/nutrition-routing.md", "references/output-policy.md"))
+sk = rule_corpus.load_corpus()  # round78：合并语料唯一助手
 q = open(os.path.join(ROOT, "references", "questionnaire.md"), encoding="utf-8").read()
 
 # 1) 默认三餐 + 少提一餐必须追问

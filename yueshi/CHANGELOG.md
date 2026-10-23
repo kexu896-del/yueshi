@@ -1,5 +1,234 @@
 # 变更记录（唯一历史记录文件，最新在前）
 
+## 用户指示 2026-09-21（round 79f：稳定性补齐——助手确认单次化 / TargetClosed 收口 / 一键收尾，yueshi-1.4.3 补丁）
+处理三项遗留：助手两个旧 bug、一键编排脚本、维护区空目录整理（助手源码不进本包）。
+- **助手·配送确认单次化**：新增 `prepared` 门禁与确认消费——导入即清确认、准备完成才允许点开始、
+  开始处理即消费确认；结束/取消/浏览器丢失/重登/清登录全部回到"待确认"；
+  `settings.json` 若残留 `delivery_confirmed` 读取即抹除；`_show_wait` 统一恢复开始按钮。
+- **助手·TargetClosed 收口**：新增 `_goto_home`，`TargetClosedError` 等底层异常统一转 `BrowserSessionLost`；
+  预检失败回等待页（点开始自动重开网页），批量收尾不再让线程崩溃；关闭入口全程吞错。
+- **助手测试**：新增 `dev/test_round79_helper_fixes.py`（确认不落盘/不可复用、TargetClosed 转换、关闭吞错）；
+  既有 5 个 dev 测试全部通过。
+- **一键收尾**：新增 `scripts/run_week.py`——目标校验 → 价格结果校验 → 采购汇总 → 渲染，fail-fast，
+  输出步骤报告（rc 0/2/3），不替代菜单设计；新增 `tests/test_round79b_run_week.py`；全量回归 **81/81**。
+- **维护区整理**：删除维护地图中已不存在的旧书提取脚本与产物登记（鱼米之乡/一人锅/TCOP 及 EPUB 提取脚本）；
+  两个空目录本就不在包内。
+- **打包**：build-source round79f；助手 exe 与完整包因源码变更重建。
+
+## 用户指示 2026-09-21（round 79d：体质子系统架构收口，yueshi-1.4.3 补丁）
+用 improve-codebase-architecture 视角复查 round 79 新增子系统，修复四处整体逻辑问题：
+- **加载缓存**：rules/profiles/nature/inferred 经 `functools.lru_cache` 一次读入——预选/排序不再
+  逐候选重复解析 JSON（此前每次评分读 3 份文件）。
+- **自述歧义**：强别名（体质名/教材名）优先；仅症状别名且命中多个方向（如"又怕冷又怕热"）时
+  **不启用偏置**并明确提示；移除湿热与阳盛重叠的"易上火"弱别名（"上火"归阳盛，湿热保留口苦/面油/
+  长痘等具体线索）。
+- **菜谱级方向保留**：新增 `recipe_score_bonus`——±0.5 的偏置至少记 ±1，避免 `int(round())`
+  银行家舍入把半权重抹掉（0.5→0）；排序器改用它。
+- **追溯**：`scripts/common/constitution.py` 加入 `pipeline_bundle_hash` 执行组件清单。
+- **测试**：新增歧义/强别名优先/缓存同对象/方向保留/执行组件断言；另按 tdd 接缝原则补两个
+  CLI 行为测试——S1 歧义与未识别自述降级（rc=0、提示、不写 constitution_context）、
+  S2 排序器方向（阳虚：韭菜炒蛋/羊肉汤得分上升、凉拌黄瓜下降）；全量回归 **80/80**。
+- **打包**：build-source round79e（tdd 行为测试重打）。
+
+## 用户指示 2026-09-21（round 79c：类别级性味推断层（半权重），yueshi-1.4.3 补丁）
+用户要求为教材未收录的现代/加工食材增加"类别级推断（basis=category_inference，权重减半）"：
+- **推断层**：`data/food-nature.json` v1.2.0——新增 `inferred` 21 项与 `inference_rules`（鱼类/豆制品/
+  叶菜与十字花科/菌菇/谷物/坚果/食用油/水果/香辛料/药食同源），每条标注类别、rationale 与 `weight: 0.5`；
+  推断条目只参与性味方向（±0.5），**不得覆盖教材条目**（同名冲突即校验失败），不冒充原文。
+- **教材补齐**：虾（2012 版河虾：味甘性温，归肝肾）与茭白（2012 版：甘寒生津）补为教材条目；
+  目录覆盖 105/105 = 84 教材 + 21 推断。
+- **匹配修正**：基础名（如"三文鱼"→"鱼"）只做精确匹配，避免"鱼"子串误命中"带鱼"等偏好清单。
+- **测试**：推断条目/半权重方向（阳虚对西兰花 -0.5、阳盛 +0.5、阳虚对咖喱粉 +0.5、三文鱼甘平不触发）；
+  全量回归 **80/80** 通过。
+- **文档**：ADR 0007 增加推断层规则；维护地图更新；打包 build-source round79c。
+
+## 用户指示 2026-09-21（round 79b：《中医营养学》2012 并入——11 种体质与性味表扩展，yueshi-1.4.3 补丁）
+用户提供《中医营养学》（周俭主编，中国中医药出版社，2012，ISBN 9787513210805）扫描件，精读并入：
+- **提取**：422 页扫描件 OCR（目录 1–20、食物各论 50–170、第九章体质食养 252–275；其余病证章节不 OCR）。
+- **体质档案与规则升级（v1.1.0）**：2012 版第九章采用 **11 种体质**（九种标准 + 教材补充血虚 + 阳盛），
+  新增 `yang_excess`（阳盛质：形体壮实、喜凉怕热、易上火；清热泻火，忌辛辣温燥与温热食物）；
+  各体质食材清单取 2012 与 2021 两本教材的**并集**并标注来源；血虚/阳盛定义与来源改为 2012；
+  特禀质增加发物/光敏参考清单（仍走安全路由，不自动偏置）。
+- **性味表升级（v1.1.0）**：以《中医营养学》2012 为主源（185 条目）、1992 版兜底（195 条目），
+  目录覆盖 73→**82/105**（新增燕麦、葡萄、鲈鱼、虾、猪肉等；三文鱼/西兰花/藜麦等现代新品仍无教材出处，
+  不臆造）；保留 `source` / `source_entry` / `source_line` 双来源字段。
+- **测试**：test_round79 更新为 11 种体质、阳盛偏置（苦瓜正/辣椒与牛肉负）、燕麦甘平；全量回归 **80/80**。
+- **文档**：ADR 0007 与维护地图同步；打包 build-source round79b。
+
+## 用户指示 2026-09-21（round 79：体质食养的显式自述软偏置，yueshi-1.4.3 补丁）
+依据用户诉求（问卷不变繁琐；仅在用户明确自述体质时调整食材与菜谱；作用于篮子而非仅烹法）：
+- **四本参考书精读入库**（维护区 `book-extraction/`）：《中医体质分类与判定》（ZYYXH/T157-2009，EPUB 全文）、
+  《中医饮食营养学》（翁维健 1992，扫描件 OCR 219/219 页）、《中医食疗学》（施洪飞、方泓 2021，
+  扫描件 OCR 上篇+中篇关键章节 1–125 页，下篇病证食疗按用户要求不 OCR）、《随息居饮食谱》
+  （王士雄，EPUB 全文，作性味交叉核对）。扫描件使用本地 RapidOCR（PDF→图像→文本）；
+  食疗学第三章"辨体施食"已完整提取（八种体质：机理/症状/食养方法/推荐食材/食养方）。
+- **新增数据**：
+  - `data/medicine-food-catalog.json`——药食同源目录 106 种（2002×87 / 2019×6 / 2023×9 / 2024×4，
+    含公告来源与别名：龙眼肉=桂圆、西红花=藏红花、姜=生姜/干姜、枣=大枣/酸枣/黑枣等）；
+  - `data/food-nature.json`——食材性味归经（中医饮食营养学 1992 中篇，73/105 项目录食材有明确
+    【性味归经】；教材未收录的加工食品与新品不臆造，缺省不做性味偏置）；
+  - `data/constitution-profiles.json`——体质档案（九种标准定义 + 教材补充"血虚"，含自述别名）；
+  - `data/constitution-food-rules.json`——体质食养规则（宜/忌食材、性味方向、烹法、注意事项；
+    规则不含药材剂量/方剂/疗效词）。
+- **修饰器**：新增 `scripts/common/constitution.py`——自述解析（别名匹配、未知不猜测）、食材级软偏置
+  （±2：相宜/禁忌清单 + ±1 性味匹配）、菜谱级偏置、生活化复述（user_line，无体质判定/辨证/疗效词）。
+- **接线**：`ingredient_preselector.py --constitution` 在候选槽位内加分/减分（不改变候选集合、槽位数与
+  最低菜数，输出 `constitution_context`）；`recipe_ranker.py --constitution` 用于菜谱同分裁决。
+  硬约束（安全/过敏/医嘱/营养/预算/锁定篮子）永远优先；特禀/过敏体质直接走安全路由。
+- **政策**：runtime-rules「中医食养」改为"仅显式自述时软偏置"（不新增问卷、不做量表、不输出判定）；
+  questionnaire 声明体质不做问卷项；output-schema 增补 `constitution_context` 契约；
+  tcm-food-style 定位改为背景速查；功法模块保持可选但不进入本流程。
+- **测试**：新增 `tests/test_round79_constitution.py`——数据完整性（106/10/10/≥60、样例性味）、
+  自述解析、软偏置方向、复述禁用语与渲染门禁、预选器接线（候选集合不变、得分按偏置调整）、政策断言；
+  全量回归 **80/80** 通过。
+- **文档**：新增 `docs/adr/0007-constitution-food-modifier.md`；维护地图登记新数据与脚本。
+- **打包**：技能重打（build-source round79）；助手无改动不重建。
+
+## 用户指示 2026-09-21（round 78：规则注册表与合并语料助手，yueshi-1.4.3 补丁）
+依据架构评审候选 6（用户确认 Q1–Q6 全部按推荐执行）：
+- **注册表解析**：新增 `scripts/common/rule_index.py`——解析 `references/rule-index.md`
+  （唯一人工源，表格不变）为结构化注册表（rule_id / topic / rule / owners / deprecated），
+  供测试按 ID 断言；不新增第二份 JSON，避免 MD/JSON 双源漂移。
+- **语料助手**：新增 `tests/rule_corpus.py`——`load_corpus()`（SKILL.md → runtime-rules →
+  nutrition-routing → output-policy 的顺序拼接，缓存）与 `read(rel)`；10 个历史语料测试
+  （accepted_batch / meal_coverage / nutrition_gate / performance / preselection_coverage /
+  recipe_steps / round28 / round31 / round32 / unselected_ingredient）全部改用，
+  **清除 4 处"三元组连拼两遍"**（test_performance / preselection_coverage / recipe_steps /
+  unselected_ingredient），并修复两处迁移中被破坏的语句（round28 的 import 位置、
+  unselected_ingredient 的内联判断）。
+- **中心化校验**：新增 `tests/test_round78_rule_registry.py`——注册表完整性（18 条、ID 唯一且
+  格式合法）、细则路径存在且 ID 至少出现在一个 owner 文件、弃用规则不得被 SKILL.md 引用、
+  **镜像一致性**（SKILL.md 提及的 8 个规则 ID 必须已登记，自动发现不手写清单）、语料助手与
+  顺序拼接等价且每份规则文件在语料中只出现一次、10 个语料测试必须引用统一助手（防回退）。
+- **登记流程**：新增规则须先在 rule-index.md 登记 ID + 细则位置，测试按 ID 断言；
+  SKILL.md 摘要引用 ID 时同样要求已登记。
+- **测试**：全量回归 **79/79** 通过。
+- **文档**：新增 `docs/adr/0006-rule-registry.md`；维护地图登记 `rule_index.py` / `rule_corpus.py`。
+- **打包**：技能重打（build-source round78）；助手无改动不重建。
+
+## 用户指示 2026-09-21（round 77：测试密封化——跑测试不改仓库，yueshi-1.4.3 补丁）
+依据架构评审候选 5（用户确认 Q1–Q6 全部按推荐执行）：
+- **沙箱机制**：新增 `tests/sandbox.py`——`make_sandbox()` 把技能树复制到临时目录
+  （排除 book-extraction/缓存，进程退出自动清理）。六个写库测试（round43 / round44 /
+  round62 / round64.1 / round64 / round72）启动时把 ROOT/BASE 指向沙箱，所有读写与子进程
+  都在副本内发生；生产脚本的默认写出路径不变（构建链写生产目录是生产行为）。
+- **跨测试依赖消除**：沙箱带完整数据副本（含 perf 基线等），round44 不再依赖 round43 的
+  生成顺序；六个测试可单跑、可乱序。
+- **篡改式测试**：household-limits / render_html / recipe-index / taxonomy / review-overrides
+  的写入与 finally 恢复保留，但都在沙箱内——即使恢复失败也不污染仓库。
+- **不变量测试**：新增 `tests/test_round77_test_hermeticity.py`——在真实树上快照
+  data/reports/scripts 哈希 → 依次运行六个写库测试 → 断言仓库逐字节不变；并校验关键生成物
+  （发布清单/性能基线/早餐模板/库清单/审计/覆写/索引）哈希不变、六个测试均引用沙箱模块。
+- **验证**：六个测试沙箱化后全部通过（39/39、41/41 等），真实树差异 0；全量回归 **78/78**。
+- **文档**：新增 `docs/adr/0005-test-hermeticity.md`；维护地图测试节补充"写文件测试必须用沙箱"。
+- **打包**：技能重打（build-source round77）；助手无改动不重建。
+
+## 用户指示 2026-09-21（round 76：菜谱库构建链单一深模块 + 快速索引收编，yueshi-1.4.3 补丁）
+依据架构评审候选 4（用户确认 Q1–Q6 全部按推荐执行）：
+- **构建链编排器**：新增 `scripts/build_library.py`——`--build-id` / `--approve --approved-by` /
+  `--check`；内部固定顺序 classifier → fingerprint → audit → gate → quick_indices，任一步失败即停并
+  透传退出码；`run_chain(runner=…)` 支持注入执行器（测试不依赖真实构建）。MAINTENANCE.md 的
+  "文字链条"改为编排器命令（保留内部顺序说明）。
+- **状态语义收紧**：链结束读取 `library-manifest.release.release_status`——approved → 0；
+  review_required 且未审批 → 2（提示审批参数）；blocked/未知 → 3。门禁 blocked 不再静默成功。
+- **孤儿产物收编**：新增 `scripts/build_quick_indices.py`（`--out`/`--check`）——两份快速模式索引
+  `recipe-production-index.json` / `ingredient-recipe-inverted.json` 此前无生成脚本且停留在
+  2026-08-21；现由生产池（recipe-index + book-recipes）与 manifest 确定性派生，作为链末步骤，
+  版本绑定 manifest 的 build_id（不内嵌 manifest 字节哈希：审批重放会改写元数据，字节绑定会
+  造成虚假过期；manifest 一致性由 --check 的 artifact_hashes 校验负责）。重建后与旧文件逐字段核对：
+  记录数 1576、食材 2471、倒排完全一致；**唯一有意差异**：书籍记录的 `estimated_active_minutes`
+  由历史 null 修正为 `active_minutes`（473 条，快速模式时间筛选从"未知"变为可用）。
+- **实跑重建**：`build_library.py --build-id 2026-09-21-r73 --approve --approved-by round76-build-chain`
+  整链通过（override 绑定哈希未变，无需重审），门禁 approved；`--check` 通过。
+- **测试**：新增 `tests/test_round76_build_chain.py`——命令装配（顺序/build_id/审批透传/末步）、
+  注入 runner 的失败即停、三种状态退出码、快速索引确定性重建与提交一致性、真实树 `--check` 通过、
+  损坏副本 `--check` 必须失败、MAINTENANCE 引用编排器；全量回归 **77/77** 通过。
+- **文档**：新增 `docs/adr/0004-recipe-library-build-chain.md`；maintenance-map 登记新脚本并更新
+  两份快速索引的生成器说明。
+- **打包**：技能重打（build-source round76）；助手无改动不重建。
+
+## 用户指示 2026-09-21（round 75：跨仓探针行为化收尾与助手缺席降级，yueshi-1.4.3 补丁）
+依据架构评审候选 3（用户确认 Q1–Q5 全部按推荐执行）：
+- **统一探针模块**：新增 `tests/probe_common.py`——`helper_src_dir`（平铺/嵌套两种布局，
+  缺失返回 None）/`read_helper`/`load_helper_module`/`skip`；test_round65、67、69、73
+  四处各自的双布局路径代码全部删除，改经该模块。路径探测只此一处。
+- **助手缺席降级**：test_round67（窗口诊断探针）与 test_round69（判定器分支/概念关系探针）
+  在助手源码不在位时打印 SKIP 并 exit 0（此前抛 FileNotFoundError 崩溃，Kimi 提取副本
+  69/72 即此根因）；在位时保持硬断言不变。
+- **探针策略分层（ADR 0003）**：同步类校验必须是行为对拍（round73 已实现，本轮不放松）；
+  功能契约类（诊断字段/概念关系键）保留文本契约探针；结构守卫类（判定器无品类分支）
+  保留源码扫描——三层都经 probe_common 读取并在缺失时降级。
+- **策略自测**：新增 `tests/test_round75_cross_repo_probe_policy.py`——双布局解析与模块加载
+  （平铺/嵌套/缺失）、四个测试统一接线、无助手副本时 67/69 的 SKIP（exit 0）、助手在位时
+  "输出不得出现 SKIP"（防静默跳过）。
+- **文档**：新增 `docs/adr/0003-cross-repo-probe-policy.md`；maintenance-map 测试清单补探针策略。
+- **打包**：全量回归 **76/76** 通过后技能重打（build-source round75）；助手无改动不重建。
+
+## 用户指示 2026-09-21（round 74：渲染门禁与入口归一，yueshi-1.4.3 补丁）
+依据架构评审候选 2（用户确认 Q1–Q6 全部按推荐执行）：
+- **门禁深模块**：新增 `scripts/render_gates.py`——`enforce(plan, fmt)`（必填键/plan_meta 版本与哈希/
+  商品名泄漏/价格完整性/流转核验/PDF 执行提醒 ≤5）、`validate_user_text`（产物文字门禁）、
+  `validate_html`（HTML 结构门禁，从 render_plan 迁入）；必填键三份、价格/流转门禁三处、
+  plan_meta 四入口各自调用的重复全部收敛。render_plan 通过 re-export 保持旧调用面
+  （REQUIRED_PLAN_KEYS / check_plan_meta / compute_*_hash / validate_html 等）。
+- **四入口统一接入**：render_plan/render_html、render_pdf、render_markdown、render_docx 全部执行
+  enforce；`render_document` 内部再次 enforce（测试直调也受保护）。
+- **修复 PDF 吞校验错误**：render_pdf 此前调用 validate_html 后丢弃返回值（禁用词/结构问题可漏出）；
+  现错误必须显式失败（rc=3），未过门禁不打印。
+- **Markdown/Word 文字门禁（新增覆盖）**：产物文本执行 validate_user_text——内部表达、标题内部术语、
+  非做饭日违禁文案、占位符异常值；此前 md/docx 完全不查。
+- **出口语义修正**：render_plan 只产 HTML，`--format pdf` 显式拒绝（rc=2）并指向 render_pdf/
+  render_output；修正 output-policy 的固定调用说明、planning-flow 步骤 15（改为 render_output 总控）、
+  render_pdf docstring（进程内调 render_document）、MAINTENANCE 目录行（模板描述去掉已禁用图形）、
+  visual-spec 模板定位（参考骨架，运行时以固定组件/样式为准）。
+- **共享辅助公开化**：新增 `scripts/common/render_shared.py`（clean/display_price/window_no_fasting/
+  normalize_provider_name/load_cafeteria_templates/CATEGORY_ORDER）；render_plan 保留旧下划线别名，
+  render_markdown 不再借用 render_plan 私有函数；render_gates/render_shared 进入 pipeline_bundle_hash。
+- **测试**：新增 `tests/test_round74_render_gates.py`（模块归属与 re-export、文字门禁、enforce 六类拒绝、
+  md/docx 拦截内部表达、PDF 不再吞错、--format pdf 显式拒绝、正常路径）；test_round31/32 的源码探针
+  改指新归属文件；全量回归 **75/75** 通过。
+- **文档**：新增 `docs/adr/0002-render-gates-single-entry.md`；maintenance-map 登记新文件。
+- **打包**：技能包重打（build-source round74），助手无改动不重建。
+
+## 用户指示 2026-09-21（round 73：商品语义判定单一来源化，yueshi-1.4.3 补丁）
+依据架构评审候选 1（improve-codebase-architecture 流程，用户确认 Q1–Q7 全部按推荐执行）：
+- **词汇契约入库**：新增 `data/commodity-vocabulary.json`（vocabulary_version 1.0.0）——判定词表
+  （物种/品类/复合/预制/零食/油炸/调味/即食/非食品/无添加糖/含糖/风味混合/全麦/其他谷物/白面包/
+  加工状态形态集）与三态/拒因枚举的唯一来源；`scripts/common/product_semantics.py` 不再持有词表、
+  只保留判定逻辑（公开常量名不变，值从契约加载）。
+- **助手快照**：新增 `scripts/export_helper_semantics.py`（--out/--check，快照含源文件哈希、可复现）；
+  助手 `src/semantics-snapshot.json` 由主库导出（目录 1.7.0 / 形态 1.5.0 / 词汇 1.0.0）；
+  助手 `config.py` 的 FORM_KEYWORDS/RESTRICTIVE_FORMS/否定前缀/条件接受/CATALOG_RULES 全部改为
+  从快照派生（删除手抄副本与死代码 form_keywords）；`build_exe.py` 打包前强制重跑导出并
+  `--add-data` 内嵌到 `_internal` 根（`_MEIPASS`/`__file__` 双模式加载）。
+- **修复助手侧行为漂移（bug）**：`semantics.py` 全麦主词改用 `_attribute_hit`——「全麦味大列巴」
+  助手侧此前误判 accepted，现与技能侧一致 review_required；profile 外层档案解包与技能侧契约对齐。
+- **字段名统一**：助手 CATALOG_RULES/QueryItem 的 `excluded_forms` → `excluded_states`
+  （与主库 query_profile 一致；旧清单经 pydantic AliasChoices 兼容读取）；
+  `network_capture.py` 否定前缀改从 config 单源导入。
+- **主库数据修复**：ingredient-catalog 1.6.0→1.7.0——猪里脊 `marinated_ready`→`marinated`（本意即腌制）；
+  助手侧 hard_excluded_terms（鸡腿腊制词/鸡蛋蛋制品词/红薯茎叶与小吃词/猪里脊油炸裹粉词）回填主库；
+  `processed/prepared` 死状态保持不动（两侧一致不命中，登记 GLOSSARY，留待独立清理）。
+  product-form-dictionary 1.4.0→1.5.0：否定前缀规则明确为"加工状态形态 + 两字符窗口"。
+- **形态识别统一**：技能仓 `product_forms.detect_forms` 与助手对齐——否定前缀守卫只作用于
+  加工状态形态（免/无/不含/未/去、两字符窗口）、「整块」归 whole 不归 cut_pieces
+  （主词典「规则」本就要求，技能侧此前缺失）。
+- **判定副本收敛**：`judge_candidate` 成为候选判定唯一入口（product_semantics），
+  purchase_selector._decision_for 与 run_price_regression._decision_of 删除并委托；
+  run_price_regression 的目录/词典版本不再硬编码、改读主库数据。
+- **验证升级**：新增 `tests/test_round73_semantics_single_source.py`——词表唯一来源、快照新鲜度
+  （重导出逐字节比对）、快照内容（marinated 改名/raw 生/frozen_raw 全词/hard 回填）、
+  **行为对拍**（17 个边界商品名 + 15 个形态名两侧判定一致，含全麦味守卫回归）、助手缺失 SKIP；
+  test_round65 的助手探针由源码文本断言改为快照版本/值集断言；历史测试版本断言更新为
+  1.7.0/1.5.0（round52/54/58/60）；助手 dev 测试同步（test_export_contract/test_round58/test_rule_matrix）。
+- **发布链**：目录升级触发菜谱库发布门禁——重跑 classifier→fingerprint→auditor→gate 构建链
+  （build_id 2026-09-21-r73），两条人工覆写（tcop-029/uyenluu-067）因目录哈希变化 stale，
+  经复核菜谱语义内容未变后重绑定哈希，gate 以既有 warning 放行
+  （approved_by round73-semantics-single-source）；助手 exe 重建（含快照内嵌 + 全麦味修复）
+  并启动冒烟通过；全量回归 **74/74** 通过后重新打包。
+- **文档**：新增 `GLOSSARY.md`（领域术语）与 `docs/adr/0001-commodity-semantics-single-source.md`；
+  maintenance-map 文件地图登记新文件。
+
 ## 用户指示 2026-09-21（round 72：早餐"自己做"语义最终修正 + yueshi-1.4.3-ux-final 冻结）
 依据《月食yueshi-1.4.3用户体验最终补丁方案》执行（1 项 P0 必改 + 2 项可选文案优化；本方案明确要求修改
 SKILL.md 入口摘要，覆盖其冻结惯例，特此记录）：

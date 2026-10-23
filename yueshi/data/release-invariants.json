@@ -1,11 +1,10 @@
 {
   "skill_version": "yueshi-1.4.3",
-  "build_id": "2026-09-17-r63",
+  "build_id": "2026-09-21-r73",
   "library_release": "approved",
   "tests": {
-    "total": 42,
-    "passed": 42,
-    "failed": 0
+    "passed": 80,
+    "total": 80
   },
   "invariants": {
     "questionnaire_exposes_internal_mode": false,

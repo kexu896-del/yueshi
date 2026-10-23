@@ -11,7 +11,8 @@ def read(p):
 
 
 SK = read("SKILL.md")
-CORPUS = SK + read("references/runtime-rules.md") + read("references/nutrition-routing.md") + read("references/output-policy.md")
+import rule_corpus  # round78：合并语料唯一助手
+CORPUS = rule_corpus.load_corpus()
 
 
 def test_changelog_and_inline_notes_removed():
@@ -61,7 +62,9 @@ def test_price_three_layers():
                "冻结前将该食材替换"):
         assert kw in CORPUS, kw
     src = read("scripts/render_plan.py")
-    assert "ESTIMATE_PRICE_BASIS" in src and "_display_price" in src
+    shared = read("scripts/common/render_shared.py")
+    # round74：价格口径常量与实现迁入 common/render_shared.py；render_plan 保留 _display_price 别名。
+    assert "ESTIMATE_PRICE_BASIS" in shared and "_display_price" in src
     est = json.load(open(os.path.join(BASE, "data/price-estimates.json"), encoding="utf-8"))
     for f in ("city", "as_of", "unit_standard", "method", "version"):
         assert f in est["meta"], f

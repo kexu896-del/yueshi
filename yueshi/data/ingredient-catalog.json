@@ -1,6 +1,6 @@
 {
  "说明": "食材目录：预选候选的元数据（别名/当令/包装/易腐/平替/最低菜数）。价格不入此表，价格走菜场参考价与平台搜索两层。 v1.1.0 起增加 catalog_version 与可选 query_profile（通用食材名称库方案 §三：exact_terms/aliases/broad_terms/形态与替代权限集中维护，查询清单由此展开）。 v1.3.0（round58）：回写本周人工剔除规则——鸡腿拒绝腊制/腌制（cured）、三文鱼拒绝刺身形态（sashimi，调味附包走 conditional_accept）、玉米拒绝玉米须茶/茶饮品、芹菜拒绝芹菜牛肉丝等组合菜；query_profile 新增可选 hard_excluded_terms。 round60：新增 ingredient_family（蛋白质族/蔬菜族/替代族分类标注，供跨周重复惩罚与 recipe_fingerprint 使用）与 protein_family（蛋白类条目）；catalog_version 提升 1.4.0。",
- "catalog_version": "1.6.0",
+ "catalog_version": "1.7.0",
  "items": {
   "三文鱼": {
    "ingredient_id": "三文鱼",
@@ -892,9 +892,17 @@
      "breaded",
      "ready_to_eat",
      "processed",
-     "marinated_ready"
+     "marinated"
     ],
-    "category_substitution_allowed": false
+    "category_substitution_allowed": false,
+    "hard_excluded_terms": [
+     "炸",
+     "小方",
+     "裹粉",
+     "即食",
+     "熟食"
+    ],
+    "round73_note": "marinated_ready 改名为 marinated（本意即腌制形态）；助手侧人工剔除词回填主库"
    }
   },
   "玉米": {
@@ -1184,7 +1192,16 @@
      "pastry",
      "processed"
     ],
-    "category_substitution_allowed": false
+    "category_substitution_allowed": false,
+    "hard_excluded_terms": [
+     "地瓜叶",
+     "番薯叶",
+     "红薯叶",
+     "甘梅",
+     "地瓜条",
+     "红薯干"
+    ],
+    "round73_note": "助手侧人工剔除词回填主库"
    }
   },
   "纳豆": {
@@ -2097,7 +2114,12 @@
      "prepared",
      "cured"
     ],
-    "category_substitution_allowed": false
+    "category_substitution_allowed": false,
+    "hard_excluded_terms": [
+     "腊鸡腿",
+     "腊制"
+    ],
+    "round73_note": "助手侧人工剔除词回填主库"
    },
    "ingredient_family": "poultry",
    "protein_family": "poultry"
@@ -2149,7 +2171,17 @@
      "cooked_egg",
      "salted_egg"
     ],
-    "category_substitution_allowed": false
+    "category_substitution_allowed": false,
+    "hard_excluded_terms": [
+     "软饼",
+     "煎饼",
+     "蛋糕",
+     "卤蛋",
+     "茶叶蛋",
+     "咸蛋",
+     "皮蛋"
+    ],
+    "round73_note": "助手侧人工剔除词回填主库"
    },
    "ingredient_family": "egg",
    "protein_family": "egg"
@@ -2251,6 +2283,7 @@
   }
  },
  "变更记录": [
+  "1.7.0（round73 语义单一来源化）：猪里脊 excluded_states 的 marinated_ready 改名为 marinated（本意即腌制形态）；助手快照中的 hard_excluded_terms（腊鸡腿/腊制、鸡蛋蛋制品词、红薯茎叶与小吃词、猪里脊油炸裹粉词）回填主库 query_profile。processed/prepared 等未登记形态名保持不动（死状态，待独立清理）。",
   "1.5.0（round63 数据治理）：修正族标注错误——鸡蛋/鸭蛋 poultry→egg，全脂牛奶 beef→dairy，土豆 soy→root；上述错误曾导致蛋糕误判 poultry、土豆菜误判 soy。",
   "1.5.0 续：牛油果 beef→fruit、海带 fish→other_vegetable（同为历史族标注错误）。"
  ]

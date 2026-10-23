@@ -37,6 +37,7 @@ except Exception:
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "common"))
 import candidate_roles  # round65：蛋白候选角色 + 冷却
+import constitution  # round79：用户自述体质的食养软偏置
 
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data")
 
@@ -74,11 +75,12 @@ def recipe_support(name, aliases):
             "distinct_flavor_count": len(flavors)}
 
 
-def score_candidate(item, support, month, prefs, return_breakdown=False):
+def score_candidate(item, support, month, prefs, return_breakdown=False, constitution_key=None):
     """候选得分 = 偏好25 + 可购20 + 菜谱支撑20 + 包装消耗15 + 加工便利10 + 时令价格10
     无可靠价格时价格权重不参与，重新归一化（此处无实时价格 → 时令10保留、价格不参与）
     round60：persistent_reduce 降权不硬排除；跨周历史重复惩罚（上周出现 -8，4 周 ≥2 次 -15）。
-    round65：return_breakdown=True 时同时返回分项评分（预选可追溯）。"""
+    round65：return_breakdown=True 时同时返回分项评分（预选可追溯）。
+    round79：constitution_key 非空时叠加食养软偏置（±2，不改变候选集合与硬门禁）。"""
     s_pref = {"favorite": 25, "acceptable": 18, "neutral": 12,
               "dislike_this_week": 0, "permanent_dislike": -99,
               "persistent_reduce": 6, "temporarily_unavailable": 0}.get(
@@ -95,6 +97,10 @@ def score_candidate(item, support, month, prefs, return_breakdown=False):
     s_conv = 10 if item["category"] != "可选点缀" else 8
     s_season = 10 if (month and month in [int(re.sub("月", "", m)) for m in item.get("seasonality", [])]) else 4
     total = s_pref + s_avail + s_recipe + s_pkg + s_conv + s_season + s_hist
+    s_const = 0
+    if constitution_key:
+        s_const, _ = constitution.bias_for(item.get("normalized_name", ""), constitution_key)
+        total += s_const
     if not return_breakdown:
         return total
     # 分项口径：availability 可购 / convenience 加工便利 / package 包装消耗 /
@@ -104,6 +110,8 @@ def score_candidate(item, support, month, prefs, return_breakdown=False):
                  "budget": None, "recipe_support": s_recipe, "diversity": 0,
                  "familiarity": s_pref, "history": s_hist, "seasonality": s_season,
                  "final": total}
+    if constitution_key:
+        breakdown["constitution"] = s_const
     return total, breakdown
 
 
@@ -119,7 +127,7 @@ def short_reason(item, support, month):
     return REASONS["searchable"]
 
 
-def build_candidates(basket, month, level, prefs, meals_per_day=1):
+def build_candidates(basket, month, level, prefs, meals_per_day=1, constitution_key=None):
     """初步篮子 → 三层预选候选"""
     catalog = load("ingredient-catalog.json").get("items", {})
     permanent = set(prefs.get("permanent_dislikes", []))
@@ -161,7 +169,11 @@ def build_candidates(basket, month, level, prefs, meals_per_day=1):
             entry["reason_short"] = short_reason(item, support, month)
             entry["preference_status"] = prefs.get("preference_status", {}).get(name, "neutral")
             entry["score"], entry["score_breakdown"] = score_candidate(
-                item, support, month, prefs, return_breakdown=True)
+                item, support, month, prefs, return_breakdown=True,
+                constitution_key=constitution_key)
+            if constitution_key:
+                _, tags = constitution.bias_for(name, constitution_key)
+                entry["constitution_bias"] = {"key": constitution_key, "tags": tags}
             # round60：时令状态与候选原因码（S02；reason codes 供选择审计）
             seasonal_hit = bool(month and month in [int(re.sub("月", "", m)) for m in item.get("seasonality", [])])
             entry["season_status"] = "in_season" if seasonal_hit else None
@@ -227,8 +239,12 @@ def build_candidates(basket, month, level, prefs, meals_per_day=1):
         "rejected_count": len(rejected),
         "top_rejected_candidates": rejected[:5],
     }
-    return {"layers": layers, "numbered": numbered, "dropped_before_selection": dropped,
-            "selection_decision": decision, "level": level, "month": month}
+    out = {"layers": layers, "numbered": numbered, "dropped_before_selection": dropped,
+           "selection_decision": decision, "level": level, "month": month}
+    if constitution_key:
+        out["constitution_context"] = {"declared": constitution_key,
+                                       "rules_version": "1.0.0", "applied": True}
+    return out
 
 
 def resolve_alias(name, catalog):
@@ -368,6 +384,8 @@ def main():
     ap.add_argument("--level", choices=["light", "standard", "detailed"], default="standard")
     ap.add_argument("--meals-per-day", type=int, default=1)
     ap.add_argument("--preferences", default="", help="用户长期偏好 JSON")
+    ap.add_argument("--constitution", default="",
+                    help="用户自述体质（如 阳虚/怕冷/湿气重）；仅显式自述时启用，作用于候选排序")
     ap.add_argument("--user-reviewed", action="store_true")
     ap.add_argument("--export-markdown", default="")
     ap.add_argument("--export-json", default="")
@@ -384,7 +402,13 @@ def main():
         basket = json.load(open(args.basket, encoding="utf-8"))
         if "weekly_basket" in basket:
             basket = basket["weekly_basket"]
-        cands = build_candidates(basket, args.month, args.level, prefs, args.meals_per_day)
+        ck, cstatus = constitution.resolve_status(args.constitution) if args.constitution else (None, "ok")
+        if args.constitution and not ck:
+            hint = ("识别到多个体质方向，无法确定单一方向" if cstatus == "ambiguous"
+                    else "未识别体质描述")
+            print("! %s：%s（不启用食养偏置）" % (hint, args.constitution), file=sys.stderr)
+        cands = build_candidates(basket, args.month, args.level, prefs, args.meals_per_day,
+                                 constitution_key=ck)
         md = export_markdown(cands)
         print(md)
         if cands["dropped_before_selection"]:

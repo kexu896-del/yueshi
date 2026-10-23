@@ -169,8 +169,8 @@
       ]
     }
   ],
-  "classification_build_id": "2026-09-17-r63",
-  "build_id": "2026-09-17-r63",
+  "classification_build_id": "2026-09-21-r73",
+  "build_id": "2026-09-21-r73",
   "quality_metrics": {
     "dish_category_coverage": 1.0,
     "primary_ingredient_family_coverage": 0.9981,

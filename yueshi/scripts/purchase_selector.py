@@ -21,7 +21,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "common"))
 
-from common.product_semantics import evaluate_candidate, load_profiles  # noqa: E402
+from common.product_semantics import evaluate_candidate, judge_candidate, load_profiles  # noqa: E402
 from price_provider_router import ordinary_payable_price  # noqa: E402
 
 CHANGE_REASON_CODES = (
@@ -30,27 +30,6 @@ CHANGE_REASON_CODES = (
     "ordinary_price_preferred", "better_required_amount_fit",
     "fallback_to_estimate",
 )
-
-
-def _decision_for(candidate, profile, revalidate=False):
-    """新助手输出 candidate_decision；旧结果回退到语义门禁/eligible 字段。
-    revalidate=True 时忽略结果内已有判定，用本地当前门禁重评（用于旧结果复评）。"""
-    decision = candidate.get("candidate_decision")
-    if not revalidate and decision in ("accepted", "rejected", "review_required"):
-        return decision, candidate.get("evidence") or {}, list(candidate.get("rejection_reasons") or [])
-    if profile:
-        return evaluate_candidate(candidate.get("product_name", ""), profile)
-    # 无概念档案：保守回退（旧字段只作参考，形态被拒或未标合格 → review_required）
-    if candidate.get("form_match") == "rejected" or candidate.get("eligible_for_purchase") is False:
-        return "rejected", {}, ["product_form_correction"]
-    if candidate.get("eligible_for_purchase") is True:
-        return "accepted", {
-            "identity": {"status": "matched", "note": "legacy_eligible"},
-            "composition": {"status": "unknown"},
-            "processing": {"status": "unknown"},
-            "attribute_evidence": {},
-        }, []
-    return "review_required", {}, ["insufficient_identity_evidence"]
 
 
 def _package_total(candidate, required_grams):
@@ -69,7 +48,7 @@ def select_item(item, query_item, profile, revalidate=False):
     required = (query_item or {}).get("required_grams") or 0
     evaluated = []
     for cand in item.get("candidates", []):
-        decision, evidence, reasons = _decision_for(cand, profile, revalidate)
+        decision, evidence, reasons = judge_candidate(cand, profile, revalidate)
         evaluated.append({"candidate": cand, "decision": decision,
                           "evidence": evidence, "reasons": reasons})
 

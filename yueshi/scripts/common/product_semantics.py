@@ -14,59 +14,46 @@ import json, os, re
 
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "data")
 
-DECISIONS = ("accepted", "rejected", "review_required")
 
-REJECTION_REASONS = (
-    "non_food_product", "category_conflict", "species_conflict", "wrong_plant_part",
-    "wrong_animal_cut", "composite_food", "prepared_dish", "snack_product",
-    "wrong_processing_state", "requirement_not_verified", "insufficient_identity_evidence",
-    # round68：plain 单品要求下的调味/混合拒收（如「0蔗糖酸奶（西柚脐橙燕麦爆珠）」）
-    "flavored_product", "mixed_composition",
-)
+def load_vocabulary(path=None):
+    """加载商品语义判定词汇契约（round73）：词表唯一来源 data/commodity-vocabulary.json。"""
+    p = path or os.path.join(DATA, "commodity-vocabulary.json")
+    return json.load(open(p, encoding="utf-8"))
 
-SPECIES_TERMS = {
-    "猪": ["猪"], "牛": ["牛"], "羊": ["羊"], "鸡": ["鸡"], "鸭": ["鸭"], "鹅": ["鹅"],
-}
+
+_VOCAB = load_vocabulary()
+
+DECISIONS = tuple(_VOCAB["decisions"])
+
+REJECTION_REASONS = tuple(_VOCAB["rejection_reasons"])
+
+SPECIES_TERMS = _VOCAB["species_terms"]
 # round67.1：物种词误伤守卫——「牛奶/奶油/牛油果/牛油/蜗牛」不是牛肉冲突。
-SPECIES_TERM_EXCEPTIONS = {
-    "牛": ["牛奶", "奶油", "牛油果", "牛油", "蜗牛"],
-    "鸡": ["鸡蛋"],
-}
+SPECIES_TERM_EXCEPTIONS = _VOCAB["species_term_exceptions"]
 
-CATEGORY_TERMS = {
-    "yogurt": ["酸奶", "发酵乳", "乳酪"],
-    "fermented_milk": ["发酵乳", "酸奶"],
-    "bread": ["面包", "吐司", "欧包", "贝果", "法棍", "餐包", "列巴", "司康"],
-    "tofu": ["豆腐"],
-    "pumpkin": ["南瓜"],
-    "celery": ["芹菜", "香芹"],
-    "hairtail": ["带鱼"],
-}
+CATEGORY_TERMS = _VOCAB["category_terms"]
 
-COMPOSITE_TERMS = ["香干", "炒", "沙拉", "汉堡", "三明治", "披萨", "寿司", "便当",
-                   "盖饭", "炒饭", "拌面", "套餐", "组合", "拼盘", "串", "粗粮包", "混合装"]
+COMPOSITE_TERMS = _VOCAB["composite_terms"]
 # round69：按通用框架维度拆分——预制菜属 composition，调味/即食属 processing。
 # （round67.1 已删除裸「卤」：卤水豆腐是凝固工艺不是预制菜。）
-COMPOSITION_PREPARED_TERMS = ["预制", "半成品", "料理包", "快手菜", "王牌菜", "加热即食"]
-SNACK_TERMS = ["零食", "小吃", "脆片", "薯片", "果干", "果脯", "点心", "饼干"]
-FRIED_TERMS = ["油炸", "炸", "酥", "天妇罗", "脆皮", "油豆腐", "油面筋"]
-SEASONED_TERMS = ["香煎", "秘制", "红烧", "糖醋", "腌制", "调味", "奥尔良",
-                  "黑椒", "孜然", "麻辣", "藤椒"]
-READY_TO_EAT_TERMS = ["即食", "开袋即食", "熟食", "凉菜", "凉拌", "卤味", "卤制", "卤蛋", "卤肉"]
-NON_FOOD_TERMS = ["火锅", "特惠", "任选", "折", "券", "水", "湿巾", "垃圾袋"]
+COMPOSITION_PREPARED_TERMS = _VOCAB["composition_prepared_terms"]
+SNACK_TERMS = _VOCAB["snack_terms"]
+FRIED_TERMS = _VOCAB["fried_terms"]
+SEASONED_TERMS = _VOCAB["seasoned_terms"]
+READY_TO_EAT_TERMS = _VOCAB["ready_to_eat_terms"]
+NON_FOOD_TERMS = _VOCAB["non_food_terms"]
 
-NO_SUGAR_TERMS = ["无糖", "无蔗糖", "0蔗糖", "0%蔗糖", "零蔗糖", "0添加蔗糖",
-                  "不加蔗糖", "裸酸奶", "断糖", "0糖"]
-SUGAR_PRESENT_TERMS = ["含糖", "风味", "果粒", "果味", "黄桃", "草莓", "芒果", "蓝莓", "甜", "糖"]
+NO_SUGAR_TERMS = _VOCAB["no_sugar_terms"]
+SUGAR_PRESENT_TERMS = _VOCAB["sugar_present_terms"]
 # round68：plain 单品要求下的调味/混合词（风味酸奶、爆珠、果粒等不得当 plain 单品）
-FLAVOR_MIX_TERMS = ["果味", "风味", "西柚", "脐橙", "草莓", "黄桃", "芒果", "蓝莓",
-                    "爆珠", "燕麦", "坚果", "巧克力", "香草", "果粒", "椰果", "啵啵",
-                    "果汁", "果酱", "混合"]
+FLAVOR_MIX_TERMS = _VOCAB["flavor_mix_terms"]
 # round68：全麦证据分层——标题「全麦/全谷物」= title_claim；仅「黑麦/杂粮」等
 # 不得自动满足全麦要求（review_required）。
-WHOLE_WHEAT_TERMS = ["全麦", "全谷物"]
-OTHER_GRAIN_TERMS = ["黑麦", "裸麦", "杂粮", "多谷物", "粗粮", "燕麦"]
-WHITE_BREAD_TERMS = ["白吐司", "牛奶吐司", "奶油面包", "甜面包", "蛋糕", "夹心"]
+WHOLE_WHEAT_TERMS = _VOCAB["whole_wheat_terms"]
+OTHER_GRAIN_TERMS = _VOCAB["other_grain_terms"]
+WHITE_BREAD_TERMS = _VOCAB["white_bread_terms"]
+# 形态词典否定前缀守卫适用的加工状态形态（与 product-form-dictionary.json 规则一致）
+PROCESSING_STATE_FORMS = tuple(_VOCAB["processing_state_forms"])
 
 
 def load_profiles(path=None):
@@ -283,3 +270,31 @@ def evaluate_candidate(name, profile):
 
     return "accepted", _ev(identity=identity, composition=composition, processing=processing,
                            attribute=attribute, level=level), []
+
+
+def judge_candidate(candidate, profile, revalidate=False):
+    """候选判定唯一入口（round73：合并 purchase_selector._decision_for 与
+    run_price_regression._decision_of 两份复评副本）。
+
+    - 助手输出 candidate_decision 时优先采用；
+    - revalidate=True 忽略结果内已有判定，用本地当前门禁重评（旧结果复评）；
+    - 无概念档案时保守回退：旧字段 form_match/eligible_for_purchase 只作参考。
+    """
+    decision = (candidate or {}).get("candidate_decision")
+    if not revalidate and decision in ("accepted", "rejected", "review_required"):
+        return decision, (candidate or {}).get("evidence") or {}, \
+            list((candidate or {}).get("rejection_reasons") or [])
+    if profile:
+        return evaluate_candidate((candidate or {}).get("product_name", ""), profile)
+    # 无概念档案：保守回退（旧字段只作参考，形态被拒或未标合格 → review_required）
+    if (candidate or {}).get("form_match") == "rejected" \
+            or (candidate or {}).get("eligible_for_purchase") is False:
+        return "rejected", {}, ["product_form_correction"]
+    if (candidate or {}).get("eligible_for_purchase") is True:
+        return "accepted", {
+            "identity": {"status": "matched", "note": "legacy_eligible"},
+            "composition": {"status": "unknown"},
+            "processing": {"status": "unknown"},
+            "attribute_evidence": {},
+        }, []
+    return "review_required", {}, ["insufficient_identity_evidence"]

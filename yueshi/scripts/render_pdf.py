@@ -5,8 +5,10 @@ render_pdf.py —— plan.json → PDF 渲染器（四渲染器之一，只读 p
 
 用法：python scripts/render_pdf.py --input plan.json --output plan.pdf
 
-链路（固定）：调用 render_html/render_plan 生成临时自包含 HTML →
+链路（固定）：进程内调用 render_plan.render_document 生成自包含 HTML →
 Chromium 无头打印一次 → 删除临时文件。本脚本不重算营养、不改菜单。
+round74：计划级门禁由 render_gates.enforce 统一执行；validate_html 的错误
+必须显式失败（此前调用后丢弃返回值），不再放出未过门禁的 PDF。
 
 round58 定稿：正式 PDF 只渲染一次；分页问题只通过样式/分页规则修复
 （整行 break-inside、分类标题与首行绑定、表头跨页重复），
@@ -16,7 +18,8 @@ round58 定稿：正式 PDF 只渲染一次；分页问题只通过样式/分页
 import argparse, os, shutil, subprocess, sys, tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from render_plan import render_document, validate_html, check_plan_meta  # noqa: E402
+from render_gates import enforce, validate_html  # noqa: E402
+from render_plan import render_document  # noqa: E402
 import json  # noqa: E402
 
 
@@ -55,9 +58,14 @@ def main():
     ap.add_argument("--output", required=True)
     a = ap.parse_args()
     plan = json.load(open(a.input, encoding="utf-8"))
-    check_plan_meta(plan)
+    # round74：计划级门禁（必填键/版本/泄漏/价格/流转/PDF 提示条数）统一执行。
+    enforce(plan, "pdf")
     html = render_document(plan, fmt="pdf")
-    validate_html(html, plan)
+    # round74：校验错误不再丢弃——未过门禁的 HTML 不得打印成 PDF。
+    errs = validate_html(html, plan)
+    if errs:
+        print("渲染门禁未通过：" + "; ".join(errs), file=sys.stderr)
+        return 3
     # round67：输出必须是文件路径；传目录/无扩展名一律显式失败，不得静默"成功"。
     if os.path.isdir(a.output) or a.output.endswith(("/", "\\")):
         print(f"--output 必须是文件路径（当前为目录）：{a.output}", file=sys.stderr)

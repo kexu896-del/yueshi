@@ -1,11 +1,11 @@
 {
- "build_id": "2026-09-17-r63",
+ "build_id": "2026-09-21-r73",
  "script": "scripts/recipe_classifier.py",
  "script_version": "1.0.0",
  "taxonomy_version": "1.0.0",
  "source_hashes": {
   "taxonomy_bundle": "sha256:a6049d126fcc7396198b142adb4932cf5c6d9174a72c937df61d6b11514344e8",
-  "ingredient_catalog": "sha256:3ac5f07c04b18d14bdf4ebe0b5a7db0d693de6a1559f6fe7cbdc062cb6a2be67"
+  "ingredient_catalog": "sha256:dd055112154041cad27df8c47cd356f90f16581f48f8d61daed23767769e05c8"
  },
  "record_count": 1576,
  "records": [

@@ -121,12 +121,12 @@ def test_schemas_and_catalog_sync():
     rs = read("schemas/price-result.schema.json")
     assert "conditional_accept" in rs and "purchase_note" in rs
     cat = json.loads(read("data/ingredient-catalog.json"))
-    assert cat["catalog_version"] == "1.6.0"
+    assert cat["catalog_version"] == "1.7.0"
     qp = cat["items"]["鸡蛋"]["query_profile"]
     assert "shell_egg" in qp["allowed_forms"]
     assert "pancake" in qp["excluded_states"]
     fd = json.loads(read("data/product-form-dictionary.json"))
-    assert fd["form_dictionary_version"] == "1.4.0"
+    assert fd["form_dictionary_version"] == "1.5.0"
     assert "conditional_accept" in fd
 
 

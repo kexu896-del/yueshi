@@ -39,13 +39,15 @@
 
 ## 测试清单（合并前全量回归）
 
-tests/ 下全部 test_*.py 为回归套件，合并候选前必须全量通过。规则类测试断言的规则文本以 SKILL.md + references/runtime-rules.md + references/nutrition-routing.md + references/output-policy.md 的合集为准（规则拆分后测试读取合并语料）。新增功能必须附带新测试文件。
+tests/ 下全部 test_*.py 为回归套件，合并候选前必须全量通过。规则类测试断言的规则文本以 SKILL.md + references/runtime-rules.md + references/nutrition-routing.md + references/output-policy.md 的合集为准（规则拆分后测试读取合并语料）。**合并语料统一经 `tests/rule_corpus.py`**；**规则 ID 一律经 `scripts/common/rule_index.py` 注册表断言**，新增规则须先在 references/rule-index.md 登记 ID + 细则位置（策略见 docs/adr/0006）。新增功能必须附带新测试文件。**写文件的测试必须沙箱化**：`from sandbox import make_sandbox`，在临时副本中运行（跑测试不得改变工作树，tests/test_round77 守护，策略见 docs/adr/0005）。**跨仓探针**（对叮咚查价助手）：统一经 `tests/probe_common.py` 解析路径；同步类校验必须是行为对拍（tests/test_round73），功能契约类与结构守卫类可为文本/源码探针；助手缺席时 SKIP（exit 0），在位时必须硬校验（策略见 docs/adr/0003）。
 
 ## 文件地图
 
 ```
 SKILL.md                        入口（触发/定位/优先级/路由/15步/关键规则摘要与指针）
 CHANGELOG.md                    参数与规则变更的唯一历史记录位置
+GLOSSARY.md                     领域术语表（round73；不含实现细节）
+docs/adr/                       架构决策记录（round73 起；勿重新讨论已记录决策）
 references/runtime-rules.md     运行规则（信息采集/餐次/早餐/预选/一人食/外食/采购/断食窗口/生成约束）
 references/nutrition-routing.md 营养路由（模式/周期协议/蛋白质四字段/营养门禁/渲染前自动修正）
 references/output-policy.md     输出策略（渲染架构/执行模式/章节白名单/视觉分页/做法规则/最终门禁）
@@ -73,6 +75,11 @@ data/ingredient-catalog.json    食材目录（别名/当令/包装/易腐/平�
 data/ingredient-preference-schema.json  偏好与安全分离的状态枚举与规则
 data/functional-substitution-groups.json  功能替换组（删食材后同类推荐 1 至 3 个）
 data/functional-medicine-rules.json  功能医学五书 A 级规则库（84 条，round70.1；auto_tip 供执行提示选择，数值仅参考、不进生产参数）
+data/medicine-food-catalog.json  药食同源目录（106 种：2002×87 / 2019×6 / 2023×9 / 2024×4，含来源公告；体质规则的白名单边界）
+data/food-nature.json  食材性味归经表（round79c：items 为教材条目——中医营养学 2012 为主、1992 兜底；inferred 为类别级推断，半权重、不冒充原文）
+data/constitution-profiles.json  体质档案（round79b：11 种体质——九标准 + 血虚 + 阳盛；仅作自述匹配，不作判定）
+data/constitution-food-rules.json  体质食养规则（round79b：显式自述时的软偏置——宜/忌食材、性味、烹法；2012 与 2021 教材并集）
+data/commodity-vocabulary.json  商品语义判定词汇契约（round73：词表唯一来源，改词须提升 vocabulary_version 并重跑 export_helper_semantics.py）
 data/substitutions.json         平替表
 data/flavor-bases.json          常备调味包与味型公式
 data/seasonal-foods.json        月度当令食材
@@ -81,12 +88,15 @@ data/effective-parameters.json  经来源审计批准的生产参数（唯一生
 data/price-estimates.json       所在地同类行情估算价（契约字段 city/as_of/unit_standard/method/version；items 含 spec/price/upper/price_basis）
 data/cafeteria-meal-templates.json  食堂/外食点餐模板与区间营养估算（template_id/version/estimate_basis/confidence；菜单/校验/渲染共用唯一来源）
 data/foods-table.json           营养计算使用的机器可读食材表（由 references/foods-table.md 校验生成）
-data/recipe-production-index.json  快速模式使用的轻量生产菜谱索引（只含 production 记录和检索必要字段）
-data/ingredient-recipe-inverted.json  ingredient→recipe 倒排索引（快速模式候选检索，不扫描菜谱正文）
+data/recipe-production-index.json  快速模式使用的轻量生产菜谱索引（由 scripts/build_quick_indices.py 生成，随构建链刷新；版本绑定 library-manifest build_id）
+data/ingredient-recipe-inverted.json  ingredient→recipe 倒排索引（由 scripts/build_quick_indices.py 生成，随构建链刷新；不扫描菜谱正文）
 scripts/macros_calculator.py    营养目标/周期阶段/达标校验
 scripts/basket_builder.py       食材篮子草案
 scripts/common/recipe_normalization.py  菜谱指纹/列表字段与比较口径唯一公共模块（空指纹合法，禁无保护 [0]）
+scripts/common/rule_index.py    规则注册表解析（round78：references/rule-index.md → 结构化注册表；测试按 ID 断言，不散捡 Markdown）
+scripts/common/constitution.py  体质食养修饰器（round79：自述解析/软偏置/生活化复述；只改排序，不改集合与计算）
 scripts/functional_medicine_rules.py  功能医学规则库加载/校验/执行提示选择（CLI：--mode/--context/--limit/--validate；协议与安全类永不自动）
+scripts/export_helper_semantics.py  助手语义快照导出（round73：主库数据 → src/semantics-snapshot.json；--check 校验新鲜度；助手构建前强制运行）
 scripts/recipe_ranker.py        菜谱候选五层过滤 + 一锅出结构白名单（只读 production 来源）
 scripts/diversity_checker.py    菜谱指纹多样性校验
 scripts/ingredient_preselector.py  食材预选（候选三层展示/删除四类处理/锁定篮子/最低校验）
@@ -96,25 +106,21 @@ scripts/price_result_validator.py  price-result.json P01–P08 校验 + price_re
 scripts/price_provider_router.py   Provider 状态→门禁映射 / price_basis 赋值 / price_snapshot_meta 构建（纯函数，不启动浏览器）
 schemas/price-query.schema.json    外部抓价输入契约（price_data_version = 1.0）
 schemas/price-result.schema.json   外部抓价结果契约（与 yueshi-dingdong-helper 模型一一对应）
-scripts/render_plan.py          HTML 固定组件渲染器本体（plan.json → HTML，含渲染完整性与 plan_meta 版本门禁）。**注意：render_plan.py is not an output router**——名称易误认为总控，实际总控是 render_output.py；本文件相当于 html_components.py（未来重命名候选）
+scripts/render_plan.py          HTML 固定组件渲染器本体（plan.json → HTML）。**注意：render_plan.py is not an output router**——名称易误认为总控，实际总控是 render_output.py；本文件相当于 html_components.py（未来重命名候选）。round74 起入口只产 HTML（--format pdf 显式拒绝），门禁在 render_gates.py
+scripts/render_gates.py         渲染门禁唯一实现（round74：enforce / validate_user_text / validate_html；四格式入口统一调用）
+scripts/common/render_shared.py  跨格式渲染共享辅助（round74：clean / display_price / window_no_fasting / normalize_provider_name / 食堂模板 / CATEGORY_ORDER）
 scripts/render_html.py          render_plan.py 的命令行包装（HTML 入口）
-scripts/render_pdf.py           PDF 渲染器（render_html → Chromium 打印一次 → 删临时文件）
+scripts/render_pdf.py           PDF 渲染器（进程内调 render_document → 校验通过 → Chromium 打印一次 → 删临时文件）
 scripts/render_output.py        输出总控路由：按用户所选格式分发到对应渲染器
 scripts/render_markdown.py      plan.json → Markdown 渲染器
 scripts/render_docx.py          plan.json → Word 渲染器
 scripts/build_recipe_index.py   菜谱索引离线构建（HowToCook 更新时重跑）
-scripts/extract_book_recipes.py EPUB 书籍菜谱提取（换书/加书时重跑）
-scripts/extract_yumizhixiang.py 《鱼米之乡》精读提取
-scripts/extract_yirenguo.py     《一人锅》精读提取
-scripts/extract_tcop_stage1.py  The Complete One Pot 阶段一候选清点
-scripts/extract_tcop_stage2.py  The Complete One Pot 阶段二精读入库
+scripts/build_quick_indices.py  快速模式索引生成（round76：生产池 + manifest → 两份轻量索引；--out/--check）
+scripts/build_library.py        菜谱库构建链编排（round76：classifier→fingerprint→audit→gate→quick_indices；--approve/--check）
 scripts/wuyun_liuqi.py          五运六气
 templates/plan-template.html    HTML 结构参考骨架（正式渲染走 scripts/render_plan.py 固定组件）
 styles/screen.css               网页屏幕样式
 styles/print.css                PDF 和打印专用样式（首页 cover、日期、月相、采购表格、分页和午餐布局的权威样式）
-book-extraction/鱼米之乡/       鱼米之乡精读产物（菜谱JSONL/味型模板/时令地图/平替/审计）
-book-extraction/一人锅/         一人锅精读产物（汤底模板/投料顺序/主食收尾/组装模式/审计）
-book-extraction/The-Complete-One-Pot/  TCOP 两阶段精读产物（候选清单/工作日评级/缩份风险）
 book-extraction/nutrition-audit/    营养学十一书二次审计；parameter-build-report.md 唯一路径
 book-extraction/chinese_homestyle/  Chinese Homestyle 的候选、酱汁模板和审计结果
 book-extraction/woks_of_life/       The Woks of Life 的候选、一锅面饭模板和嫩化技法

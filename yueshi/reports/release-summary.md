@@ -1,9 +1,9 @@
 # 发布摘要（展示用，机器门禁以 data/release-invariants.json 为准）
 
 - 技能版本：yueshi-1.4.3
-- 构建 ID：2026-09-17-r63
+- 构建 ID：2026-09-21-r73
 - 菜谱库发布状态：approved
-- 测试：{"total": 42, "passed": 42, "failed": 0}
+- 测试：{"passed": 80, "total": 80}
 
 ## 关键不变量
 - questionnaire_exposes_internal_mode: False（期望 False）✓

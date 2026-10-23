@@ -7,7 +7,9 @@ import json, os, subprocess, sys, tempfile
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
 sys.path.insert(0, os.path.join(ROOT, "scripts", "common"))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import candidate_roles, product_forms, selection_change_log  # noqa: E401
+import probe_common as pc  # noqa: E402
 
 fails = []
 
@@ -141,8 +143,8 @@ def test_form_gate_real_failures():
 def test_catalog_profiles_and_versions():
     cat = product_forms.load_catalog()
     d = product_forms.load_dictionary()
-    check(cat["catalog_version"] == "1.6.0", "目录版本 1.6.0")
-    check(d["form_dictionary_version"] == "1.4.0", "形态词典 1.4.0")
+    check(cat["catalog_version"] == "1.7.0", "目录版本 1.7.0")
+    check(d["form_dictionary_version"] == "1.5.0", "形态词典 1.5.0")
     for ing in ("红薯", "猪里脊", "鸡蛋"):
         qp = cat["items"][ing].get("query_profile") or {}
         check(qp.get("excluded_states"), "%s 有 excluded_states" % ing)
@@ -166,16 +168,27 @@ def test_validator_p09():
 
 
 def test_helper_snapshot_synced():
-    # 2026-09-18：兼容两种源码包布局（平铺 src/ 或嵌套一层 yueshi-dingdong-helper/src/）。
-    base = os.path.join(ROOT, "..", "yueshi-dingdong-helper")
-    cands = [os.path.join(base, "src", "config.py"),
-             os.path.join(base, "yueshi-dingdong-helper", "src", "config.py")]
-    hcfg = next((p for p in cands if os.path.exists(p)), cands[0])
-    src = open(hcfg, encoding="utf-8").read()
-    check('FORM_DICTIONARY_VERSION = "1.4.0"' in src
-          and 'CATALOG_RULES_VERSION = "1.6.0"' in src, "助手版本快照同步")
-    for ing in ('"鸡蛋"', '"红薯"', '"猪里脊"'):
-        check(ing + ": {" in src, "助手 CATALOG_RULES 含 %s" % ing)
+    # round73：助手词表不再手抄于 config.py，改为内嵌快照 semantics-snapshot.json
+    # （由 scripts/export_helper_semantics.py 从主库导出）。此处校验快照版本与主库一致、
+    # 目录规则字段与主库同名同值。
+    # round75：跨仓探针统一经 tests/probe_common.py；助手缺席时 SKIP（ADR 0003）。
+    snap_text = pc.read_helper("semantics-snapshot.json")
+    if snap_text is None:
+        pc.skip("助手快照不在位（%s）" % os.path.join(ROOT, "..", "yueshi-dingdong-helper"))
+        return
+    snap = json.loads(snap_text)
+    cat = product_forms.load_catalog()
+    d = product_forms.load_dictionary()
+    check(snap["form_dictionary"]["version"] == d["form_dictionary_version"],
+          "助手快照形态词典版本同步")
+    check(snap["catalog"]["version"] == cat["catalog_version"], "助手快照目录版本同步")
+    for ing in ("鸡蛋", "红薯", "猪里脊"):
+        rule = snap["catalog"]["rules"].get(ing) or {}
+        check(rule.get("excluded_states") is not None, "助手快照 %s 有 excluded_states" % ing)
+        check(rule.get("excluded_states") == cat["items"][ing]["query_profile"]["excluded_states"],
+              "助手快照 %s excluded_states 与主库一致" % ing)
+    check("marinated_ready" not in (snap["catalog"]["rules"]["猪里脊"].get("excluded_states") or []),
+          "快照不得再以 marinated_ready 作为排除形态值")
 
 
 # ---- P1a 预选可追溯 ----

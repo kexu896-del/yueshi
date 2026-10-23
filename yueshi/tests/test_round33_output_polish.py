@@ -13,6 +13,7 @@ SK = read("SKILL.md")
 OP = read("references/output-policy.md")
 PRINT = read("styles/print.css")
 RP = read("scripts/render_plan.py")
+RG = read("scripts/render_gates.py")
 
 
 def _plan(subtitle="能量期 · 减重目标 · 月经期转卵泡期", breakfast_status="自备 · 免煮",
@@ -56,7 +57,7 @@ def _render(plan):
 
 
 def test_banned_title_terms_gate():
-    assert "BANNED_TITLE_TERMS" in RP and "周期协议" in RP
+    assert "BANNED_TITLE_TERMS" in RG and "周期协议" in RG
     assert "用户可见术语门禁" in OP
     rc, out = _render(_plan(subtitle="能量期 · 经前一周（周期协议）"))
     assert rc != 0 and "内部术语" in out

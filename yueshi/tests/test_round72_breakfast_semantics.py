@@ -11,7 +11,8 @@ import os
 import subprocess
 import sys
 
-BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from sandbox import make_sandbox  # round77：写库测试在临时副本中运行
+BASE = make_sandbox()
 
 
 def read(p):

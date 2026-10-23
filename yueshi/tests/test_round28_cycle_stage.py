@@ -6,6 +6,7 @@ import os, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "..", "scripts"))
 import render_plan as rp
+import rule_corpus  # round78：合并语料唯一助手
 BASE = os.path.join(HERE, "..")
 
 
@@ -23,7 +24,7 @@ def test_cycle_protocol_active():
 
 
 def test_evidence_gate_removed_but_safety_kept():
-    sk = open(os.path.join(BASE, "SKILL.md"), encoding="utf-8").read() + "".join(open(os.path.join(BASE, p), encoding="utf-8").read() for p in ("references/runtime-rules.md", "references/nutrition-routing.md", "references/output-policy.md"))
+    sk = rule_corpus.load_corpus()  # round78：合并语料唯一助手
     assert "external_evidence_reviewed: true`。未完成" not in sk, "旧证据门禁段落应删除"
     assert "方可进入计划计算" in sk and "CHANGELOG" in sk, "周期协议执行口径缺失（round32 起改为『进入计算+安全约束』口径）"
     for kw in ["抗凝药物", "进食障碍史", "妊娠或哺乳期", "BMI < 18.5", "缺铁性贫血服用铁剂不属于禁食禁忌"]:

@@ -1,5 +1,5 @@
 {
- "build_id": "2026-09-17-r63",
+ "build_id": "2026-09-21-r73",
  "script": "scripts/recipe_fingerprint_builder.py",
  "script_version": "1.0.0",
  "field_sources": {

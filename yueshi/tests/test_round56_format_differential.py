@@ -53,6 +53,15 @@ def _item(**extra):
 
 
 def _render_html(plan, fmt="html"):
+    if fmt != "html":
+        # round74：render_plan.py 只产 HTML（--format pdf 显式拒绝）；
+        # PDF 模式的 HTML 通过内部接口 render_document(fmt="pdf") 获取。
+        sys.path.insert(0, os.path.join(BASE, "scripts"))
+        import render_plan as _rp
+        try:
+            return 0, _rp.render_document(plan, fmt=fmt)
+        except SystemExit as e:
+            return 1, str(e)
     with tempfile.TemporaryDirectory() as td:
         fp = os.path.join(td, "plan.json")
         op = os.path.join(td, "o.html")

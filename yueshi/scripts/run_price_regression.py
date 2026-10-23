@@ -20,7 +20,8 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "common"))
 
-from common.product_semantics import evaluate_candidate, load_profiles  # noqa: E402
+from common.product_semantics import judge_candidate, load_profiles  # noqa: E402
+from common.product_forms import load_catalog, load_dictionary  # noqa: E402
 import purchase_selector as ps  # noqa: E402
 
 REGRESSION_ITEMS = [
@@ -44,15 +45,13 @@ def build_query(profiles):
         if p.get("uncertainty_policy"):
             item["uncertainty_policy"] = p["uncertainty_policy"]
         items.append(item)
-    return {"request_id": "2026-09-18-regression", "catalog_version": "1.6.0",
-            "form_dictionary_version": "1.4.0", "items": items}
-
-
-def _decision_of(candidate, profile, revalidate=False):
-    d = candidate.get("candidate_decision")
-    if not revalidate and d in ("accepted", "rejected", "review_required"):
-        return d, candidate.get("evidence") or {}, list(candidate.get("rejection_reasons") or [])
-    return evaluate_candidate(candidate.get("product_name", ""), profile)
+    # round73：版本不再硬编码，直接读主库数据文件（单一来源）。
+    catalog = load_catalog()
+    dictionary = load_dictionary()
+    return {"request_id": "2026-09-18-regression",
+            "catalog_version": catalog.get("catalog_version"),
+            "form_dictionary_version": dictionary.get("form_dictionary_version"),
+            "items": items}
 
 
 def run_regression(result, query, out_dir, source="fixture", revalidate=False):
@@ -70,7 +69,7 @@ def run_regression(result, query, out_dir, source="fixture", revalidate=False):
         profile = (profiles.get(iid) or {}).get("acceptance_profile")
         cands = []
         for c in item.get("candidates", []):
-            d, ev, rs = _decision_of(c, profile, revalidate)
+            d, ev, rs = judge_candidate(c, profile, revalidate)
             counts[d] = counts.get(d, 0) + 1
             cands.append({"product_name": c.get("product_name"),
                           "decision": d, "evidence": ev, "rejection_reasons": rs,

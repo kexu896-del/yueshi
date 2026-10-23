@@ -1,5 +1,7 @@
 # 规划主流程（固定执行顺序 15 步）
 
+> 稳定规则 ID：DIVERSITY-001 / SELECT-001（索引见 references/rule-index.md）。
+
 > 默认 `execution_mode: fast`：一次加载 manifest + `data/foods-table.json` + `data/recipe-production-index.json`；候选检索用 **ingredient→recipe 倒排索引**（`data/ingredient-recipe-inverted.json`），不扫描全部菜谱正文；先按 locked_basket 过滤再打开完整菜谱（复杂度判定优先读菜谱元数据 complexity 字段）；用户选"不需要做法"时 recipe_steps 读取数=0，选"需要"时只打开最终入选的 moderate/complex 中饭晚饭完整步骤；营养最多两轮；菜单包装锁定后才算价格；只跑一次采购汇总；只生成用户所选格式；不运行全库提取/去重/审计；耗时记入内部性能日志。`maintenance_audit` 模式需明确要求才运行。
 
 > 每次生成周计划都按此顺序执行，**不得跳步、不得换序**。每步的输入输出见下；任何一步缺信息，按 `workflows/fallback-flow.md` 降级，不猜。
@@ -25,7 +27,7 @@
 | 13 | 反向汇总采购 | 菜单→汇总→扣库存→按包装规格取整；跑 `scripts/shopping_aggregator.py`。**未在菜单中使用的锁定食材不得进入采购清单**（含预选未入选项：只进 selection report 与执行提示一行说明）。`dingdong_price_choice = use_helper` 时，**在本步骤生成并交付唯一正式的「月食-查价清单.json」**——必须使用最终 `new_purchase_amount > 0` 食材、最终克数、最终 ingredient_id 与 request_id（无采购需求项不列入）。**两阶段暂停（G12）**：正式清单交付后即进入 `awaiting_price_result` 状态——本阶段只交付查价清单与一段简短操作指引（拖入助手→查价→回传结果 JSON），**不执行步骤 14–15，不输出最终食谱、采购 PDF 或任何渲染产物（拒绝渲染属正常等待，不判 fatal）**；同时记录 `menu_snapshot_hash`（菜单草案+克数）、`nutrition_snapshot_hash`（营养计算结果）与 `shopping_demand_hash`（最终新购需求）供恢复时比对。用户回传有效「月食-叮咚价格结果.json」（G13 根级校验 + price_result_validator，必要时迁移器迁移并重新校验）或选择 `opt_out_after_query` 后才继续 | 采购清单（可选：唯一正式查价清单 → 流程暂停） |
 | 13.5 | 价格锚定（硬门禁） | 每条采购项必须有价格：优先 `scripts/market_price_normalizer.py` + `references/cities/{city}-price-sources.yaml` 有效样本；无样本（confidence low/unavailable）按 `data/price-estimates.json` 六大类行情估算并标注估算口径。**禁止"暂无参考价/实价为准/待定"占位**；区间按上限累加，清单顶部显示"本周预算约 ¥XXX（估算口径，实际以购买时为准）" | 带价采购清单 |
 | 14 | 输出采购信息 | 每项食材输出采购清单字段（`references/output-schema.md`：食材/常用购买名称/建议购买量/常见规格/参考价/平替/剩余去向）+ 储存方式 | 最终采购清单 |
-| 15 | 定稿 plan.json 并渲染 | **格式差异化渲染（round56 定稿）**：「对应菜单及用量」HTML/Word/Markdown 默认完整保留（HTML 可折叠、Word 附录、Markdown 分组列表），**PDF 固定不展示**。业务结果一次写入并校验 plan.json（契约见 output-schema）；用 `scripts/render_plan.py` 固定组件渲染，禁止占位符全局 replace 与运行时修模板；按用户所选格式交付（单选只交单种）；**正式文件不含"03 本周食材选择"小节**；做法按问卷必选项（B 则 recipe_steps 读取数为 0）。**查价链路恢复（两阶段第二阶段）**：价格结果回传后先比对 `menu_snapshot_hash` / `nutrition_snapshot_hash` / `shopping_demand_hash`——三哈希均匹配时只做**价格层局部重算**（价格校验、候选筛选、包装组合、预算更新，即重跑步骤 13.5 后直接进入本步渲染，菜单、做法、营养不重算）；普通商品切换、促销价变化和包装取整不触发菜单重算；**只有 ingredient_id 发生替换时才局部重算对应餐次与当天营养**；任一快照哈希变化说明用户在查价期间改了菜单或参数，须回到对应步骤重算后再渲染。第二阶段一次性交付全部最终产物（最终文件只渲染一次；渲染失败只重跑渲染层），不再回到 awaiting_price_result。最终预算、采购表和价格说明引用同一 `price_result_hash` | 交付物 |
+| 15 | 定稿 plan.json 并渲染 | **格式差异化渲染（round56 定稿）**：「对应菜单及用量」HTML/Word/Markdown 默认完整保留（HTML 可折叠、Word 附录、Markdown 分组列表），**PDF 固定不展示**。业务结果一次写入并校验 plan.json（契约见 output-schema）；用 `scripts/render_output.py` 总控渲染（HTML 组件由 render_plan 生成，PDF 由 render_pdf 打印，四格式统一门禁见 render_gates；G12 由总控执行），禁止占位符全局 replace 与运行时修模板；按用户所选格式交付（单选只交单种）；**正式文件不含"03 本周食材选择"小节**；做法按问卷必选项（B 则 recipe_steps 读取数为 0）。**查价链路恢复（两阶段第二阶段）**：价格结果回传后先比对 `menu_snapshot_hash` / `nutrition_snapshot_hash` / `shopping_demand_hash`——三哈希均匹配时只做**价格层局部重算**（价格校验、候选筛选、包装组合、预算更新，即重跑步骤 13.5 后直接进入本步渲染，菜单、做法、营养不重算）；普通商品切换、促销价变化和包装取整不触发菜单重算；**只有 ingredient_id 发生替换时才局部重算对应餐次与当天营养**；任一快照哈希变化说明用户在查价期间改了菜单或参数，须回到对应步骤重算后再渲染。第二阶段一次性交付全部最终产物（最终文件只渲染一次；渲染失败只重跑渲染层），不再回到 awaiting_price_result。最终预算、采购表和价格说明引用同一 `price_result_hash` | 交付物 |
 
 ## 两次生成的核心原则
 

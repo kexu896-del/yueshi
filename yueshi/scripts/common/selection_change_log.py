@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """商品变更日志（round65）：记录 provider_suggestion → final_selection 的每次变更。
 
+- 稳定规则 ID：CHANGE-001（references/rule-index.md）。
 每条记录：
   {ingredient_id, provider_suggestion, final_selection, selection_changed,
    selection_change_reason_codes, change_category}

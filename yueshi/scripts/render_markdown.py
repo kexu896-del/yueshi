@@ -13,9 +13,11 @@ render_markdown.py —— plan.json → Markdown 渲染器（四渲染器之一�
 import argparse, json, os, re, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from render_plan import (REQUIRED_PLAN_KEYS, CATEGORY_ORDER, _display_price,  # noqa: E402
-                         _window_no_fasting, clean, load_cafeteria_templates, check_plan_meta,
-                         _normalize_provider_name, check_provider_name_leak)
+# round74：跨格式辅助走 common/render_shared；门禁统一走 render_gates。
+from common.render_shared import (CATEGORY_ORDER, clean, display_price,  # noqa: E402
+                                  load_cafeteria_templates, normalize_provider_name,
+                                  window_no_fasting)
+from render_gates import REQUIRED_PLAN_KEYS, enforce, validate_user_text  # noqa: E402,F401
 
 
 def _md(plan):
@@ -58,9 +60,9 @@ def _md(plan):
             name = i['ingredient']
             ppn = (i.get("provider_product_name") or "").strip()
             if ppn:
-                name += f"（叮咚：{_normalize_provider_name(ppn)}）"
+                name += f"（叮咚：{normalize_provider_name(ppn)}）"
             out.append(f"| {cat} | {name} | {i.get('required_quantity','')} | "
-                       f"{i.get('acceptable_package','')} | {_display_price(i)} | "
+                       f"{i.get('acceptable_package','')} | {display_price(i)} | "
                        f"{i.get('purchase_note','')} | {subs} | {i.get('leftover_action','')} |")
     if shopping.get("total"):
         out += ["", f"**本周预计支出：{shopping['total']}**"]
@@ -98,7 +100,7 @@ def _md(plan):
     out += ["## 七天菜单", ""]
     for d in plan["days"]:
         out += [f"### {d['label']}", ""]
-        w = _window_no_fasting(d.get("window", ""))
+        w = window_no_fasting(d.get("window", ""))
         if w:
             out += [w, ""]
         for m in d.get("meals", []):
@@ -145,12 +147,13 @@ def main():
     ap.add_argument("--output", required=True)
     a = ap.parse_args()
     plan = json.load(open(a.input, encoding="utf-8"))
-    missing = [k for k in REQUIRED_PLAN_KEYS if k not in plan]
-    if missing:
-        raise SystemExit(f"plan.json 缺字段: {missing}")
-    check_plan_meta(plan)
-    check_provider_name_leak(plan)  # G12 旁路：商品名泄漏门禁对全部格式生效
+    # round74：四格式统一门禁（必填键/版本/泄漏/价格/流转），并新增产物文字门禁。
+    enforce(plan, "md")
     md = _md(plan)
+    errs = validate_user_text(md)
+    if errs:
+        print("渲染门禁未通过：" + "; ".join(errs), file=sys.stderr)
+        sys.exit(3)
     open(a.output, "w", encoding="utf-8").write(md)
     print(f"Markdown 已生成: {a.output}")
 

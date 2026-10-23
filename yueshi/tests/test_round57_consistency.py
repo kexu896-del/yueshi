@@ -21,6 +21,7 @@ PF = read("workflows/planning-flow.md")
 OP = read("references/output-policy.md")
 PP = read("references/price-provider-policy.md")
 RP = read("scripts/render_plan.py")
+RG = read("scripts/render_gates.py")
 
 
 def test_freeze_timing_p0():
@@ -121,7 +122,7 @@ def test_terminology_gate_expanded():
                  "shopping_demand_hash", "price_result_hash",
                  "migration_log", "provider_product_name",
                  "shopping_meal_usage_map"):
-        assert f'"{term}"' in RP, f"BANNED_TITLE_TERMS 缺 {term}"
+        assert f'"{term}"' in RG, f"BANNED_TITLE_TERMS 缺 {term}"
         assert term in OP, f"术语门禁策略缺 {term}"
     for conv in ("awaiting_price_result → 等待叮咚价格结果",
                  "price_result_received → 已读取价格结果",

@@ -10,7 +10,8 @@ def read(p):
 
 
 SK = read("SKILL.md")
-CORPUS = SK + read("references/runtime-rules.md") + read("references/nutrition-routing.md") + read("references/output-policy.md")
+import rule_corpus  # round78：合并语料唯一助手
+CORPUS = rule_corpus.load_corpus()
 
 
 def test_renderer_naming_unique():
@@ -23,8 +24,10 @@ def test_renderer_naming_unique():
 
 
 def test_plan_meta_gate():
-    src = read("scripts/render_plan.py")
+    # round74：plan_meta 门禁唯一实现在 render_gates.py；render_plan 通过 re-export 保持旧调用面。
+    src = read("scripts/render_gates.py")
     assert "PLAN_SCHEMA_VERSION" in src and "check_plan_meta" in src
+    assert "from render_gates import" in read("scripts/render_plan.py")
     for f in ("plan_schema_version", "skill_version", "recipe_manifest_version",
               "effective_parameters_version", "price_data_version"):
         assert f in src and f in CORPUS, f

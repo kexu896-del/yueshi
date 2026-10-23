@@ -4,7 +4,8 @@
 双哈希 / 迁移映射 / 包内烟测 / 性能基线）。"""
 import json, os, subprocess, sys, tempfile
 
-BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from sandbox import make_sandbox  # round77：写库测试在临时副本中运行
+BASE = make_sandbox()
 SK = open(os.path.join(BASE, "SKILL.md"), encoding="utf-8").read()
 sys.path.insert(0, os.path.join(BASE, "scripts"))
 

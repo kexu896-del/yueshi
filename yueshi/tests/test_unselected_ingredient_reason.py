@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """未入选食材回归：不进采购数据行；去向说明含真实原因；aggregator 排除逻辑。"""
 import io, json, os, subprocess, sys, tempfile
+import rule_corpus  # noqa: E402  合并语料唯一助手（round78）
 
 base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 fails = []
@@ -13,7 +14,7 @@ if 'menu_status") == "not_selected"' not in sa:
 osch = io.open(os.path.join(base, "references", "output-schema.md"), encoding="utf-8").read()
 if "不得出现在正式采购表数据行" not in osch:
     fails.append("output-schema 缺采购排除规则")
-if "原因只能来自 ranker 日志" not in io.open(os.path.join(base, "SKILL.md"), encoding="utf-8").read() + "".join(open(os.path.join(base, p), encoding="utf-8").read() for p in ("references/runtime-rules.md", "references/nutrition-routing.md", "references/output-policy.md")) + "".join(open(os.path.join(base, p), encoding="utf-8").read() for p in ("references/runtime-rules.md", "references/nutrition-routing.md", "references/output-policy.md")):
+if "原因只能来自 ranker 日志" not in rule_corpus.load_corpus():
     fails.append("SKILL 未规定原因必须来自 ranker 日志")
 # 端到端：构造菜单 CSV 含蛤蜊行 + selection report 未入选 → 被移除且无金额行
 tmp = tempfile.mkdtemp()

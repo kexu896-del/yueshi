@@ -33,7 +33,7 @@ class TestFormDictionary(unittest.TestCase):
         self.dic = _load("data/product-form-dictionary.json")
 
     def test_version_and_negation(self):
-        self.assertEqual(self.dic["form_dictionary_version"], "1.4.0")
+        self.assertEqual(self.dic["form_dictionary_version"], "1.5.0")
         for neg in ("免", "无", "未"):
             self.assertIn(neg, self.dic["negation_prefixes"])
 
@@ -56,7 +56,7 @@ class TestCatalogProfiles(unittest.TestCase):
         self.cat = _load("data/ingredient-catalog.json")
 
     def test_catalog_version(self):
-        self.assertEqual(self.cat["catalog_version"], "1.6.0")
+        self.assertEqual(self.cat["catalog_version"], "1.7.0")
 
     def test_query_profiles(self):
         for name in ("上海青", "鸡腿", "鸡蛋"):
