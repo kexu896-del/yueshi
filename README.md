@@ -22,34 +22,36 @@
 - `yueshi-dingdong-helper/` — 叮咚查价助手源码（可选，Windows；不选叮咚查价时完全不需要）
 - `kimi.plugin.json` — Kimi Code CLI 插件清单
 
-## 安装
+## 接入方式
 
-### 方式一：Kimi 插件（推荐）
+技能本体就是一个 `yueshi/` 文件夹（入口 `SKILL.md`）。**任何支持 SKILL.md / Agent Skills 的 AI 工具都能用**，不绑定 Kimi。
 
-在 Kimi Code CLI 中执行：
+### 通用：复制到技能目录
+
+把 `yueshi/` 整个文件夹放进所用工具的技能目录，常见位置：
+
+| 工具 | 全局技能目录 | 项目内目录 |
+|---|---|---|
+| Kimi Code CLI | `~/.kimi-code/skills/` | — |
+| Claude Code | `~/.claude/skills/` | `.claude/skills/` |
+| opencode | `~/.config/opencode/skills/` | `.opencode/skills/` |
+| 其他支持 SKILL.md 的工具 | 以工具文档为准 | 以工具文档为准 |
+
+> Windows 下 `~` 即 `C:\Users\<你的用户名>`。新开会话后，说"帮我做一周食谱"触发。
+
+### Kimi 一键插件
 
 ```text
 /plugins install https://github.com/kexu896-del/yueshi
 ```
 
-然后 `/reload` 或开新会话，说"帮我做一周食谱"即可。
+然后 `/reload` 或开新会话。
 
-### 方式二：手动安装
+### 不安装：直接当附件
 
-```bash
-git clone https://github.com/kexu896-del/yueshi.git
-```
+把 `yueshi/` 打包成 zip 发给 AI（或任何能读文件的模型），让它读取 `SKILL.md` 并按流程执行。
 
-把 `yueshi/` 整个文件夹复制到技能目录：
-
-- Windows：`C:\Users\<你的用户名>\.kimi-code\skills\`
-- macOS / Linux：`~/.kimi-code/skills/`
-
-新开会话后，说"帮我做一周食谱"触发。技能只依赖 Python 3.10+ 标准库；PDF 渲染额外调用本机 Chrome/Edge。
-
-### 方式三：不安装，直接当附件
-
-把 `yueshi/` 打包成 zip 发给 AI（或任何能读文件的 AI），让它读取 `SKILL.md` 并按流程执行。
+技能只依赖 Python 3.10+ 标准库；PDF 渲染额外调用本机 Chrome/Edge。
 
 ## 使用过程
 

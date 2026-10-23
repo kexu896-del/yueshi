@@ -1,22 +1,22 @@
 {
   "release_version": "yueshi-1.4.3",
-  "created_at": "2026-10-23T01:43:04+00:00",
-  "build_source": "round79g-2026-09-21",
+  "created_at": "2026-10-23T02:46:09+00:00",
+  "build_source": "round79h-2026-10-23",
   "build_tool_version": "release_pack.py@587e90e13a01",
   "artifacts": [
     {
       "name": "yueshi.skill",
-      "size_bytes": 1315473,
-      "sha256": "9c3f3ff5fa8185cdc340bd3cfd125c8c4040f279e24743922c47b5127546f24b"
+      "size_bytes": 1316381,
+      "sha256": "1206c7eba8ef6b05d776d44a13042e10396ebee67387f86a2b701218a6919179"
     },
     {
       "name": "yueshi.zip",
-      "size_bytes": 1315473,
-      "sha256": "9c3f3ff5fa8185cdc340bd3cfd125c8c4040f279e24743922c47b5127546f24b"
+      "size_bytes": 1316381,
+      "sha256": "1206c7eba8ef6b05d776d44a13042e10396ebee67387f86a2b701218a6919179"
     }
   ],
   "package_file_count": 277,
-  "uncompressed_size_bytes": 7195529,
+  "uncompressed_size_bytes": 7197412,
   "size_reduction_note": "round43 起排除维护区工作目录：仅移除非运行期维护材料，无运行依赖变化",
   "excluded_paths": [
     "book-extraction/",
@@ -59,12 +59,12 @@
     {
       "step": "identity_merge",
       "ok": true,
-      "tail": "merged: <identity> (applied 0 overrides) -> C:\\Users\\22408913\\AppData\\Local\\Temp\\tmplqij9uf1\\pkg\\_smoke_identity.json\n"
+      "tail": "merged: <identity> (applied 0 overrides) -> C:\\Users\\22408913\\AppData\\Local\\Temp\\tmpucjhas6k\\pkg\\_smoke_identity.json\n"
     },
     {
       "step": "override_merge",
       "ok": true,
-      "tail": "merged: C:\\Users\\22408913\\AppData\\Local\\Temp\\tmplqij9uf1\\pkg\\data\\golden\\household\\samples\\golden-override-sample.json (applied 1 overrides) -> C:\\Users\\22408913\\AppData\\Local\\Temp\\tmplqij9uf1\\pkg\\_smoke_override.json\n"
+      "tail": "merged: C:\\Users\\22408913\\AppData\\Local\\Temp\\tmpucjhas6k\\pkg\\data\\golden\\household\\samples\\golden-override-sample.json (applied 1 overrides) -> C:\\Users\\22408913\\AppData\\Local\\Temp\\tmpucjhas6k\\pkg\\_smoke_override.json\n"
     },
     {
       "step": "effective_validation",
@@ -74,7 +74,7 @@
     {
       "step": "solo_golden_render",
       "ok": true,
-      "tail": "已渲染 C:\\Users\\22408913\\AppData\\Local\\Temp\\tmplqij9uf1\\pkg\\_smoke_solo.html（include_recipe_steps=True）\n"
+      "tail": "已渲染 C:\\Users\\22408913\\AppData\\Local\\Temp\\tmpucjhas6k\\pkg\\_smoke_solo.html（include_recipe_steps=True）\n"
     },
     {
       "step": "family_effective_render",

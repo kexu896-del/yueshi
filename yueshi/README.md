@@ -1,6 +1,8 @@
 # 月食（yueshi）——采购驱动的一周饮食计划技能
 
 > 适用版本：`yueshi-1.4.3`
+>
+> 可用于任何支持 `SKILL.md` / Agent Skills 的 AI 工具（Claude Code、opencode、Kimi Code CLI、Codex 等）；也可以把 `yueshi/` 打包成 zip 直接作为对话附件。
 
 ## 这是什么
 
