@@ -14,6 +14,7 @@ from config import (
     PRICE_FIELD_UNITS,
     PRODUCT_RESPONSE_URL_HINTS,
     RESTRICTIVE_FORMS,
+    _NEGATION_PREFIXES,
     detect_forms,
     detect_conditional_accept,
     conditional_accept_note,
@@ -129,12 +130,10 @@ def is_eligible_sku(candidate: ProductCandidate) -> bool:
     ))
 
 
-_NEGATION_PREFIXES = ("免", "无", "不含", "未", "去")
-
-
 def _is_hard_excluded(name: str, hard_excludes: list[str]) -> bool:
     """硬排除词命中商品名即拒绝，但跳过否定前缀场景：
-    「免腌制」「无添加」「不含防腐剂」「未腌制」不应被「腌制/添加」等词误伤。"""
+    「免腌制」「无添加」「不含防腐剂」「未腌制」不应被「腌制/添加」等词误伤。
+    （round73：否定前缀唯一来源 config._NEGATION_PREFIXES ← 语义快照）"""
     for term in hard_excludes:
         start = 0
         while True:
@@ -190,9 +189,9 @@ def extract_candidates_from_json(
     exact_set = {query_item.query, *query_item.exact_terms}
     alias_set = set(query_item.aliases)
     # v2.0 形态门禁（词典识别，替代 v1.9 纯关键词包含）：
-    # excluded_forms 命中即拒；allowed_forms 设置后，识别出的限制性形态
+    # excluded_states 命中即拒；allowed_forms 设置后，识别出的限制性形态
     # 不在允许清单内同样拒绝（鸡腿块不能冒充整腿进入候选）。
-    excluded_form_set = set(query_item.excluded_forms)
+    excluded_form_set = set(query_item.excluded_states)
     allowed_form_set = set(query_item.allowed_forms)
     seen_pids: set[str] = set()   # 进入解析即按 product_id 去重
     count_re = re.compile(r"\d+\s*(?:枚|件|只|条|盒|袋|瓶)")

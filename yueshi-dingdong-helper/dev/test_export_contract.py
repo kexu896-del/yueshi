@@ -26,7 +26,7 @@ def _dump(batch):
 
 
 def test_form_dictionary_version_bumped():
-    assert FORM_DICTIONARY_VERSION == "1.4.0"
+    assert FORM_DICTIONARY_VERSION == "1.5.0"
 
 
 def test_new_egg_forms_restrictive():

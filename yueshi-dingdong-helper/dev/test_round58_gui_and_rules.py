@@ -26,8 +26,8 @@ def check(cond, msg):
 
 
 # 1. 形态词典
-check(config.FORM_DICTIONARY_VERSION == "1.4.0", "词典版本未升到 1.3.0")
-check(config.CATALOG_RULES_VERSION == "1.6.0", "目录快照版本未升到 1.3.0")
+check(config.FORM_DICTIONARY_VERSION == "1.5.0", "词典版本应为 1.5.0")
+check(config.CATALOG_RULES_VERSION == "1.7.0", "目录快照版本应为 1.7.0")
 for f in ("cured", "sashimi"):
     check(f in config.FORM_KEYWORDS, f"FORM_KEYWORDS 缺 {f}")
     check(f in config.RESTRICTIVE_FORMS, f"RESTRICTIVE_FORMS 缺 {f}")
@@ -35,11 +35,11 @@ check("腊鸡腿" in "".join(config.FORM_KEYWORDS["cured"]) or any(
     "腊" in k for k in config.FORM_KEYWORDS["cured"]), "cured 缺腊字")
 check(any("刺身" in k for k in config.FORM_KEYWORDS["sashimi"]), "sashimi 缺刺身")
 
-# 四类人工剔除规则已回写快照
+# 四类人工剔除规则已回写快照（round73 起字段名与主库一致 excluded_states）
 rules = config.CATALOG_RULES
 check("腊鸡腿" in rules["鸡腿"]["hard_excluded_terms"], "鸡腿缺腊制排除")
-check("cured" in rules["鸡腿"]["excluded_forms"], "鸡腿缺 cured 排除形态")
-check("sashimi" in rules["三文鱼"]["excluded_forms"], "三文鱼缺 sashimi 排除形态")
+check("cured" in rules["鸡腿"]["excluded_states"], "鸡腿缺 cured 排除形态")
+check("sashimi" in rules["三文鱼"]["excluded_states"], "三文鱼缺 sashimi 排除形态")
 check(any("茶" in t for t in rules["玉米"]["hard_excluded_terms"]), "玉米缺茶饮排除")
 check("牛肉丝" in rules["芹菜"]["hard_excluded_terms"], "芹菜缺组合菜排除")
 

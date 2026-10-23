@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from typing import Any, Literal
-from pydantic import BaseModel, Field
+from pydantic import AliasChoices, BaseModel, Field
 
 
 class PriceQueryItem(BaseModel):
@@ -37,9 +37,12 @@ class PriceQueryItem(BaseModel):
         default_factory=list,
         description="允许形态：whole_leg/drumstick/wing/breast 等；设置后候选形态必须正向匹配。",
     )
-    excluded_forms: list[str] = Field(
+    excluded_states: list[str] = Field(
         default_factory=list,
-        description="排除形态：diced/shredded/sliced/minced/marinated/cooked 等；命中即拒。",
+        validation_alias=AliasChoices("excluded_states", "excluded_forms"),
+        description="排除形态：diced/shredded/sliced/minced/marinated/cooked 等；命中即拒。"
+                    "（round73 与主库 ingredient-catalog query_profile 字段名统一，"
+                    "旧清单的 excluded_forms 仍兼容读取。）",
     )
     # v2.0 匹配质量分层（通用食材库方案）：exact/alias/broad 三层词。
     exact_terms: list[str] = Field(
@@ -77,8 +80,8 @@ class PriceQueryItem(BaseModel):
             self.hard_excluded_terms = list(rule["hard_excluded_terms"])
         if not self.allowed_forms and rule.get("allowed_forms"):
             self.allowed_forms = list(rule["allowed_forms"])
-        if not self.excluded_forms and rule.get("excluded_forms"):
-            self.excluded_forms = list(rule["excluded_forms"])
+        if not self.excluded_states and rule.get("excluded_states"):
+            self.excluded_states = list(rule["excluded_states"])
 
     def effective_search_terms(self) -> list[str]:
         # round67：有 search_scope 时先按稳定大品类召回，父品类仅作最后回退；

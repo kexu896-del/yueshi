@@ -8,7 +8,7 @@
 
 | 交付物 | 内容 | 面向 |
 |---|---|---|
-| 用户包 | 预构建 windowed EXE + 浏览器运行时 + price-query.json 示例 + 使用说明.txt | 普通用户 |
+| 用户包 | 预构建 windowed EXE（默认不打包浏览器，使用系统 Chrome/Edge）+ price-query.json 示例 + 使用说明.txt | 普通用户 |
 | 源码包（本目录） | Python 源码、requirements、构建脚本、开发模式 | 开发维护 |
 | 诊断包 | 用户主动导出的脱敏日志 zip | 排错 |
 
@@ -46,8 +46,10 @@ install-deps.bat   # 一次性
 build-exe.bat      # 纯 ASCII 壳，实际逻辑在 build_exe.py
 ```
 
-`build_exe.py`：安装 PyInstaller → 浏览器运行时下载到项目 `browsers\` →
-PyInstaller windowed 打包（中文名「月食叮咚查价助手」）→ 组装 dist 用户包。
+`build_exe.py`：安装 PyInstaller → 从月食主库导出语义快照
+（`src/semantics-snapshot.json`）→ PyInstaller windowed 打包（中文名
+「月食叮咚查价助手」）→ 组装 dist 用户包。默认不打包浏览器；目标机器
+没有 Chrome/Edge 时，构建前设 `YUESHI_BUNDLE_BROWSER=1` 打自带浏览器大包。
 R08 门禁：任何一步失败即非零退出，不留下看似成功的空 dist；
 打包前强制移除 YUESHI_DEV，正式构建不可能携带 inspect。
 
@@ -100,8 +102,10 @@ R08 门禁：任何一步失败即非零退出，不留下看似成功的空 dis
 - 图标：`assets/icon-master.png`（AI 生成母图）→ `icon-1024.png`（裁边留白）→
   `app.ico`（16–256 多尺寸）+ `icon-64.png`（界面顶部）。build_exe.py 以
   `--icon assets/app.ico --add-data assets;assets` 打包。
-- 首页为四步式布局（上传区 → 登录+地址确认勾选 → 开始查询 → 结果下载），
-  进度经 `app.run(progress_callback=...)` 回报；登录用 `login_only=True`。
+- 窗口流程：导入清单（拖入/选择）→ 自检等待页（浏览器可用性 + 唯一主按钮
+  「开始查询」；登录与收货地址由用户在叮咚网页自行确认）→ 查询进度 →
+  完成页（下载结果并返回月食）。进度经 `app.execute_batch(progress_callback=...)`
+  回报；CLI 模式仍可用 `app.run`。
 - ~~安装程序：Inno Setup~~（第二轮优化起移除，见下）。
 
 ---
@@ -173,12 +177,13 @@ Python 或任何构建工具。
   主按钮固定在底部，清单再长也不会被挤出窗口。
 - 窗口可调大小并记忆上次尺寸（不小于 600×440）；明细支持滚轮与
   PageUp/PageDown/Home/End。
-- 导出自动带格式自检（E01–E05：schema_version/provider/request_id/
-  results 非空/保存后回读校验），普通用户不需要理解这些字段；
+- 导出自动带格式自检（E01–E06：schema_version/provider/request_id/
+  results 非空/保存后回读校验/observed_at 非空），普通用户不需要理解这些字段；
   自检不通过时只提示重新保存，字段明细在「设置与帮助 → 导出诊断信息」。
 - 精简查价清单支持：清单可只带食材 ID + 需求克数 + 用途约束，
-  匹配规则由内置目录快照（1.3.0，含腊制鸡腿/刺身三文鱼/玉米茶/
-  组合菜剔除规则）自动展开；清单内同名字段优先。
+  匹配规则由内置语义快照（目录 1.7.0 / 形态词典 1.5.0，由月食
+  `scripts/export_helper_semantics.py` 导出为 `src/semantics-snapshot.json`；
+  含腊制鸡腿/刺身三文鱼/玉米茶/组合菜剔除规则）自动展开；清单内同名字段优先。
 
 ### 方案 §8 收口（本次）
 

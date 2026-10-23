@@ -422,6 +422,8 @@ class HelperWindow:
 
     def _show_wait(self):
         """进入自检面板（方案 §8.1）：刷新三状态后再展示。"""
+        # 单一入口恢复开始按钮：任何回到等待页的路径都重新允许确认。
+        self.btn_start.configure(state="normal")
         # 能走到这里说明清单已成功读取
         self.check_list_label.configure(text=SELFCHECK_LIST_READY, fg=GREEN)
         if browser_available():
@@ -504,6 +506,7 @@ class HelperWindow:
             "item_names": names,
             "delivery_confirmed": False,
             "user_clicked_start": False,
+            "prepared": False,
         }
         summary = (f"{path.name}\n{len(names)} 种食材："
                    + "、".join(names[:12]) + ("…" if len(names) > 12 else ""))
@@ -519,7 +522,7 @@ class HelperWindow:
     def click_start_query(self):
         """开始按钮：四条件同时成立才允许排队查询（最佳实践 §三）。"""
         job = self._job
-        if not job:
+        if not job or not job.get("prepared") or job.get("user_clicked_start"):
             return
         job["delivery_confirmed"] = True
         job["confirmed_at"] = datetime.now().astimezone().isoformat()
@@ -608,6 +611,20 @@ class HelperWindow:
         ))
         self._logged_in = True
 
+    def _goto_home(self, page):
+        """统一回首页：页面被关/崩溃时转成 BrowserSessionLost（人话提示）。"""
+        import app as helper_app
+        try:
+            page.goto(helper_app.DINGDONG_HOME,
+                      wait_until="domcontentloaded", timeout=30000)
+            helper_app.audit_current_url(page)
+        except helper_app.BrowserSessionLost:
+            raise
+        except Exception as exc:
+            # TargetClosedError 等底层异常不外泄，由调用方按会话丢失处理。
+            raise helper_app.BrowserSessionLost(
+                "打开叮咚首页时网页被关闭") from exc
+
     def _do_prepare(self, qf: Path):
         """导入后只做准备工作：打开网页、必要时引导登录，
         然后停在等待确认页，绝不自动查价。"""
@@ -615,19 +632,26 @@ class HelperWindow:
         self._ensure_session()
         _pw, _ctx, page, _collector = self._session
 
-        page.goto(helper_app.DINGDONG_HOME,
-                  wait_until="domcontentloaded", timeout=30000)
-        helper_app.audit_current_url(page)
+        try:
+            self._goto_home(page)
+            if not self._logged_in and helper_app.session_needs_login(page):
+                self.root.after(0, lambda: self.progress_label.configure(
+                    text="需要你登录叮咚…"))
+                self._confirm_login_ui()
+                self._goto_home(page)
+        except helper_app.BrowserSessionLost:
+            # 预检失败不阻断任务：回到等待页，用户点开始时会重开网页。
+            self._close_session()
+            self.root.after(0, lambda: messagebox.showwarning(
+                "网页没有打开",
+                "叮咚网页打不开或被关闭了。\n\n"
+                "点【开始查询】会重新打开网页，请确认地址后再查。",
+                parent=self.root))
 
-        if not self._logged_in and helper_app.session_needs_login(page):
-            self.root.after(0, lambda: self.progress_label.configure(
-                text="需要你登录叮咚…"))
-            self._confirm_login_ui()
-            page.goto(helper_app.DINGDONG_HOME,
-                      wait_until="domcontentloaded", timeout=30000)
-            helper_app.audit_current_url(page)
-
-        # 就绪：进入自检面板，无限期等用户点击开始按钮。
+        # 只有当前任务仍有效才允许确认；旧任务被替换时不再回写状态。
+        job = self._job
+        if job is not None and job.get("query_file") == qf:
+            job["prepared"] = True
         self.root.after(0, self._show_wait)
 
     def _do_start_query(self):
@@ -635,8 +659,12 @@ class HelperWindow:
         t0 = time.monotonic()
         # 开始按钮处理函数内再次校验（不只靠界面禁用）。
         job = self._job
-        if (not job or not job.get("user_clicked_start")
+        if (not job or not job.get("prepared")
+                or not job.get("user_clicked_start")
                 or not job.get("delivery_confirmed")):
+            if job is not None:
+                job["delivery_confirmed"] = False
+                job["user_clicked_start"] = False
             # §8.3：内部错误码写日志，界面只给操作建议。
             self._log_internal("delivery_context_missing")
             self.root.after(0, lambda: messagebox.showwarning(
@@ -645,62 +673,59 @@ class HelperWindow:
                 parent=self.root))
             self.root.after(0, self._show_wait)
             return
-        self._ensure_session()  # 浏览器被关过会自动重开
-        _pw, _ctx, page, collector = self._session
+        # 确认是一次性的：校验通过即消费，任何后续路径都不能复用。
+        job["delivery_confirmed"] = False
 
-        page.goto(helper_app.DINGDONG_HOME,
-                  wait_until="domcontentloaded", timeout=30000)
-        helper_app.audit_current_url(page)
-
-        # 点击开始后若发现会话失效，引导登录再回到等待页重新确认。
-        if not self._logged_in and helper_app.session_needs_login(page):
-            self.root.after(0, lambda: self.progress_label.configure(
-                text="需要你登录叮咚…"))
-            self._confirm_login_ui()
-            page.goto(helper_app.DINGDONG_HOME,
-                      wait_until="domcontentloaded", timeout=30000)
-            helper_app.audit_current_url(page)
-            job["delivery_confirmed"] = False
-            job["user_clicked_start"] = False
-            self.root.after(0, lambda: self.btn_start.configure(
-                state="normal"))
-            self.root.after(0, self._show_wait)
-            return
-
-        batch = helper_app.load_query(Path(job["query_file"]))
-        self._last_batch = batch
-        started_at = datetime.now().astimezone()
-        total = len(batch.items)
-
-        def on_progress(i, n, text):
-            if self._cancel_requested:
-                raise helper_app.QueryCancelled()
-            self.root.after(0, lambda: (
-                self.progress_label.configure(
-                    text=f"正在查询 {i} / {n}：{text}"),
-                self.bar.configure(value=int((i - 1) / max(n, 1) * 100))))
-
-        cancelled = False
-        results, diags = [], []
-        try:
-            results, diags = helper_app.execute_batch(
-                page, collector, batch, on_progress)
-        except helper_app.QueryCancelled:
-            cancelled = True
-        except helper_app.BrowserSessionLost:
-            # 浏览器窗口被关掉/崩溃：清确认、回等待页，重开网页后重新确认。
+        def session_lost():
             self._close_session()
             if self._job is not None:
                 self._job["delivery_confirmed"] = False
                 self._job["user_clicked_start"] = False
-            self.root.after(0, lambda: self.btn_start.configure(
-                state="normal"))
             self.root.after(0, lambda: messagebox.showwarning(
                 "查询中断",
-                "查询过程中叮咚网页被关闭或失去响应，剩余项目没有完成。\n\n"
-                "网页会在你下次开始时自动重开，请重新确认地址后再查。",
+                "叮咚网页被关闭或失去响应，本次没有继续。\n\n"
+                "点【开始查询】会重新打开网页，请重新确认地址后再查。",
                 parent=self.root))
             self.root.after(0, self._show_wait)
+
+        try:
+            self._ensure_session()  # 浏览器被关过会自动重开
+            _pw, _ctx, page, collector = self._session
+
+            self._goto_home(page)
+
+            # 点击开始后若发现会话失效，引导登录再回到等待页重新确认。
+            if not self._logged_in and helper_app.session_needs_login(page):
+                self.root.after(0, lambda: self.progress_label.configure(
+                    text="需要你登录叮咚…"))
+                self._confirm_login_ui()
+                self._goto_home(page)
+                job["user_clicked_start"] = False
+                self.root.after(0, self._show_wait)
+                return
+
+            batch = helper_app.load_query(Path(job["query_file"]))
+            self._last_batch = batch
+            started_at = datetime.now().astimezone()
+            total = len(batch.items)
+
+            def on_progress(i, n, text):
+                if self._cancel_requested:
+                    raise helper_app.QueryCancelled()
+                self.root.after(0, lambda: (
+                    self.progress_label.configure(
+                        text=f"正在查询 {i} / {n}：{text}"),
+                    self.bar.configure(value=int((i - 1) / max(n, 1) * 100))))
+
+            cancelled = False
+            results, diags = [], []
+            try:
+                results, diags = helper_app.execute_batch(
+                    page, collector, batch, on_progress)
+            except helper_app.QueryCancelled:
+                cancelled = True
+        except helper_app.BrowserSessionLost:
+            session_lost()
             return
 
         self._perf["query_total_ms"] = int((time.monotonic() - t0) * 1000)
@@ -908,6 +933,8 @@ class HelperWindow:
         if self._job is not None:
             self._job["delivery_confirmed"] = False
             self._job["user_clicked_start"] = False
+            self.root.after(0, lambda: self.btn_start.configure(
+                state="normal"))
         self.root.after(0, lambda: messagebox.showinfo(
             "完成", "本地登录信息已清除。", parent=self.root))
 

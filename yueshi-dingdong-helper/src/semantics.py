@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""商品语义门禁（round67，与月食 scripts/common/product_semantics.py 同规则）
+"""商品语义门禁（round67 起；round73 单一来源化）
+
+与月食 scripts/common/product_semantics.py 同规则：词表唯一来源为内嵌快照
+semantics-snapshot.json（由月食 scripts/export_helper_semantics.py 从主库导出），
+本文件只持有判定逻辑。
 
 - 名称命中只用于召回；验收条件由 acceptance_profile 决定；
 - 三态：accepted / rejected / review_required；证据不足一律 review_required；
@@ -8,49 +12,40 @@
 """
 from __future__ import annotations
 
+import json
 import re
+import sys
+from pathlib import Path
 
-SPECIES_TERMS = {
-    "猪": ["猪"], "牛": ["牛"], "羊": ["羊"], "鸡": ["鸡"], "鸭": ["鸭"], "鹅": ["鹅"],
-}
+_SNAP_PATH = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent)) \
+    / "semantics-snapshot.json"
+with open(_SNAP_PATH, encoding="utf-8") as _f:
+    _SNAP = json.load(_f)
+_VOCAB = _SNAP["commodity_vocabulary"]
+
+SPECIES_TERMS = _VOCAB["species_terms"]
 # round67.1：物种词误伤守卫——「牛奶/奶油/牛油果/牛油/蜗牛」不是牛肉冲突。
-SPECIES_TERM_EXCEPTIONS = {
-    "牛": ["牛奶", "奶油", "牛油果", "牛油", "蜗牛"],
-    "鸡": ["鸡蛋"],
-}
-CATEGORY_TERMS = {
-    "yogurt": ["酸奶", "发酵乳", "乳酪"],
-    "fermented_milk": ["发酵乳", "酸奶"],
-    "bread": ["面包", "吐司", "欧包", "贝果", "法棍", "餐包", "列巴", "司康"],
-    "tofu": ["豆腐"],
-    "pumpkin": ["南瓜"],
-    "celery": ["芹菜", "香芹"],
-    "hairtail": ["带鱼"],
-}
-COMPOSITE_TERMS = ["香干", "炒", "沙拉", "汉堡", "三明治", "披萨", "寿司", "便当",
-                   "盖饭", "炒饭", "拌面", "套餐", "组合", "拼盘", "串", "粗粮包", "混合装"]
+SPECIES_TERM_EXCEPTIONS = _VOCAB["species_term_exceptions"]
+CATEGORY_TERMS = _VOCAB["category_terms"]
+COMPOSITE_TERMS = _VOCAB["composite_terms"]
 # round69：按通用框架维度拆分——预制菜属 composition，调味/即食属 processing。
 # （round67.1 已删除裸「卤」：卤水豆腐是凝固工艺不是预制菜。）
-COMPOSITION_PREPARED_TERMS = ["预制", "半成品", "料理包", "快手菜", "王牌菜", "加热即食"]
-SNACK_TERMS = ["零食", "小吃", "脆片", "薯片", "果干", "果脯", "点心", "饼干"]
-FRIED_TERMS = ["油炸", "炸", "酥", "天妇罗", "脆皮", "油豆腐", "油面筋"]
-SEASONED_TERMS = ["香煎", "秘制", "红烧", "糖醋", "腌制", "调味", "奥尔良",
-                  "黑椒", "孜然", "麻辣", "藤椒"]
-READY_TO_EAT_TERMS = ["即食", "开袋即食", "熟食", "凉菜", "凉拌", "卤味", "卤制", "卤蛋", "卤肉"]
-NON_FOOD_TERMS = ["火锅", "特惠", "任选", "折", "券", "水", "湿巾", "垃圾袋"]
+COMPOSITION_PREPARED_TERMS = _VOCAB["composition_prepared_terms"]
+SNACK_TERMS = _VOCAB["snack_terms"]
+FRIED_TERMS = _VOCAB["fried_terms"]
+SEASONED_TERMS = _VOCAB["seasoned_terms"]
+READY_TO_EAT_TERMS = _VOCAB["ready_to_eat_terms"]
+NON_FOOD_TERMS = _VOCAB["non_food_terms"]
 
-NO_SUGAR_TERMS = ["无糖", "无蔗糖", "0蔗糖", "0%蔗糖", "零蔗糖", "0添加蔗糖",
-                  "不加蔗糖", "裸酸奶", "断糖", "0糖"]
-SUGAR_PRESENT_TERMS = ["含糖", "风味", "果粒", "果味", "黄桃", "草莓", "芒果", "蓝莓", "甜", "糖"]
+NO_SUGAR_TERMS = _VOCAB["no_sugar_terms"]
+SUGAR_PRESENT_TERMS = _VOCAB["sugar_present_terms"]
 # round68：plain 单品要求下的调味/混合词（风味酸奶、爆珠、果粒等不得当 plain 单品）
-FLAVOR_MIX_TERMS = ["果味", "风味", "西柚", "脐橙", "草莓", "黄桃", "芒果", "蓝莓",
-                    "爆珠", "燕麦", "坚果", "巧克力", "香草", "果粒", "椰果", "啵啵",
-                    "果汁", "果酱", "混合"]
+FLAVOR_MIX_TERMS = _VOCAB["flavor_mix_terms"]
 # round68：全麦证据分层——标题「全麦/全谷物」= title_claim；仅「黑麦/杂粮」等
 # 不得自动满足全麦要求（review_required）。
-WHOLE_WHEAT_TERMS = ["全麦", "全谷物"]
-OTHER_GRAIN_TERMS = ["黑麦", "裸麦", "杂粮", "多谷物", "粗粮", "燕麦"]
-WHITE_BREAD_TERMS = ["白吐司", "牛奶吐司", "奶油面包", "甜面包", "蛋糕", "夹心"]
+WHOLE_WHEAT_TERMS = _VOCAB["whole_wheat_terms"]
+OTHER_GRAIN_TERMS = _VOCAB["other_grain_terms"]
+WHITE_BREAD_TERMS = _VOCAB["white_bread_terms"]
 
 _PROMO_BRACKET = re.compile(r"【[^】]*】")
 
@@ -129,7 +124,11 @@ def evaluate_candidate(name: str, acceptance_profile: dict | None):
         return "rejected", _ev(identity={"status": "non_food", "note": "页面推荐词/非商品名"}), \
             ["non_food_product"]
 
-    ap = acceptance_profile
+    # round73：与技能侧契约对齐——兼容外层概念档案（含 acceptance_profile 键）或验收条件本体。
+    ap = acceptance_profile.get("acceptance_profile") \
+        if isinstance(acceptance_profile, dict) and "acceptance_profile" in acceptance_profile \
+        else acceptance_profile
+    ap = ap or {}
 
     # ── 1) identity：大品类 / 物种 / 部位 ──────────────────────────────
     identity = {"status": "unknown", "category": None, "species": None, "cut": None}
@@ -227,7 +226,8 @@ def evaluate_candidate(name: str, acceptance_profile: dict | None):
                 ["requirement_not_verified"]
 
     if ap.get("whole_grain_requirement") == "whole_grain":
-        h = _hit(name, WHOLE_WHEAT_TERMS)
+        # round73：与技能侧一致使用 _attribute_hit——「全麦味」是风味声明，不算全麦证据
+        h = _attribute_hit(name, WHOLE_WHEAT_TERMS)
         other = _attribute_hit(name, OTHER_GRAIN_TERMS)
         white = _hit(name, WHITE_BREAD_TERMS)
         if h:

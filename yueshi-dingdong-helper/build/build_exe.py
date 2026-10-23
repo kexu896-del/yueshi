@@ -82,6 +82,16 @@ def main() -> int:
             time.sleep(1.5)
             shutil.rmtree(old, ignore_errors=True)
 
+    # round73：语义单一来源化——打包前从月食主库导出语义快照（semantics-snapshot.json）
+    # 并随包内嵌（_internal 根）。技能仓必须与本项目同级（…\月食\yueshi）；
+    # 缺失时构建直接失败（快照是运行依赖，不可带病打包）。
+    skill_exporter = TOP.parent / "yueshi" / "scripts" / "export_helper_semantics.py"
+    if not skill_exporter.exists():
+        print(f"[FAIL] 未找到主库导出脚本：{skill_exporter}（技能仓须与助手仓并列）")
+        return 1
+    run([PY, str(skill_exporter), "--out", str(SRC / "semantics-snapshot.json")],
+        "export semantics snapshot from yueshi main data")
+
     pyinstaller_cmd = [
         PY, "-m", "PyInstaller", "--noconfirm", "--clean", "--windowed",
         "--name", APP_NAME,
@@ -93,6 +103,7 @@ def main() -> int:
         "--collect-all", "tkinterdnd2",
         "--add-data", f"{TOP / 'assets'};assets",
         "--add-data", f"{TOP / 'examples' / '月食-查价清单-示例.json'};.",
+        "--add-data", f"{SRC / 'semantics-snapshot.json'};.",
     ]
     if bundle_browser and (TOP / "browsers").exists():
         pyinstaller_cmd += ["--add-data", f"{TOP / 'browsers'};browsers"]

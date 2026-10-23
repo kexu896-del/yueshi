@@ -104,143 +104,57 @@ SELECTORS = {
         "[id*='location']",
     ],
 }
-# ---- 形态与加工状态词典（v2.0，对应主库 yueshi/data/product-form-dictionary.json）----
-# 让候选与菜谱做法匹配：整腿需求不被肉丁/鸡块替代；熟食形态直接拒绝。
-# 本字典是主库的构建快照；主库更新时同步此处并提升 FORM_DICTIONARY_VERSION。
-FORM_DICTIONARY_VERSION = "1.4.0"
+# ---- 形态与加工状态词典（round73 单一来源化） ----
+# 本段内容不再手写：由月食主库经 scripts/export_helper_semantics.py 导出为
+# 内嵌快照 semantics-snapshot.json（构建时随包分发），此处只做加载与派生。
+# 主库更新时提升主库版本并重跑导出；快照与代码不同版由月食侧回归测试兜底。
+import json as _json
+
+_SNAP_PATH = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent)) \
+    / "semantics-snapshot.json"
+with open(_SNAP_PATH, encoding="utf-8") as _snap_f:
+    _SNAPSHOT = _json.load(_snap_f)
+
+FORM_DICTIONARY_VERSION = _SNAPSHOT["form_dictionary"]["version"]
 
 FORM_KEYWORDS: dict[str, tuple[str, ...]] = {
-    # 切配形态（限制性：菜谱未允许时不得替代原始食材）
-    "diced": ("丁",),
-    "shredded": ("丝",),
-    "sliced": ("片",),
-    "minced": ("末", "糜", "泥"),
-    "cut_pieces": ("切块", "块"),
-    "filled": ("馅",),
-    "ball": ("丸",),
-    "patty": ("排",),
-    "pie": ("饼",),
-    "roll": ("卷",),
-    # 加工状态（限制性）
-    "marinated": ("腌制", "奥尔良", "黑椒", "孜然", "调味"),
-    "cooked": ("熟食", "即食", "烤", "炸", "卤", "预制", "调理", "半成品"),
-    # round58 新增限制性形态（与主库 product-form-dictionary.json 1.3.0 同步）：
-    # 腊制/风干（查询鲜鸡腿时腊鸡腿不得替代）；刺身/生食（刺身不是默认熟食烹饪候选）
-    "cured": ("腊", "腊制", "腌腊", "风干"),
-    "sashimi": ("刺身", "生鱼片", "生食"),
-    # 部位/整件形态
-    "whole_leg": ("琵琶腿", "整腿", "鸡大腿", "鸡腿"),
-    "drumstick": ("琵琶腿",),
-    "wing": ("翅",),
-    "breast": ("胸",),
-    "whole": ("整只", "整条", "整根", "整块", "整"),
-    "whole_leaf": ("整棵", "整颗"),
-    # 蛋类加工形态（限制性：查询"鸡蛋"时软饼/卤蛋/咸蛋不得替代带壳鲜蛋）
-    "shell_egg": ("带壳", "鲜鸡蛋", "土鸡蛋", "谷物蛋", "柴鸡蛋", "可生食鸡蛋"),
-    "pancake": ("软饼", "煎饼", "蛋饼", "手抓饼", "鸡蛋饼"),
-    "pastry": ("蛋糕", "蛋酥", "蛋黄酥", "糕点"),
-    "cooked_egg": ("卤蛋", "茶叶蛋", "熟蛋", "溏心蛋", "温泉蛋"),
-    "salted_egg": ("咸蛋", "咸鸭", "皮蛋", "松花蛋"),
-    # 保鲜状态（非限制性，仅标注）
-    "fresh": ("冷鲜", "冰鲜", "鲜"),
-    "frozen": ("冷冻", "速冻"),
-    # round65 新增（与主库 product-form-dictionary.json 1.4.0 同步）：
-    # 根茎/生鲜原料（非限制性标注）；叶部位、油炸、裹粉、即食、加工小吃（限制性）
-    "raw": ("生鲜", "原料"),
-    "root_tuber": ("红薯", "地瓜", "番薯", "蜜薯", "紫薯", "根茎"),
-    "frozen_raw": ("冻品",),
-    "leaf": ("叶", "苗", "尖"),
-    "fried": ("炸", "酥", "脆"),
-    "breaded": ("裹粉", "面包糠", "小方", "鸡米花"),
-    "ready_to_eat": ("即食", "开袋即食", "熟食"),
-    "cooked_snack": ("甘梅", "烤肠", "零食", "小吃"),
+    form: tuple(spec.get("keywords") or ())
+    for form, spec in _SNAPSHOT["form_dictionary"]["forms"].items()
 }
 
 # 限制性形态：设置 allowed_forms 时，命中且不在允许清单内即拒
 # （鸡腿块 ≠ 整腿；肉丁 ≠ 整肉）。
-RESTRICTIVE_FORMS = frozenset({
-    "diced", "shredded", "sliced", "minced", "cut_pieces",
-    "filled", "ball", "patty", "pie", "roll",
-    "marinated", "cooked", "cured", "sashimi",
-    "pancake", "pastry", "cooked_egg", "salted_egg",
-    "leaf", "fried", "breaded", "ready_to_eat", "cooked_snack",
-})
+RESTRICTIVE_FORMS = frozenset(
+    form for form, spec in _SNAPSHOT["form_dictionary"]["forms"].items()
+    if spec.get("restrictive")
+)
 
 # 形态词中的加工状态词需先过否定前缀（「免腌制」「未调味」不误伤）。
-_NEGATION_PREFIXES = ("免", "无", "不含", "未", "去")
+# 守卫适用形态集合与主库商品语义词汇契约一致。
+_NEGATION_PREFIXES = tuple(_SNAPSHOT["form_dictionary"]["negation_prefixes"])
+NEGATION_GUARD_FORMS = frozenset(
+    _SNAPSHOT["commodity_vocabulary"].get("processing_state_forms") or []
+)
 
 # ---- 条件接受（round54）：本体合格但附独立调味包的商品 ----
 # 命中后候选不拒绝，标记 conditional_accept 并生成 purchase_note 提示
 # （如"调味牛肉（附独立调味包，可不用）"）。仅识别独立附赠包，
 # 本体已调味仍走 marinated 门禁。
+_CA = _SNAPSHOT["form_dictionary"]["conditional_accept"] or {}
 CONDITIONAL_ACCEPT_PAIRS: tuple[tuple[str, str], ...] = tuple(
     (attach, pack)
-    for attach in ("附", "赠", "含", "送", "配")
-    for pack in ("调味包", "酱料包", "料包", "酱汁包", "蘸料")
+    for attach in _CA.get("attach_prefixes") or []
+    for pack in _CA.get("packs") or []
 )
 
 
-CATALOG_RULES_VERSION = "1.6.0"
+CATALOG_RULES_VERSION = _SNAPSHOT["catalog"]["version"]
 
-# ---- 食材目录规则快照（round58，对应主库 ingredient-catalog.json 1.3.0 query_profile）----
+# ---- 食材目录规则快照（round58 起，round73 单一来源化） ----
 # 精简查价清单只携带 ingredient_id + 需求 + 用途约束时，由本快照展开匹配规则；
-# 清单逐项字段存在时优先（override）。主库更新时同步此处并提升 CATALOG_RULES_VERSION。
-CATALOG_RULES: dict[str, dict] = {
-    "鸡腿": {
-        "exact_terms": ["鸡腿"],
-        "aliases": ["鸡大腿", "琵琶腿"],
-        "allowed_forms": ["whole_leg", "drumstick"],
-        "excluded_forms": ["marinated", "cooked", "cured"],
-        # 拒绝腊制、腌制（round58 人工剔除规则回写）
-        "hard_excluded_terms": ["腊鸡腿", "腊制"],
-    },
-    "三文鱼": {
-        "exact_terms": ["三文鱼"],
-        "aliases": ["鲑鱼"],
-        "excluded_forms": ["sashimi", "marinated"],
-        # 刺身不是默认熟食烹饪候选；附独立调味包走 conditional_accept，本体调味由 marinated 拒绝
-        "hard_excluded_terms": ["刺身", "生鱼片"],
-    },
-    "玉米": {
-        "exact_terms": ["鲜玉米", "甜玉米", "玉米"],
-        "aliases": ["甜玉米", "水果玉米"],
-        "excluded_forms": ["cooked"],
-        # 拒绝玉米须茶等饮品
-        "hard_excluded_terms": ["玉米须", "玉米茶", "茶饮", "饮品"],
-    },
-    "芹菜": {
-        "exact_terms": ["芹菜"],
-        "aliases": ["香芹"],
-        # 拒绝芹菜牛肉丝等组合菜（芹菜用量不可控，主料非芹菜）
-        "hard_excluded_terms": ["牛肉丝", "肉丝", "组合菜", "芹菜牛肉"],
-    },
-    # round65 新增（与主库 ingredient-catalog.json 1.6.0 query_profile 同步）：
-    "鸡蛋": {
-        "exact_terms": ["鸡蛋"],
-        "aliases": ["鲜鸡蛋", "土鸡蛋", "谷物蛋"],
-        "allowed_forms": ["shell_egg", "fresh", "frozen"],
-        "excluded_forms": ["cooked", "pancake", "pastry", "cooked_egg", "salted_egg", "ready_to_eat"],
-        # 鸡蛋软饼/蛋糕/卤蛋等蛋制品不得替代带壳鲜蛋
-        "hard_excluded_terms": ["软饼", "煎饼", "蛋糕", "卤蛋", "茶叶蛋", "咸蛋", "皮蛋"],
-    },
-    "红薯": {
-        "exact_terms": ["红薯", "地瓜"],
-        "aliases": ["番薯", "山芋", "蜜薯", "紫薯"],
-        "required_category": "root_tuber",
-        "allowed_forms": ["root_tuber", "fresh", "raw", "whole"],
-        "excluded_forms": ["leaf", "cooked_snack", "fried", "ready_to_eat", "pastry"],
-        # 地瓜叶/番薯叶是茎叶不是根茎；甘梅地瓜条是加工小吃
-        "hard_excluded_terms": ["地瓜叶", "番薯叶", "红薯叶", "甘梅", "地瓜条", "红薯干"],
-    },
-    "猪里脊": {
-        "exact_terms": ["猪里脊", "里脊肉"],
-        "aliases": ["猪里脊肉", "小里脊"],
-        "allowed_forms": ["raw", "fresh", "frozen_raw"],
-        "excluded_forms": ["cooked", "fried", "breaded", "ready_to_eat", "marinated"],
-        # 香炸里脊小方等油炸/裹粉预制制品不得作为生鲜里脊候选
-        "hard_excluded_terms": ["炸", "小方", "裹粉", "即食", "熟食"],
-    },
-}
+# 清单逐项字段存在时优先（override）。字段名与主库 ingredient-catalog.json
+# query_profile 一致（excluded_states 等），不再维护手抄副本。
+CATALOG_RULES: dict[str, dict] = _SNAPSHOT["catalog"]["rules"]
 
 
 def catalog_rule_for(ingredient_id: str) -> dict:
@@ -263,14 +177,6 @@ def conditional_accept_note(name: str) -> str:
     return ""
 
 
-def form_keywords(forms: list[str]) -> list[str]:
-    """展开形态名为关键词；未登记形态按原样作为关键词兜底。"""
-    words: list[str] = []
-    for form in forms:
-        words.extend(FORM_KEYWORDS.get(form, (form,)))
-    return list(dict.fromkeys(words))
-
-
 def _negated(name: str, idx: int) -> bool:
     """命中位置前两字符内带否定前缀（免/无/不含/未/去）。"""
     prefix = name[max(0, idx - 2):idx]
@@ -280,7 +186,8 @@ def _negated(name: str, idx: int) -> bool:
 def detect_forms(name: str) -> list[str]:
     """识别商品名含有的形态/加工状态（按词典登记顺序返回）。
 
-    - 否定前缀守卫：「免腌制」不识别为 marinated；
+    round73 与主词典「规则」及月食端对齐：
+    - 否定前缀守卫只作用于加工状态形态（NEGATION_GUARD_FORMS）；
     - 「整块」归 whole 不归 cut_pieces（切块才是 cut_pieces）。
     """
     found: list[str] = []
@@ -292,7 +199,7 @@ def detect_forms(name: str) -> list[str]:
                 idx = name.find(word, start)
                 if idx < 0:
                     break
-                if form in ("marinated", "cooked") and _negated(name, idx):
+                if form in NEGATION_GUARD_FORMS and _negated(name, idx):
                     start = idx + 1
                     continue
                 if form == "cut_pieces" and name[max(0, idx - 1):idx] == "整":
