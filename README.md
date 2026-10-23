@@ -71,7 +71,7 @@
 
 ## 叮咚查价助手（可选）
 
-只有选择"叮咚查价助手"时才需要。源码在 `yueshi-dingdong-helper/`；打包版见仓库 Releases 页面（附件名以发布页为准），或按 `yueshi-dingdong-helper/dev/DEVELOPMENT.md` 从源码运行。
+只有选择"叮咚查价助手"时才需要。源码在 `yueshi-dingdong-helper/`；打包版从 [Releases](https://github.com/kexu896-del/yueshi/releases) 下载 `yueshi-dingdong-helper.zip`（约 53.6MB，解压后保留完整文件夹），或按 `yueshi-dingdong-helper/dev/DEVELOPMENT.md` 从源码运行。
 
 使用方式：拖入查价清单 → 在叮咚网页自行登录并确认收货地址 → 点"开始查询" → 下载结果并上传回对话。
 
